@@ -1,13 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from "react";
+import { OutletContext } from "react-dom";
 
 function App() {
-  
-
-  return (
-    <div>
-
-    </div>
-  )
+  const [user, setUser] = useState(null);
+  return <div></div>;
 }
 
-export default App
+export default App;

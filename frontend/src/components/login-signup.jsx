@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
+import { useOutletContext } from "react-dom";
 
 function LoginSignUp() {
+  const { user, setUser } = useOutletContext();
+
   const [wantToLogin, setWantToLogin] = useState(true);
 
   const [email, setEmail] = useState("");
@@ -34,6 +37,8 @@ function LoginSignUp() {
           password,
         }),
       });
+
+      // if res login is successful update useState user in app
     } catch (error) {
       setOtherLoginErrors(error.errMsg);
     }
