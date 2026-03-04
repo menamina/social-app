@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 
 function LoginSignUp() {
-  const [login, setLogin] = useState(true);
+  const [wantToLogin, setWantToLogin] = useState(true);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -11,41 +12,55 @@ function LoginSignUp() {
   const [signUpPassword, setSignUpPassword] = useState("");
   const [signUpConfirmPassword, setSignUpConfirmPassword] = useState("");
 
+  const [loginErrors, setLoginErrors] = useState(null);
+  const [signupErrors, setSignupErrors] = useState(null);
+
+  const [otherLoginErrors, setOtherLoginErrors] = useState(null);
+
+  const [otherSignupErrors, setOtherSignupErrors] = useState(null);
+
   function toggleOption() {
-    setLogin((prev) => !prev);
+    setWantToLogin((prev) => !prev);
   }
 
   async function login(e) {
     e.preventDefault();
     try {
-        const res = 
-    } catch (error) {}
+      const res = await fetch("http://localhost:5555/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
+    } catch (error) {
+      setOtherLoginErrors(error.errMsg);
+    }
   }
 
   async function signup(e) {
     e.preventDefault();
     try {
-        const res = await fetch("http://localhost:5555/signup", {
-            method: "POST",
-            headers: {"Content-Type" : "application/json"},
-            body: JSON.stringify({
-                name: signUpName,
-                username: signUpUsername,
-                email: signUpEmail,
-                password: signUpPassword,
-                confirmPassword: signUpConfirmPassword
-
-
-            })
-        })
+      const res = await fetch("http://localhost:5555/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: signUpName,
+          username: signUpUsername,
+          email: signUpEmail,
+          password: signUpPassword,
+          confirmPassword: signUpConfirmPassword,
+        }),
+      });
     } catch (error) {
-
+      setOtherSignupErrors(error.errMsg);
     }
   }
 
   return (
     <div className="login-signupMain">
-      {login ? (
+      {wantToLogin ? (
         <div className="login">
           <form onSubmit={(e) => login(e)}>
             <div>
