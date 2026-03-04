@@ -65,11 +65,20 @@ function LoginSignUp() {
           <form onSubmit={(e) => login(e)}>
             <div>
               <label>Email:</label>
-              <input></input>
+              <input
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              ></input>
             </div>
             <div>
               <label>Password:</label>
-              <input></input>
+              <input
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              ></input>
+            </div>
+            <div>
+              <button>login</button>
             </div>
           </form>
           <div>
@@ -82,23 +91,41 @@ function LoginSignUp() {
           <form onSubmit={(e) => signup(e)}>
             <div>
               <label>Name:</label>
-              <input></input>
+              <input
+                value={signUpName}
+                onChange={(e) => setSignUpName(e.target.value)}
+              ></input>
             </div>
             <div>
               <label>Username:</label>
-              <input></input>
+              <input
+                value={signUpUsername}
+                onChange={(e) => setSignUpUsername(e.target.value)}
+              ></input>
             </div>
             <div>
               <label>Email:</label>
-              <input></input>
+              <input
+                value={signUpEmail}
+                onChange={(e) => setSignUpEmail(e.target.value)}
+              ></input>
             </div>
             <div>
               <label>Password:</label>
-              <input></input>
+              <input
+                value={signUpPassword}
+                onChange={(e) => setSignUpPassword(e.target.value)}
+              ></input>
             </div>
             <div>
               <label>Confirm Password:</label>
-              <input></input>
+              <input
+                value={signUpConfirmPassword}
+                onChange={(e) => setSignUpConfirmPassword(e.target.value)}
+              ></input>
+            </div>
+            <div>
+              <button>sign up</button>
             </div>
           </form>
           <div>
