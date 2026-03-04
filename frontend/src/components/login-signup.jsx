@@ -25,6 +25,10 @@ function LoginSignUp() {
               <input></input>
             </div>
           </form>
+          <div>
+            <div>Need an account?</div>
+            <div onClick={toggleOption}>Create new account</div>
+          </div>
         </div>
       ) : (
         <div className="signup">
@@ -34,6 +38,10 @@ function LoginSignUp() {
               <input></input>
             </div>
           </form>
+          <div>
+            <div>Already have an account?</div>
+            <div onClick={toggleOption}>login</div>
+          </div>
         </div>
       )}
     </div>
