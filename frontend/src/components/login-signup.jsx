@@ -64,7 +64,11 @@ function LoginSignUp() {
         <div className="login">
           <form onSubmit={(e) => login(e)}>
             <div>
-              <label></label>
+              <label>Email:</label>
+              <input></input>
+            </div>
+            <div>
+              <label>Password:</label>
               <input></input>
             </div>
           </form>
@@ -77,7 +81,23 @@ function LoginSignUp() {
         <div className="signup">
           <form onSubmit={(e) => signup(e)}>
             <div>
-              <label></label>
+              <label>Name:</label>
+              <input></input>
+            </div>
+            <div>
+              <label>Username:</label>
+              <input></input>
+            </div>
+            <div>
+              <label>Email:</label>
+              <input></input>
+            </div>
+            <div>
+              <label>Password:</label>
+              <input></input>
+            </div>
+            <div>
+              <label>Confirm Password:</label>
               <input></input>
             </div>
           </form>
