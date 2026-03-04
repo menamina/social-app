@@ -1,16 +1,22 @@
 require("dotenv").config();
-
 const express = require("express");
 const server = express();
 const port = process.env.PORT || 5555;
-
 const routes = require("./router/routes");
 const cors = require("cors");
 
-const session = require("express-session");
+server.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  }),
+);
 
 server.use(express.json());
 server.use(express.urlencoded({ extended: false }));
+
+server.use("/uploads", express.static("uploads"));
+server.use("/", routes);
 
 function iferr(error) {
   if (error) {
