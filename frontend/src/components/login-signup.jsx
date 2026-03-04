@@ -7,7 +7,7 @@ function LoginSignUp() {
 
   const [signUpName, setSignUpName] = useState("");
   const [signUpUsername, setSignUpUsername] = useState("");
-  const [signUpEmai, setSignUpEmail] = useState("");
+  const [signUpEmail, setSignUpEmail] = useState("");
   const [signUpPassword, setSignUpPassword] = useState("");
   const [signUpConfirmPassword, setSignUpConfirmPassword] = useState("");
 
@@ -15,12 +15,32 @@ function LoginSignUp() {
     setLogin((prev) => !prev);
   }
 
-  function login(e) {
+  async function login(e) {
     e.preventDefault();
+    try {
+        const res = 
+    } catch (error) {}
   }
 
-  function signup(e) {
+  async function signup(e) {
     e.preventDefault();
+    try {
+        const res = await fetch("http://localhost:5555/signup", {
+            method: "POST",
+            headers: {"Content-Type" : "application/json"},
+            body: JSON.stringify({
+                name: signUpName,
+                username: signUpUsername,
+                email: signUpEmail,
+                password: signUpPassword,
+                confirmPassword: signUpConfirmPassword
+
+
+            })
+        })
+    } catch (error) {
+
+    }
   }
 
   return (
