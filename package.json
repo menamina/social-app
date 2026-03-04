@@ -16,7 +16,10 @@
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
     "express-session": "^1.19.0",
-    "jsonwebtoken": "^9.0.3"
+    "jsonwebtoken": "^9.0.3",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0",
+    "passport-session": "^1.0.2"
   },
   "devDependencies": {
     "@faker-js/faker": "^10.3.0",

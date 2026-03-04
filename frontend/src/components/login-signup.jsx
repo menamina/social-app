@@ -22,6 +22,7 @@ function LoginSignUp() {
 
   const [otherSignupErrors, setOtherSignupErrors] = useState(null);
 
+
   function toggleOption() {
     setWantToLogin((prev) => !prev);
   }
