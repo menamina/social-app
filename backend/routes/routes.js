@@ -26,8 +26,12 @@ router.get("/settings", isAuth, remote.settings);
 // posts // 
 router.post("/post", isAuth, remote.post)
 router.delete("/deletePost", isAuth, remote.deletePost)
+
 router.post("/repost", isAuth, remote.repost)
 router.delete("/removeRepost", isAuth, remote.removeRepost)
+
+router.post("/like", isAuth, remote.like)
+router.delete("/removeLike", isAuth, remote.removeLike)
 
 // comments //
 router.post("/comment", isAuth, remote.comment)
