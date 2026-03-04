@@ -15,11 +15,19 @@ function LoginSignUp() {
     setLogin((prev) => !prev);
   }
 
+  function login(e) {
+    e.preventDefault();
+  }
+
+  function signup(e) {
+    e.preventDefault();
+  }
+
   return (
     <div className="login-signupMain">
       {login ? (
         <div className="login">
-          <form>
+          <form onSubmit={(e) => login(e)}>
             <div>
               <label></label>
               <input></input>
@@ -32,7 +40,7 @@ function LoginSignUp() {
         </div>
       ) : (
         <div className="signup">
-          <form onSubmit={(e) => signUp(e)}>
+          <form onSubmit={(e) => signup(e)}>
             <div>
               <label></label>
               <input></input>
