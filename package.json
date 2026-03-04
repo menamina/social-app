@@ -19,6 +19,7 @@
     "jsonwebtoken": "^9.0.3"
   },
   "devDependencies": {
+    "@faker-js/faker": "^10.3.0",
     "prisma": "^7.4.2"
   }
 }
