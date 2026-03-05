@@ -7,19 +7,41 @@ const validators = require("../utils/validator");
 
 router.get("/api/isAuth", isAuth, (req, res, next) => {
     res.json({
-        user: {
-            id: req.user.id,
-            name: req.user.name,
-            username: req.user.username,
-            email: req.user.email
-        }
+        user: req.user 
     })
-
 })
 
-router.post("/login");
-//passport local
-router.post("/sign-up");
+router.post("/login", (req, res, next) => {
+    passport.authenticate("local", (err, user, info) => {
+        if  (err) return next(err);
+        if (!user) {
+            return res.status(401).json({ message: info.message})
+        }
+
+        req.login(user, (err) => {
+             if (err) return next(err);
+
+            return res.json({
+                user: {
+                id: user.id,
+                name: user.name,
+                email: user.email,
+        },
+      });
+        })
+    })
+});
+
+
+router.post("/sign-up", (req, res, next) => {
+    req.logout((error) => {
+        if (error){
+            return next(error)
+        }
+        res.clearCookie("connect.sid")
+        res.status(200).json({ success: true })
+    })
+});
 
 router.post("/logout", (req, res){
 

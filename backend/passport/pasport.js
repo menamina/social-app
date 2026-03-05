@@ -10,7 +10,7 @@ function verifyCB(email, password, done) {
     .findUnique({ where: { email } })
     .then((user) => {
       if (!user) {
-        return done(null, false, { message: "invalid email " });
+        return done(null, false, { message: "invalid email" });
       }
       if (user) {
         const match = checkPassword(password, user.saltedHash);
