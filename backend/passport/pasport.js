@@ -26,3 +26,20 @@ function verifyCB(email, password, done) {
 passport.serializeUser((user, done) => {
   done(null, user.id);
 });
+
+passport.deserializeUser(async (id, done) => {
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        name: true,
+        username: true,
+        email: true,
+      },
+    });
+    return done(null, user);
+  } catch (error) {
+    return done(error);
+  }
+});
