@@ -22,7 +22,6 @@ function LoginSignUp() {
 
   const [otherSignupErrors, setOtherSignupErrors] = useState(null);
 
-
   function toggleOption() {
     setWantToLogin((prev) => !prev);
   }
@@ -98,6 +97,7 @@ function LoginSignUp() {
             <div>
               <label>Name:</label>
               <input
+                name="name"
                 value={signUpName}
                 onChange={(e) => setSignUpName(e.target.value)}
               ></input>
@@ -105,6 +105,7 @@ function LoginSignUp() {
             <div>
               <label>Username:</label>
               <input
+                name="username"
                 value={signUpUsername}
                 onChange={(e) => setSignUpUsername(e.target.value)}
               ></input>
@@ -112,6 +113,7 @@ function LoginSignUp() {
             <div>
               <label>Email:</label>
               <input
+                name="email"
                 value={signUpEmail}
                 onChange={(e) => setSignUpEmail(e.target.value)}
               ></input>
@@ -119,6 +121,7 @@ function LoginSignUp() {
             <div>
               <label>Password:</label>
               <input
+                name="password"
                 value={signUpPassword}
                 onChange={(e) => setSignUpPassword(e.target.value)}
               ></input>
@@ -126,6 +129,7 @@ function LoginSignUp() {
             <div>
               <label>Confirm Password:</label>
               <input
+                name="confirmpassword"
                 value={signUpConfirmPassword}
                 onChange={(e) => setSignUpConfirmPassword(e.target.value)}
               ></input>
