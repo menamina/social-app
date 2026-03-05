@@ -15,11 +15,11 @@ model User {
   saltedHash String
 
   profile Profile[]
-  posts
-  likes
-  comments
-  following
-  followers
+  posts Posts[]
+  likes Likes []
+  comments Comments []
+  following Following[]
+  followers Followers[]
 
 }
 
@@ -31,7 +31,7 @@ model Profile {
     username String
     email String
     
-    publicAccount Boolean @default(true)
+    accountStatus String @default("public")
     blockedAccounts Blocked []
 
     userProfile User @relation(fields: [user], references: [id])
