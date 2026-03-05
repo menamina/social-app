@@ -12,7 +12,7 @@ model User {
   name String
   username String @unique
   email String @unique
-  saltedHash
+  saltedHash String
 
   profile Profile[]
   posts
@@ -24,6 +24,17 @@ model User {
 }
 
 model Profile {
+    id Int @id @default(autoincrement())
+    user Int 
+    pfp String @default("default-png")
+    name String
+    username String
+    email String
+    
+    publicAccount Boolean @default(true)
+    blockedAccounts Blocked []
+
+    userProfile User @relation(fields: [user], references: [id])
 
 }
 
@@ -31,16 +42,20 @@ model Posts {
   id Int @id @default(autoincrement())
   madeBy Int 
   createdAt DateTime @default(now())
-  likes 
-  comments
+  likes Int
+  comments 
 
 }
 
 model Likes {
+    id Int @id @default(autoincrement())
+    userLikes Int 
 
 }
 
 model Comments {
+      id Int @id @default(autoincrement())
+    userComments Int 
 
 }
 
@@ -49,9 +64,17 @@ model Msgs {
 }
 
 model Following {
+      id Int @id @default(autoincrement())
+    userFollowing Int 
 
 }
 
 model Followers {
+      id Int @id @default(autoincrement())
+    userFollowers Int 
+
+}
+
+model Blocked {
 
 }
