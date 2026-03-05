@@ -5,7 +5,7 @@ const remote = require("../controller/remote");
 const passport = require("../passport/passport");
 const validator = require("../utils/validator");
 
-router.get("/api/isAuth", isAuth, (req, res, next) => {
+router.get("/api/isAuth", isAuth, (req, res) => {
   res.json({
     user: req.user,
   });
