@@ -8,6 +8,18 @@ datasource db {
 }
 
 model User {
+  id Int @id @default(autoincrement())
+  name String
+  username String @unique
+  email String @unique
+  saltedHash
+
+  profile Profile[]
+  posts
+  likes
+  comments
+  following
+  followers
 
 }
 
@@ -16,6 +28,11 @@ model Profile {
 }
 
 model Posts {
+  id Int @id @default(autoincrement())
+  madeBy Int 
+  createdAt DateTime @default(now())
+  likes 
+  comments
 
 }
 
@@ -36,5 +53,5 @@ model Following {
 }
 
 model Followers {
-  
+
 }
