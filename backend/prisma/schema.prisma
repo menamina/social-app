@@ -42,21 +42,32 @@ model Posts {
   id Int @id @default(autoincrement())
   madeBy Int 
   createdAt DateTime @default(now())
-  likes Int
-  comments 
+  likes Likes[]
+  comments Comments[]
+
+  postedBy User @relation(fields: [madeBy], references: [id])
 
 }
 
 model Likes {
     id Int @id @default(autoincrement())
-    userLikes Int 
+    postID Int
+    userID Int
+
+    post Posts @relation(fields: [postID], references: [id])
+    user User @relation(fields: [userID], references: [id])
 
 }
 
 model Comments {
-      id Int @id @default(autoincrement())
-    userComments Int 
-
+    id Int @id @default(autoincrement())
+    postID Int
+    userID Int
+    comment String
+    createdAt DateTime @default(now())
+    
+    post Posts @relation(fields: [postID], references: [id])
+        user User @relation(fields: [userID], references: [id])
 }
 
 model Msgs {
