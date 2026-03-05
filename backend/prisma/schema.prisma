@@ -14,7 +14,7 @@ model User {
   email String @unique
   saltedHash String
 
-  profile Profile[]
+  profile Profile?
   posts Posts[]
   likes Likes []
   comments Comments []
@@ -67,24 +67,25 @@ model Comments {
     createdAt DateTime @default(now())
     
     post Posts @relation(fields: [postID], references: [id])
-        user User @relation(fields: [userID], references: [id])
+    user User @relation(fields: [userID], references: [id])
+}
+
+model Follow {
+  id Int @id @default(autoincrement())
+
+  followerId Int
+  followingId Int
+
+  follower   User @relation("UserFollowing", fields: [followerId], references: [id])
+  following  User @relation("UserFollowers", fields: [followingId], references: [id])
+
+  @@unique([followerId, followingId])
 }
 
 model Msgs {
 
 }
 
-model Following {
-      id Int @id @default(autoincrement())
-    userFollowing Int 
-
-}
-
-model Followers {
-      id Int @id @default(autoincrement())
-    userFollowers Int 
-
-}
 
 model Blocked {
 
