@@ -66,4 +66,4 @@ router.post("/comment", isAuth, remote.comment);
 router.post("/deleteComment", isAuth, remote.deleteComment);
 
 // update profile //
-router.patch("/update-profile", isAuth, remote.updateProfile);
+router.patch("/update-profile", isAuth, remote.updateProfileSettings);

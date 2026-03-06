@@ -28,7 +28,7 @@ model User {
 model Profile {
     id Int @id @default(autoincrement())
     user Int @unique
-    pfp String @default("default-png")
+    pfp String? @default("default-png")
     name String
     username String
     email String

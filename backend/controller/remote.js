@@ -129,8 +129,27 @@ async function settings(req, res) {
   }
 }
 
-async function updateProfile(req, res) {
+async function updateProfileSettings(req, res) {
   try {
+    const id = req.user.id;
+    const userID = Number(id);
+
+    const { name, username, email, accountStatus } = req.body;
+    const { pfp } = req.file;
+
+    await prisma.profile.update({
+      where: {
+        user: userID,
+      },
+      data: {
+        pfp: pfp ? pfp : "default-png",
+        name: name,
+        username: username,
+        email: email,
+        accountStatus: accountStatus,
+      },
+    });
+    res.status(200).json({ success: true });
   } catch (error) {
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
   }
@@ -278,6 +297,7 @@ module.exports = {
   profile,
   //   search,
   settings,
+  updateProfileSettings,
   post,
   deletePost,
   //   repost,
