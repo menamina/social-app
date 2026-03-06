@@ -18,19 +18,21 @@ model User {
   posts Posts[]
   likes Likes []
   comments Comments []
-  following Following[]
-  followers Followers[]
+  following Follow[] @relation("UserFollowing")
+  followers Follow[] @relation("UserFollowers")
+  sentMessages Msgs[] @relation("SentMessages")
+  receivedMessages Msgs[] @relation("ReceivedMessages")
 
 }
 
 model Profile {
     id Int @id @default(autoincrement())
-    user Int 
+    user Int @unique
     pfp String @default("default-png")
     name String
     username String
     email String
-    
+
     accountStatus String @default("public")
     blockedAccounts Blocked []
 
@@ -102,7 +104,7 @@ model Blocked {
   blockerId   Int
   blockedId   Int
 
-  user Profile @relation(fields: [blockerId], references: [user])
+  profile Profile @relation(fields: [blockerId], references: [user])
 
   @@unique([blockerId, blockedId])
 

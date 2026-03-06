@@ -110,11 +110,58 @@ async function settings(req, res) {
     const id = req.user.id;
     const userID = Number(id);
 
-    const userProfile = await prisma.user.findUnique({
+    const userSettings = await prisma.user.findUnique({
       where: {
         id: userID,
       },
+      select: {
+        profile: true,
+      },
     });
+
+    res.json({ userSettings });
+  } catch (error) {
+    return res.status(500).json({ errorMsg: "Internal server error :^(" });
+  }
+}
+
+async function post(res, res) {
+  try {
+  } catch (error) {
+    return res.status(500).json({ errorMsg: "Internal server error :^(" });
+  }
+}
+
+async function deletePost(res, res) {
+  try {
+  } catch (error) {
+    return res.status(500).json({ errorMsg: "Internal server error :^(" });
+  }
+}
+
+async function repost(res, res) {
+  try {
+  } catch (error) {
+    return res.status(500).json({ errorMsg: "Internal server error :^(" });
+  }
+}
+
+async function removeRepost(res, res) {
+  try {
+  } catch (error) {
+    return res.status(500).json({ errorMsg: "Internal server error :^(" });
+  }
+}
+
+async function like(res, res) {
+  try {
+  } catch (error) {
+    return res.status(500).json({ errorMsg: "Internal server error :^(" });
+  }
+}
+
+async function removelike(res, res) {
+  try {
   } catch (error) {
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
   }
@@ -126,4 +173,5 @@ module.exports = {
   followingFeed,
   profile,
   search,
+  settings,
 };

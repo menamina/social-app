@@ -48,7 +48,7 @@ router.get("/", isAuth, remote.forYouFeed);
 router.get("/following", isAuth, remote.followingFeed);
 
 router.get("/profile", isAuth, remote.profile);
-router.get("/search", isAuth, remote.home);
+router.get("/search", isAuth, remote.search);
 router.get("/settings", isAuth, remote.settings);
 
 // posts //
