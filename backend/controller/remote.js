@@ -127,6 +127,19 @@ async function settings(req, res) {
 
 async function post(res, res) {
   try {
+    const { body } = req.body;
+
+    const id = req.user.id;
+    const userID = Number(id);
+
+    await prisma.posts.create({
+      data: {
+        madeBy: userID,
+        msg: body,
+      },
+    });
+
+    res.status(200).json({ success: true });
   } catch (error) {
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
   }
@@ -134,6 +147,16 @@ async function post(res, res) {
 
 async function deletePost(res, res) {
   try {
+    const id = req.user.id;
+    const userID = Number(id);
+
+    await prisma.posts.delete({
+      where: {
+        madeBy: userID,
+      },
+    });
+
+    res.status(200).jjson({ success: true });
   } catch (error) {
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
   }
@@ -155,6 +178,18 @@ async function removeRepost(res, res) {
 
 async function like(res, res) {
   try {
+    const post = req.body.postID;
+    const postID = Number(post);
+    const uID = req.user.id;
+    const userID = Number(uID);
+
+    await prisma.likes.create({
+      data: {
+        postID: postID,
+        idOfLiker: userID,
+      },
+    });
+    res.status(200).jjson({ success: true });
   } catch (error) {
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
   }
@@ -172,6 +207,12 @@ module.exports = {
   forYouFeed,
   followingFeed,
   profile,
-  search,
+  //   search,
   settings,
+  post,
+  deletePost,
+  //   repost,
+  //   removeRepost,
+  like,
+  removelike,
 };

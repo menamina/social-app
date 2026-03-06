@@ -43,6 +43,7 @@ model Profile {
 model Posts {
   id Int @id @default(autoincrement())
   madeBy Int 
+  msg String
   createdAt DateTime @default(now())
   likes Likes[]
   comments Comments[]
