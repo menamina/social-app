@@ -55,23 +55,23 @@ model Posts {
 model Likes {
     id Int @id @default(autoincrement())
     postID Int
-    userID Int
+    idOfLiker Int
     likedAt DateTime @default(now())
 
     post Posts @relation(fields: [postID], references: [id])
-    user User @relation(fields: [userID], references: [id])
+    user User @relation(fields: [idOfLiker], references: [id])
 
 }
 
 model Comments {
     id Int @id @default(autoincrement())
     postID Int
-    userID Int
+    commenterID Int
     comment String
     createdAt DateTime @default(now())
     
     post Posts @relation(fields: [postID], references: [id])
-    user User @relation(fields: [userID], references: [id])
+    user User @relation(fields: [commenterID], references: [id])
 }
 
 model Follow {
@@ -110,3 +110,5 @@ model Blocked {
   @@unique([blockerId, blockedId])
 
 }
+
+// on delete of comments or likes cascade

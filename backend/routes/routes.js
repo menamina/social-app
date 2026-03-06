@@ -65,8 +65,5 @@ router.delete("/removeLike", isAuth, remote.removeLike);
 router.post("/comment", isAuth, remote.comment);
 router.post("/deleteComment", isAuth, remote.deleteComment);
 
-// search //
-router.get("/search", isAuth, remote.search);
-
 // update profile //
 router.patch("/update-profile", isAuth, remote.updateProfile);
