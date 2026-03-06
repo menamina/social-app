@@ -53,6 +53,7 @@ model Likes {
     id Int @id @default(autoincrement())
     postID Int
     userID Int
+    likedAt DateTime @default(now())
 
     post Posts @relation(fields: [postID], references: [id])
     user User @relation(fields: [userID], references: [id])
@@ -100,6 +101,8 @@ model Blocked {
   id Int @id @default(autoincrement())
   blockerId   Int
   blockedId   Int
+
+  user Profile @relation(fields: [blockerId], references: [user])
 
   @@unique([blockerId, blockedId])
 

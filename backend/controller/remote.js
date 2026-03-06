@@ -101,9 +101,29 @@ async function profile(req, res) {
   }
 }
 
+async function search(req, res) {
+  const { query } = req.params.search;
+}
+
+async function settings(req, res) {
+  try {
+    const id = req.user.id;
+    const userID = Number(id);
+
+    const userProfile = await prisma.user.findUnique({
+      where: {
+        id: userID,
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({ errorMsg: "Internal server error :^(" });
+  }
+}
+
 module.exports = {
   signup,
   forYouFeed,
   followingFeed,
   profile,
+  search,
 };
