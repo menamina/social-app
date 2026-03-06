@@ -53,7 +53,49 @@ async function followingFeed(req, res) {
 
     const followingIDs = followingList.following.map((user) => user.id);
 
-    return res.status(200).json({ allPosts: allPosts });
+    const followingPosts = await prisma.posts.findMany({
+      where: {
+        madeBy: { in: followingIDs },
+      },
+    });
+
+    return res.status(200).json({ followingPosts });
+  } catch (error) {
+    return res.status(500).json({ errorMsg: "Internal server error :^(" });
+  }
+}
+
+async function profile(req, res) {
+  try {
+    const id = req.user.id;
+    const userID = Number(id);
+
+    const userProfile = await prisma.user.findUnique({
+      where: {
+        id: userID,
+      },
+      include: {
+        posts: {
+          orderBy: {
+            createdAt: "desc",
+          },
+        },
+        likes: {
+          orderBy: {
+            likedAt: "desc",
+          },
+        },
+        comments: {
+          orderBy: {
+            createdAt: "desc",
+          },
+        },
+        following: true,
+        followers: true,
+      },
+    });
+
+    res.json({ userProfile });
   } catch (error) {
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
   }
@@ -63,4 +105,5 @@ module.exports = {
   signup,
   forYouFeed,
   followingFeed,
+  profile,
 };
