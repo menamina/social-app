@@ -155,7 +155,12 @@ async function updateProfileSettings(req, res) {
   }
 }
 
-async function dms(req, res) {}
+async function dms(req, res) {
+  try {
+  } catch (error) {
+    return res.status(500).json({ errorMsg: "Internal server error :^(" });
+  }
+}
 
 async function post(res, res) {
   try {
