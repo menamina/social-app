@@ -45,11 +45,13 @@ router.post("/logout", (req, res, next) => {
 });
 
 router.get("/", isAuth, remote.forYouFeed);
+router.get("/for-you", isAuth, remote.forYouFeed);
 router.get("/following", isAuth, remote.followingFeed);
 
 router.get("/profile", isAuth, remote.profile);
 router.get("/search", isAuth, remote.search);
 router.get("/settings", isAuth, remote.settings);
+router.get("/dms", isAuth, remote.dms);
 
 // posts //
 router.post("/post", isAuth, remote.post);
