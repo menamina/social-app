@@ -209,13 +209,28 @@ async function one2oneDMS(req, res) {
     const { wUser } = req.params;
 
     const thisUsersID = Number(id);
-    const withThisUSER = Number(wUser)
-
+    const withThisUSER = Number(wUser);
 
     const queryRes = await prisma.user.findUnique({
-      where: 
-    })
+      where: {
+        id: thisUsersID,
+      },
 
+      include: {
+        sentMessages: {
+          where: {
+            receiverID: withThisUSER,
+          },
+        },
+        receivedMessages: {
+          where: {
+            receiver: {
+              thisUsersID,
+            },
+          },
+        },
+      },
+    });
   } catch (error) {
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
   }
