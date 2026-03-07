@@ -67,5 +67,10 @@ router.delete("/removeLike", isAuth, remote.removeLike);
 router.post("/comment", isAuth, remote.comment);
 router.post("/deleteComment", isAuth, remote.deleteComment);
 
+// dms //
+
+router.post("/msg", isAuth, remote.sendMsg);
+router.delete("/deleteMsg", isAuth, remote.sendMsg);
+
 // update profile //
 router.patch("/update-profile", isAuth, remote.updateProfileSettings);
