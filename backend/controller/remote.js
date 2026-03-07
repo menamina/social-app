@@ -26,10 +26,25 @@ async function signup(req, res) {
 
 async function forYouFeed(req, res) {
   try {
+    const id = req.user.id;
+    const userID = Number(id);
+
+    const blockedUsers = await prisma.blocked.findMany({
+      where: {
+        blockerID: userID,
+      },
+      select: {
+        blockedID: true,
+      },
+    });
+
+    const blockedIDs = blockedUsers.map((blocked) => blocked.blockedID);
+
     const allPosts = await prisma.posts.findMany({
       where: {
-        likes: { gte: 2 },
-        comments: { gte: 2 },
+        // likes: { gte: 2 },
+        // comments: { gte: 2 },
+        madeBy: { notIn: blockedIDs },
       },
       orderBy: [{ likes: "desc" }, { comments: "desc" }],
     });
@@ -493,51 +508,21 @@ async function blockThem(req, res) {
       },
     });
 
-    const thisUserFollowingThem = await prisma.user.findUnique({
-      where: { id: userID },
-      select: {
-        following: {
-          in: blockThem,
-        },
+    await prisma.follow.delete({
+      where: {
+        followerID: userID,
+        followingID: blockThem,
       },
     });
 
-    const theBlockeeFollowsThisUser = await prisma.user.findUnique({
-      where: { id: userID },
-      select: {
-        followers: {
-          in: blockThem,
-        },
+    await prisma.follow.delete({
+      where: {
+        followerID: blockThem,
+        followingID: userID,
       },
     });
 
-    if (!thisUserFollowingThem || !theBlockeeFollowsThisUser) {
-      return res.status(200).json({ success: true });
-    }
-
-    if (thisUserFollowingThem || theBlockeeFollowsThisUser) {
-      return res.status(200).json({ success: true });
-    }
-
-    if (thisUserFollowingThem) {
-      await prisma.follow.delete({
-        where: {
-          followerID: userID,
-          followingID: blockThemID,
-        },
-      });
-      return res.status(200).json({ success: true });
-    }
-
-    if (theBlockeeFollowsThisUser) {
-      await prisma.follow.delete({
-        where: {
-          followerID: blockThem,
-          followingID: userID,
-        },
-      });
-      return res.status(200).json({ success: true });
-    }
+    return res.status(200).json({ success: true });
   } catch (error) {
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
   }
