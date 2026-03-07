@@ -445,6 +445,14 @@ async function followThem(req, res) {
 
     const userID = Number(id);
     const followThem = Number(followThemID);
+
+    await prisma.follow.create({
+      data: {
+        followerID: userID,
+        followingID: followThemID,
+      },
+    });
+    return res.status(200).json({ success: true });
   } catch (error) {
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
   }
@@ -457,6 +465,14 @@ async function unfollowThem(req, res) {
 
     const userID = Number(id);
     const unfollowThem = Number(unfollowThemID);
+
+    await prisma.follow.delete({
+      where: {
+        followerID: userID,
+        followingID: unfollowThem,
+      },
+    });
+    return res.status(200).json({ success: true });
   } catch (error) {
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
   }
@@ -468,7 +484,15 @@ async function blockThem(req, res) {
     const { blockThemID } = req.body;
 
     const userID = Number(id);
-    const unfollowThem = Number(blockThemID);
+    const blockThem = Number(blockThemID);
+
+    await prisma.blocked.create({
+      data: {
+        blockerID: userID,
+        blockedID: blockThem,
+      },
+    });
+    return res.status(200).json({ success: true });
   } catch (error) {
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
   }
@@ -480,7 +504,15 @@ async function unblockThem(req, res) {
     const { unblockThemID } = req.body;
 
     const userID = Number(id);
-    const unfollowThem = Number(unblockThemID);
+    const unblockThem = Number(unblockThemID);
+
+    await prisma.blocked.delete({
+      where: {
+        blockerID: userID,
+        blockedID: unblockThem,
+      },
+    });
+    return res.status(200).json({ success: true });
   } catch (error) {
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
   }

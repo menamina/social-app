@@ -70,7 +70,7 @@ router.post("/deleteComment", isAuth, remote.deleteComment);
 // following + followers //
 
 router.post("/follow:/:thisID", isAuth, remote.followThem);
-router.post("/unfollow:/:thisID", isAuth, remote.unfollowThem);
+router.delete("/unfollow:/:thisID", isAuth, remote.unfollowThem);
 
 // dms //
 
@@ -81,4 +81,4 @@ router.patch("/deleteMsg", isAuth, remote.deleteMsg);
 // user settings //
 router.patch("/update-profile", isAuth, remote.updateProfileSettings);
 router.post("/block/:thisID", isAuth, remote.blockThem);
-router.post("/unblock/:thisID", isAuth, remote.unblockThem);
+router.delete("/unblock/:thisID", isAuth, remote.unblockThem);

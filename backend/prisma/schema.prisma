@@ -33,6 +33,7 @@ model Profile {
     username String
     email String
 
+
     blockedAccounts Blocked []
 
     userProfile User @relation(fields: [user], references: [id])
@@ -73,18 +74,6 @@ model Comments {
     user User @relation(fields: [commenterID], references: [id])
 }
 
-model Follow {
-  id Int @id @default(autoincrement())
-
-  followerId Int
-  followingId Int
-
-  follower   User @relation("UserFollowing", fields: [followerId], references: [id])
-  following  User @relation("UserFollowers", fields: [followingId], references: [id])
-
-  @@unique([followerId, followingId])
-}
-
 model Msgs {
   id Int    @id @default(autoincrement())
   senderID  Int
@@ -99,15 +88,26 @@ model Msgs {
 
 }
 
+model Follow {
+  id Int @id @default(autoincrement())
+
+  followerID Int
+  followingID Int
+
+  follower   User @relation("UserFollowing", fields: [followerID], references: [id])
+  following  User @relation("UserFollowers", fields: [followingID], references: [id])
+
+  @@unique([followerID, followingID])
+}
 
 model Blocked {
   id Int @id @default(autoincrement())
-  blockerId   Int
-  blockedId   Int
+  blockerID   Int
+  blockedID   Int
 
-  profile Profile @relation(fields: [blockerId], references: [user])
+  profile Profile @relation(fields: [blockerID], references: [user])
 
-  @@unique([blockerId, blockedId])
+  @@unique([blockerID, blockedID])
 
 }
 
