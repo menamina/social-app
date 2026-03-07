@@ -347,7 +347,7 @@ async function comment(req, res) {
         comment: commentBody,
       },
     });
-    res.status(200).jjson({ success: true });
+    return res.status(200).jjson({ success: true });
   } catch (error) {
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
   }
@@ -370,8 +370,7 @@ async function deleteComment(req, res) {
         id: commentID,
       },
     });
-    res.status(200).jjson({ success: true });
-    res.status(200).jjson({ success: true });
+    return res.status(200).json({ success: true });
   } catch (error) {
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
   }
@@ -379,6 +378,23 @@ async function deleteComment(req, res) {
 
 async function sendMsg(req, res) {
   try {
+    const { sendToID, msg } = req.body;
+    const { image } = req.file;
+    const { id } = req.user;
+
+    const sendTo = Number(sendToID);
+    const thisUsersID = Number(id);
+
+    await prisma.msgs.create({
+      data: {
+        senderID: thisUsersID,
+        receiverID: sendTo,
+        message: msg,
+        image: image ? image : null,
+      },
+    });
+
+    return res.status(200).json({ success: true });
   } catch (error) {
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
   }
