@@ -492,7 +492,52 @@ async function blockThem(req, res) {
         blockedID: blockThem,
       },
     });
-    return res.status(200).json({ success: true });
+
+    const thisUserFollowingThem = await prisma.user.findUnique({
+      where: { id: userID },
+      select: {
+        following: {
+          in: blockThem,
+        },
+      },
+    });
+
+    const theBlockeeFollowsThisUser = await prisma.user.findUnique({
+      where: { id: userID },
+      select: {
+        followers: {
+          in: blockThem,
+        },
+      },
+    });
+
+    if (!thisUserFollowingThem || !theBlockeeFollowsThisUser) {
+      return res.status(200).json({ success: true });
+    }
+
+    if (thisUserFollowingThem || theBlockeeFollowsThisUser) {
+      return res.status(200).json({ success: true });
+    }
+
+    if (thisUserFollowingThem) {
+      await prisma.follow.delete({
+        where: {
+          followerID: userID,
+          followingID: blockThemID,
+        },
+      });
+      return res.status(200).json({ success: true });
+    }
+
+    if (theBlockeeFollowsThisUser) {
+      await prisma.follow.delete({
+        where: {
+          followerID: blockThem,
+          followingID: userID,
+        },
+      });
+      return res.status(200).json({ success: true });
+    }
   } catch (error) {
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
   }
@@ -544,6 +589,6 @@ module.exports = {
   sendMsg,
   deleteMsg,
 
-  // blockThem,
-  // unblockThem,
+  blockThem,
+  unblockThem,
 };
