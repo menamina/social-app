@@ -33,7 +33,6 @@ model Profile {
     username String
     email String
 
-    accountStatus String @default("public")
     blockedAccounts Blocked []
 
     userProfile User @relation(fields: [user], references: [id])

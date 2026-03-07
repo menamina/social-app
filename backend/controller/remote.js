@@ -65,16 +65,22 @@ async function followingFeed(req, res) {
   }
 }
 
-async function profile(req, res) {
+async function viewProfile(req, res) {
   try {
     const id = req.user.id;
-    const userID = Number(id);
+    const { profile } = req.params;
+    const wantedProfile = Number(profile);
 
     const userProfile = await prisma.user.findUnique({
       where: {
-        id: userID,
+        id: wantedProfile,
       },
-      include: {
+      select: {
+        id: true,
+        name: true,
+        username: true,
+        following: true,
+        followers: true,
         posts: {
           orderBy: {
             createdAt: "desc",
@@ -90,12 +96,13 @@ async function profile(req, res) {
             createdAt: "desc",
           },
         },
-        following: true,
-        followers: true,
       },
     });
 
-    res.json({ userProfile });
+    if (userProfile.id === id) {
+      return res.json({ viewUserProfile: userProfile });
+    }
+    return { userProfile };
   } catch (error) {
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
   }
@@ -123,7 +130,7 @@ async function settings(req, res) {
       },
     });
 
-    res.json({ userSettings });
+    return res.json({ userSettings });
   } catch (error) {
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
   }
@@ -149,7 +156,7 @@ async function updateProfileSettings(req, res) {
         accountStatus: accountStatus,
       },
     });
-    res.status(200).json({ success: true });
+    return res.status(200).json({ success: true });
   } catch (error) {
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
   }
@@ -197,7 +204,7 @@ async function dms(req, res) {
 
     const newSetFilteredDms = new Set(filteredDMs);
 
-    res.json({ sideBarDMS: newSetFilteredDms });
+    return res.json({ sideBarDMS: newSetFilteredDms });
   } catch (error) {
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
   }
@@ -215,8 +222,7 @@ async function one2oneDMS(req, res) {
       where: {
         id: thisUsersID,
       },
-
-      include: {
+      select: {
         sentMessages: {
           where: {
             receiverID: withThisUSER,
@@ -224,13 +230,13 @@ async function one2oneDMS(req, res) {
         },
         receivedMessages: {
           where: {
-            receiver: {
-              thisUsersID,
-            },
+            senderID: withThisUSER,
           },
         },
       },
     });
+
+    return res.json({ one2one: queryRes });
   } catch (error) {
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
   }
@@ -267,7 +273,7 @@ async function deletePost(res, res) {
       },
     });
 
-    res.status(200).jjson({ success: true });
+    return res.status(200).jjson({ success: true });
   } catch (error) {
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
   }
@@ -300,7 +306,7 @@ async function like(res, res) {
         idOfLiker: userID,
       },
     });
-    res.status(200).jjson({ success: true });
+    return res.status(200).jjson({ success: true });
   } catch (error) {
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
   }
@@ -319,7 +325,7 @@ async function removeLike(res, res) {
         idOfLiker: userID,
       },
     });
-    res.status(200).jjson({ success: true });
+    return res.status(200).jjson({ success: true });
   } catch (error) {
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
   }
@@ -389,7 +395,7 @@ module.exports = {
   signup,
   forYouFeed,
   followingFeed,
-  profile,
+  viewProfile,
   //   search,
   settings,
   updateProfileSettings,
