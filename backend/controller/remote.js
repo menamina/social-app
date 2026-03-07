@@ -157,6 +157,34 @@ async function updateProfileSettings(req, res) {
 
 async function dms(req, res) {
   try {
+    const id = req.user.id;
+    const userID = Number(id);
+
+    const queryRes = await prisma.msgs.findMany({
+      where: {
+        OR: [{ senderID: userID }, { receiverID: userID }],
+      },
+
+      include: {
+        sender: {
+          select: {
+            id: true,
+            name: true,
+            username: true,
+          },
+        },
+        receiver: {
+          select: {
+            id: true,
+            name: true,
+            username: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
   } catch (error) {
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
   }

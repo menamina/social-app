@@ -88,8 +88,8 @@ model Follow {
 
 model Msgs {
   id Int    @id @default(autoincrement())
-  senderId  Int
-  receiverId Int
+  senderID  Int
+  receiverID Int
   message   String
   image String?
   createdAt DateTime @default(now())
