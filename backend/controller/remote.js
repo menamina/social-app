@@ -260,6 +260,77 @@ async function one2oneDMS(req, res) {
   }
 }
 
+async function sendMsg(req, res) {
+  try {
+    const { sendToID, msg } = req.body;
+    const { image } = req.file;
+    const { id } = req.user;
+
+    const sendTo = Number(sendToID);
+    const thisUsersID = Number(id);
+
+    const blockExists = await prisma.blocked.findFirst({
+      where: {
+        OR: [
+          { blockerID: thisUsersID, blockedID: sendTo },
+          { blockerID: sendTo, blockedID: thisUsersID },
+        ],
+      },
+    });
+
+    if (blockExists) {
+      return res
+        .status(403)
+        .json({ errorMsg: "Cannot send message to this user" });
+    }
+
+    await prisma.msgs.create({
+      data: {
+        senderID: thisUsersID,
+        receiverID: sendTo,
+        message: msg,
+        image: image ? image : null,
+      },
+    });
+
+    return res.status(200).json({ success: true });
+  } catch (error) {
+    return res.status(500).json({ errorMsg: "Internal server error :^(" });
+  }
+}
+
+async function deleteMsg(req, res) {
+  try {
+    const { id } = req.user;
+    const { deleteThisMsgID } = req.body;
+
+    const thisUsersID = Number(id);
+    const deleteThisMsg = Number(deleteThisMsgID);
+
+    await prisma.user.update({
+      where: {
+        id: thisUsersID,
+      },
+      data: {
+        sentMessages: {
+          update: {
+            where: {
+              id: deleteThisMsg,
+            },
+            data: {
+              deletedBySender: true,
+            },
+          },
+        },
+      },
+    });
+
+    return res.status(200).json({ success: true });
+  } catch (error) {
+    return res.status(500).json({ errorMsg: "Internal server error :^(" });
+  }
+}
+
 async function post(res, res) {
   try {
     const { body } = req.body;
@@ -388,76 +459,6 @@ async function deleteComment(req, res) {
         id: commentID,
       },
     });
-    return res.status(200).json({ success: true });
-  } catch (error) {
-    return res.status(500).json({ errorMsg: "Internal server error :^(" });
-  }
-}
-
-async function sendMsg(req, res) {
-  try {
-    const { sendToID, msg } = req.body;
-    const { image } = req.file;
-    const { id } = req.user;
-
-    const sendTo = Number(sendToID);
-    const thisUsersID = Number(id);
-
-    // Check if either user has blocked the other
-    const blockExists = await prisma.blocked.findFirst({
-      where: {
-        OR: [
-          { blockerID: thisUsersID, blockedID: sendTo },
-          { blockerID: sendTo, blockedID: thisUsersID },
-        ],
-      },
-    });
-
-    if (blockExists) {
-      return res.status(403).json({ errorMsg: "Cannot send message to this user" });
-    }
-
-    await prisma.msgs.create({
-      data: {
-        senderID: thisUsersID,
-        receiverID: sendTo,
-        message: msg,
-        image: image ? image : null,
-      },
-    });
-
-    return res.status(200).json({ success: true });
-  } catch (error) {
-    return res.status(500).json({ errorMsg: "Internal server error :^(" });
-  }
-}
-
-async function deleteMsg(req, res) {
-  try {
-    const { id } = req.user;
-    const { deleteThisMsgID } = req.body;
-
-    const thisUsersID = Number(id);
-    const deleteThisMsg = Number(deleteThisMsgID);
-
-    await prisma.user.update({
-      where: {
-        id: thisUsersID,
-      },
-      data: {
-        sentMessages: {
-          update: {
-            where: {
-              id: deleteThisMsg,
-            },
-            data: {
-              deletedBySender: true,
-            },
-          },
-        },
-      },
-    });
-
     return res.status(200).json({ success: true });
   } catch (error) {
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
