@@ -203,6 +203,24 @@ async function dms(req, res) {
   }
 }
 
+async function one2oneDMS(req, res) {
+  try {
+    const id = req.user.id;
+    const { wUser } = req.params;
+
+    const thisUsersID = Number(id);
+    const withThisUSER = Number(wUser)
+
+
+    const queryRes = await prisma.user.findUnique({
+      where: 
+    })
+
+  } catch (error) {
+    return res.status(500).json({ errorMsg: "Internal server error :^(" });
+  }
+}
+
 async function post(res, res) {
   try {
     const { body } = req.body;
@@ -361,6 +379,7 @@ module.exports = {
   settings,
   updateProfileSettings,
   dms,
+  one2oneDMS,
   post,
   deletePost,
   //   repost,

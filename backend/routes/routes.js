@@ -71,7 +71,7 @@ router.post("/deleteComment", isAuth, remote.deleteComment);
 
 // dms //
 
-router.get("/dms/:withThisUser", isAuth, remote.one2oneDMS);
+router.get("/dms/:wUser", isAuth, remote.one2oneDMS);
 router.post("/msg", isAuth, remote.sendMsg);
 router.delete("/deleteMsg", isAuth, remote.deleteMsg);
 
