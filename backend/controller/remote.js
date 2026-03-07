@@ -1,9 +1,6 @@
 const prisma = require("../prisma/client");
 const { hashPass } = require("../utils/password");
 
-// bc i have blocks now need edge cases to not show posts by blocked users ++ no dms ++ not follows
-// if u block personn. + they follow u remove from following
-
 // when loading user also load block list
 
 async function signup(req, res) {
@@ -405,6 +402,20 @@ async function sendMsg(req, res) {
 
     const sendTo = Number(sendToID);
     const thisUsersID = Number(id);
+
+    // Check if either user has blocked the other
+    const blockExists = await prisma.blocked.findFirst({
+      where: {
+        OR: [
+          { blockerID: thisUsersID, blockedID: sendTo },
+          { blockerID: sendTo, blockedID: thisUsersID },
+        ],
+      },
+    });
+
+    if (blockExists) {
+      return res.status(403).json({ errorMsg: "Cannot send message to this user" });
+    }
 
     await prisma.msgs.create({
       data: {

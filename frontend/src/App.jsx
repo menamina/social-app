@@ -21,12 +21,29 @@ function App() {
 
         setUser(data.user);
       } catch (error) {
-        return;
+        return error;
         //fix later
       }
     }
     checkIfUser();
   }, []);
+
+  useEffect(() => {
+    if (!user) return;
+
+    loadUserContent() => {
+          try {
+      const res = await fetch("", {
+        method:
+      })
+    } catch (error) {
+      return error;
+      //fix later
+    }
+
+    }
+    loadUserContent()
+  }, [user]);
 
   return <div></div>;
 }
