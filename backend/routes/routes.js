@@ -82,6 +82,3 @@ router.patch("/deleteMsg", isAuth, remote.deleteMsg);
 router.patch("/update-profile", isAuth, remote.updateProfileSettings);
 router.post("/block/:thisID", isAuth, remote.blockThem);
 router.post("/unblock/:thisID", isAuth, remote.unblockThem);
-
-// bc i have blocks now need edge cases to not show posts by blocked users ++ no dms ++ not follows
-// need to do controller for followers etc

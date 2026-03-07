@@ -1,6 +1,11 @@
 const prisma = require("../prisma/client");
 const { hashPass } = require("../utils/password");
 
+// bc i have blocks now need edge cases to not show posts by blocked users ++ no dms ++ not follows
+// if u block personn. + they follow u remove from following
+
+// when loading user also load block list
+
 async function signup(req, res) {
   try {
     const { name, username, email, password } = req.body;
@@ -433,6 +438,54 @@ async function deleteMsg(req, res) {
   }
 }
 
+async function followThem(req, res) {
+  try {
+    const id = req.user.id;
+    const { followThemID } = req.body;
+
+    const userID = Number(id);
+    const followThem = Number(followThemID);
+  } catch (error) {
+    return res.status(500).json({ errorMsg: "Internal server error :^(" });
+  }
+}
+
+async function unfollowThem(req, res) {
+  try {
+    const id = req.user.id;
+    const { unfollowThemID } = req.body;
+
+    const userID = Number(id);
+    const unfollowThem = Number(unfollowThemID);
+  } catch (error) {
+    return res.status(500).json({ errorMsg: "Internal server error :^(" });
+  }
+}
+
+async function blockThem(req, res) {
+  try {
+    const id = req.user.id;
+    const { blockThemID } = req.body;
+
+    const userID = Number(id);
+    const unfollowThem = Number(blockThemID);
+  } catch (error) {
+    return res.status(500).json({ errorMsg: "Internal server error :^(" });
+  }
+}
+
+async function unblockThem(req, res) {
+  try {
+    const id = req.user.id;
+    const { unblockThemID } = req.body;
+
+    const userID = Number(id);
+    const unfollowThem = Number(unblockThemID);
+  } catch (error) {
+    return res.status(500).json({ errorMsg: "Internal server error :^(" });
+  }
+}
+
 module.exports = {
   signup,
   forYouFeed,
@@ -441,16 +494,24 @@ module.exports = {
   //   search,
   settings,
   updateProfileSettings,
-  dms,
-  one2oneDMS,
-  post,
-  deletePost,
-  //   repost,
-  //   removeRepost,
+
+  followThem,
+  unfollowThem,
+
   like,
   removeLike,
+  //   repost,
+  //   removeRepost,
   comment,
   deleteComment,
+  post,
+  deletePost,
+
+  dms,
+  one2oneDMS,
   sendMsg,
   deleteMsg,
+
+  // blockThem,
+  // unblockThem,
 };
