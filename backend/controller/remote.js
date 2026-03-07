@@ -404,7 +404,30 @@ async function sendMsg(req, res) {
 async function deleteMsg(req, res) {
   try {
     const { id } = req.user;
+    const { deleteThisMsgID } = req.body;
+
     const thisUsersID = Number(id);
+    const deleteThisMsg = Number(deleteThisMsgID);
+
+    await prisma.user.update({
+      where: {
+        id: thisUsersID,
+      },
+      data: {
+        sentMessages: {
+          update: {
+            where: {
+              id: deleteThisMsg,
+            },
+            data: {
+              deletedBySender: true,
+            },
+          },
+        },
+      },
+    });
+
+    return res.status(200).json({ success: true });
   } catch (error) {
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
   }

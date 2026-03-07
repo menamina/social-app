@@ -48,7 +48,7 @@ router.get("/", isAuth, remote.forYouFeed);
 router.get("/for-you", isAuth, remote.forYouFeed);
 router.get("/following", isAuth, remote.followingFeed);
 
-router.get("/user/profile", isAuth, remote.viewProfile);
+router.get("/user/:profile", isAuth, remote.viewProfile);
 router.get("/search", isAuth, remote.search);
 router.get("/settings", isAuth, remote.settings);
 router.get("/dms", isAuth, remote.dms);
@@ -71,7 +71,7 @@ router.post("/deleteComment", isAuth, remote.deleteComment);
 
 router.get("/dms/:wUser", isAuth, remote.one2oneDMS);
 router.post("/msg", isAuth, remote.sendMsg);
-router.delete("/deleteMsg", isAuth, remote.deleteMsg);
+router.patch("/deleteMsg", isAuth, remote.deleteMsg);
 
 // update profile //
 router.patch("/update-profile", isAuth, remote.updateProfileSettings);
