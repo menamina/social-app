@@ -155,6 +155,8 @@ async function updateProfileSettings(req, res) {
   }
 }
 
+async function dms(req, res) {}
+
 async function post(res, res) {
   try {
     const { body } = req.body;
@@ -290,6 +292,20 @@ async function deleteComment(req, res) {
   }
 }
 
+async function sendMsg(req, res) {
+  try {
+  } catch (error) {
+    return res.status(500).json({ errorMsg: "Internal server error :^(" });
+  }
+}
+
+async function deleteMsg(req, res) {
+  try {
+  } catch (error) {
+    return res.status(500).json({ errorMsg: "Internal server error :^(" });
+  }
+}
+
 module.exports = {
   signup,
   forYouFeed,
@@ -298,6 +314,7 @@ module.exports = {
   //   search,
   settings,
   updateProfileSettings,
+  dms,
   post,
   deletePost,
   //   repost,
@@ -306,4 +323,6 @@ module.exports = {
   removeLike,
   comment,
   deleteComment,
+  sendMsg,
+  deleteMsg,
 };
