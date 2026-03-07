@@ -158,11 +158,12 @@ async function updateProfileSettings(req, res) {
 async function dms(req, res) {
   try {
     const id = req.user.id;
-    const userID = Number(id);
+    const thisUsersID = Number(id);
+    let filteredDMs = [];
 
     const queryRes = await prisma.msgs.findMany({
       where: {
-        OR: [{ senderID: userID }, { receiverID: userID }],
+        OR: [{ senderID: thisUsersID }, { receiverID: thisUsersID }],
       },
 
       include: {
@@ -185,6 +186,18 @@ async function dms(req, res) {
         createdAt: "desc",
       },
     });
+
+    queryRes.forEach((msgs) => {
+      const otherUser =
+        msgs.receiverID === thisUsersID ? msgs.senderID : receiverID;
+      if (!filteredDMs.has(otherUser)) {
+        filteredDMs.push(otherUser);
+      }
+    });
+
+    const newSetFilteredDms = new Set(filteredDMs);
+
+    res.json({ sideBarDMS: newSetFilteredDms });
   } catch (error) {
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
   }

@@ -48,6 +48,8 @@ router.get("/", isAuth, remote.forYouFeed);
 router.get("/for-you", isAuth, remote.forYouFeed);
 router.get("/following", isAuth, remote.followingFeed);
 
+router.get("/user/profile", isAuth, remote.otherProfile);
+
 router.get("/profile", isAuth, remote.profile);
 router.get("/search", isAuth, remote.search);
 router.get("/settings", isAuth, remote.settings);
@@ -69,6 +71,7 @@ router.post("/deleteComment", isAuth, remote.deleteComment);
 
 // dms //
 
+router.get("/dms/:withThisUser", isAuth, remote.one2oneDMS);
 router.post("/msg", isAuth, remote.sendMsg);
 router.delete("/deleteMsg", isAuth, remote.deleteMsg);
 
