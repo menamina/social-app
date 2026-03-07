@@ -6,7 +6,7 @@ const passport = require("../passport/passport");
 const validator = require("../utils/validator");
 
 router.get("/api/isAuth", isAuth, (req, res) => {
-  res.json({
+  res.status(200).json({
     user: req.user,
   });
 });
@@ -70,7 +70,7 @@ router.post("/deleteComment", isAuth, remote.deleteComment);
 // dms //
 
 router.post("/msg", isAuth, remote.sendMsg);
-router.delete("/deleteMsg", isAuth, remote.sendMsg);
+router.delete("/deleteMsg", isAuth, remote.deleteMsg);
 
 // update profile //
 router.patch("/update-profile", isAuth, remote.updateProfileSettings);

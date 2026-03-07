@@ -6,7 +6,24 @@ function App() {
 
   useEffect(() => {
     async function checkIfUser() {
-      //api for jwt;
+      try {
+        const res = await fetch("http://localhost:5555/api/isAuth", {
+          method: "GET",
+          credentials: "include",
+        });
+
+        const data = await res.json();
+
+        if (!res.status === 401) {
+          return;
+          //fix later
+        }
+
+        setUser(data.user);
+      } catch (error) {
+        return;
+        //fix later
+      }
     }
     checkIfUser();
   }, []);
