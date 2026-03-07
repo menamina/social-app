@@ -226,6 +226,7 @@ async function one2oneDMS(req, res) {
         sentMessages: {
           where: {
             receiverID: withThisUSER,
+            deletedBySender: false,
           },
         },
         receivedMessages: {
@@ -402,6 +403,8 @@ async function sendMsg(req, res) {
 
 async function deleteMsg(req, res) {
   try {
+    const { id } = req.user;
+    const thisUsersID = Number(id);
   } catch (error) {
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
   }
