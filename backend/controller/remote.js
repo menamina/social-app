@@ -86,7 +86,33 @@ async function viewProfile(req, res) {
   try {
     const id = req.user.id;
     const { profile } = req.params;
+
+    const userID = Number(id);
     const wantedProfile = Number(profile);
+
+    const blockRelations = await prisma.blocked.findMany({
+      where: {
+        OR: [
+          { blockerID: userID, blockedID: wantedProfile },
+          { blockerID: wantedProfile, blockedID: userID },
+        ],
+      },
+    });
+
+    const youBlockedThem = blockRelations.some(
+      (block) => block.blockerID === userID && block.blockedID === wantedProfile
+    );
+    const theyBlockedYou = blockRelations.some(
+      (block) => block.blockerID === wantedProfile && block.blockedID === userID
+    );
+
+    if (theyBlockedYou) {
+      return res.status(403).json({ errorMsg: "This user has blocked you" });
+    }
+
+    if (youBlockedThem) {
+      return res.status(403).json({ errorMsg: "You have blocked this user" });
+    }
 
     const userProfile = await prisma.user.findUnique({
       where: {
@@ -119,7 +145,7 @@ async function viewProfile(req, res) {
     if (userProfile.id === id) {
       return res.json({ viewUserProfile: userProfile });
     }
-    return { userProfile };
+    return res.json({ userProfile });
   } catch (error) {
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
   }
