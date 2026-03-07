@@ -67,11 +67,21 @@ router.delete("/removeLike", isAuth, remote.removeLike);
 router.post("/comment", isAuth, remote.comment);
 router.post("/deleteComment", isAuth, remote.deleteComment);
 
+// following + followers //
+
+router.post("/follow:/:thisID", isAuth, remote.followThem);
+router.post("/unfollow:/:thisID", isAuth, remote.unfollowThem);
+
 // dms //
 
 router.get("/dms/:wUser", isAuth, remote.one2oneDMS);
 router.post("/msg", isAuth, remote.sendMsg);
 router.patch("/deleteMsg", isAuth, remote.deleteMsg);
 
-// update profile //
+// user settings //
 router.patch("/update-profile", isAuth, remote.updateProfileSettings);
+router.post("/block/:thisID", isAuth, remote.blockThem);
+router.post("/unblock/:thisID", isAuth, remote.unblockThem);
+
+// bc i have blocks now need edge cases to not show posts by blocked users ++ no dms ++ not follows
+// need to do controller for followers etc
