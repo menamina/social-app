@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { OutletContext, useNavigate, Link } from "react-router-dom";
 
 function Nav() {
+  const { user } = OutletContext();
   const [utilsToggle, setUtilsToggle] = useState(false);
 
   function utilToggle() {
@@ -47,7 +48,7 @@ function Nav() {
           <img src="" alt="" />
         </div>
 
-        {utilToggle ? (
+        {utilsToggle ? (
           <div className="utilsOpen">
             <div>
               <Link to="/settings">Settings</Link>

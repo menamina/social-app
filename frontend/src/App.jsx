@@ -23,7 +23,7 @@ function App() {
         setUser(data.user);
         const path = window.location.pathname;
         if (path === "/" || path === "/login" || path === "/signup") {
-          navigate("/hub");
+          navigate("/");
         }
       } catch (error) {
         return error;
