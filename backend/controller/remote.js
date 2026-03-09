@@ -1,8 +1,6 @@
 const prisma = require("../prisma/client");
 const { hashPass } = require("../utils/password");
 
-// when loading user also load block list
-
 async function signup(req, res) {
   try {
     const { name, username, email, password } = req.body;
@@ -100,10 +98,12 @@ async function viewProfile(req, res) {
     });
 
     const youBlockedThem = blockRelations.some(
-      (block) => block.blockerID === userID && block.blockedID === wantedProfile
+      (block) =>
+        block.blockerID === userID && block.blockedID === wantedProfile,
     );
     const theyBlockedYou = blockRelations.some(
-      (block) => block.blockerID === wantedProfile && block.blockedID === userID
+      (block) =>
+        block.blockerID === wantedProfile && block.blockedID === userID,
     );
 
     if (theyBlockedYou) {

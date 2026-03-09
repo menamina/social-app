@@ -3,6 +3,8 @@ import { OutletContext } from "react-dom";
 
 function App() {
   const [user, setUser] = useState(null);
+  const [forYouFeed, setForYouFeed] = useState(null);
+  const [forYouFeedErr, setForYouFeedErr] = useState(null);
 
   useEffect(() => {
     async function checkIfUser() {
@@ -14,9 +16,8 @@ function App() {
 
         const data = await res.json();
 
-        if (!res.status === 401) {
+        if (res.status === 401) {
           return;
-          //fix later
         }
 
         setUser(data.user);
@@ -31,18 +32,21 @@ function App() {
   useEffect(() => {
     if (!user) return;
 
-    loadUserContent() => {
-          try {
-      const res = await fetch("", {
-        method:
-      })
-    } catch (error) {
-      return error;
-      //fix later
-    }
+    async function loadUserContent() {
+      try {
+        const res = await fetch("http://localhost:5555/for-you-feed", {
+          method: "GET",
+          credentials: "include",
+        });
 
+        const data = await res.json();
+
+        setForYouFeed(data.allPosts);
+      } catch (error) {
+        setForYouFeedErr(error.errorMsg);
+      }
     }
-    loadUserContent()
+    loadUserContent();
   }, [user]);
 
   return <div></div>;

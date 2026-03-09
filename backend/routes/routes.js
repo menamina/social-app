@@ -44,7 +44,7 @@ router.post("/logout", (req, res, next) => {
   });
 });
 
-router.get("/", isAuth, remote.forYouFeed);
+router.get("/for-you-feed", isAuth, remote.forYouFeed);
 router.get("/for-you", isAuth, remote.forYouFeed);
 router.get("/following", isAuth, remote.followingFeed);
 
