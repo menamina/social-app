@@ -4,6 +4,10 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App.jsx";
 import LoginSignUp from "./components/login-signup.jsx";
 import Hub from "./components/HUB.jsx";
+import Feed from "./components/feed.jsx";
+import Search from "./components/search.jsx";
+import Profile from "./components/profile.jsx";
+import Settings from "./components/settings.jsx";
 
 const routes = createBrowserRouter([
   {
@@ -11,12 +15,16 @@ const routes = createBrowserRouter([
     element: <App />,
     children: [
       { path: "/", element: <LoginSignUp /> },
-      { path: "/hub", element: <Hub />,
+      {
+        path: "/",
+        element: <Hub />,
         children: [
-          { path: "/hub/", element: },
-          
-        ]
-       },
+          { path: "/", element: <Feed /> },
+          { path: "/search", element: <Search /> },
+          { path: "/profile", element: <Profile /> },
+          { path: "/settings", element: <Settings /> },
+        ],
+      },
     ],
   },
 ]);

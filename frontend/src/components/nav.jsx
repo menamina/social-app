@@ -2,6 +2,14 @@ import { useState, useEffect } from "react";
 import { OutletContext, useNavigate, Link } from "react-router-dom";
 
 function Nav() {
+  const [utilsToggle, setUtilsToggle] = useState(false);
+
+  function utilToggle() {
+    setUtilsToggle((prev) => !prev);
+  }
+
+  function logout() {}
+
   return (
     <div>
       <div className="logoIMG"></div>
@@ -34,7 +42,21 @@ function Nav() {
         </div>
       </div>
 
-      <div className="openSettings"></div>
+      <div className="openSettings">
+        <div onClick={utilToggle}>
+          <img src="" alt="" />
+        </div>
+
+        {utilToggle ? (
+          <div className="utilsOpen">
+            <div>
+              <Link to="/settings">Settings</Link>
+            </div>
+            <div>Report a problem</div>
+            <div onClick={logout}>Logout</div>
+          </div>
+        ) : null}
+      </div>
     </div>
   );
 }
