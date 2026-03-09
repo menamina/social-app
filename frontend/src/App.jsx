@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
-import { OutletContext } from "react-dom";
+import { OutletContext, useNavigate } from "react-router-dom";
 
 function App() {
   const [user, setUser] = useState(null);
   const [forYouFeed, setForYouFeed] = useState(null);
   const [forYouFeedErr, setForYouFeedErr] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function checkIfUser() {
@@ -19,8 +20,11 @@ function App() {
         if (res.status === 401) {
           return;
         }
-
         setUser(data.user);
+        const path = window.location.pathname;
+        if (path === "/" || path === "/login" || path === "/signup") {
+          navigate("/hub");
+        }
       } catch (error) {
         return error;
         //fix later
@@ -49,7 +53,20 @@ function App() {
     loadUserContent();
   }, [user]);
 
-  return <div></div>;
+  return (
+    <div>
+      <OutletContext
+        context={{
+          user,
+          setUser,
+          forYouFeed,
+          setForYouFeed,
+          forYouFeedErr,
+          setForYouFeedErr,
+        }}
+      />
+    </div>
+  );
 }
 
 export default App;
