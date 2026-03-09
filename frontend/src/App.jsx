@@ -55,7 +55,7 @@ function App() {
 
   return (
     <div>
-      <OutletContext
+      <Outlet
         context={{
           user,
           setUser,

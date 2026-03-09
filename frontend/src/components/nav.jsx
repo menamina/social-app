@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { OutletContext, useNavigate } from "react-router-dom";
+import { OutletContext, useNavigate, Link } from "react-router-dom";
 
 function Nav() {
   return (
@@ -8,19 +8,29 @@ function Nav() {
 
       <div className="navOpts">
         <div>
-          <img src="" alt="" />
+          <Link to="/">
+            {" "}
+            <img src="" alt="home image for main feed" />
+          </Link>
         </div>
         <div>
-          <img src="" alt="" />
+          <Link to="/search">
+            {" "}
+            <img src="" alt="search" />
+          </Link>
         </div>
         <div>
-          <img src="" alt="" />
+          // new post pop up ... make component and render here(?)
+          {/* <Link to="/new-post">
+            {" "}
+            <img src="" alt="new post" />
+          </Link> */}
         </div>
         <div>
-          <img src="" alt="" />
-        </div>
-        <div>
-          <img src="" alt="" />
+          <Link to={`/@${user.username}`}>
+            {" "}
+            <img src="" alt="your profile" />
+          </Link>
         </div>
       </div>
 

@@ -48,7 +48,7 @@ router.get("/for-you-feed", isAuth, remote.forYouFeed);
 router.get("/for-you", isAuth, remote.forYouFeed);
 router.get("/following", isAuth, remote.followingFeed);
 
-router.get("/user/:profile", isAuth, remote.viewProfile);
+router.get("/:profile", isAuth, remote.viewProfile);
 router.get("/search", isAuth, remote.search);
 router.get("/settings", isAuth, remote.settings);
 router.get("/dms", isAuth, remote.dms);

@@ -10,7 +10,7 @@ function Hub() {
     <div>
       <Nav />
       {/* context is where it will load whatever is clicked from nav */}
-      <OutletContext context={{}} />
+      <Outlet context={{}} />
     </div>
   );
 }
