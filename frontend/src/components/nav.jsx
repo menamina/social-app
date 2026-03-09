@@ -5,23 +5,25 @@ function Nav() {
   return (
     <div>
       <div className="logoIMG"></div>
+
       <div className="navOpts">
         <div>
-          <img />
+          <img src="" alt="" />
         </div>
         <div>
-          <img />
+          <img src="" alt="" />
         </div>
         <div>
-          <img />
+          <img src="" alt="" />
         </div>
         <div>
-          <img />
+          <img src="" alt="" />
         </div>
         <div>
-          <img />
+          <img src="" alt="" />
         </div>
       </div>
+
       <div className="openSettings"></div>
     </div>
   );

@@ -11,7 +11,12 @@ const routes = createBrowserRouter([
     element: <App />,
     children: [
       { path: "/", element: <LoginSignUp /> },
-      { path: "/hub", element: <Hub /> },
+      { path: "/hub", element: <Hub />,
+        children: [
+          { path: "/hub/", element: },
+          
+        ]
+       },
     ],
   },
 ]);
