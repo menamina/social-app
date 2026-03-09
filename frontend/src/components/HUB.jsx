@@ -6,6 +6,8 @@ import Nav from "./nav.jsx";
 // put loaded feed here + mini profile view
 
 function Hub() {
+  const { user, forYouFeed, setForYouFeed, forYouFeedErr, setForYouFeedErr } =
+    OutletContext();
   const [userProfile, setUserProfile] = useState(null);
 
   useEffect(() => {
@@ -24,11 +26,15 @@ function Hub() {
   return (
     <div>
       <Nav />
-      {/* context is where it will load whatever is clicked from nav */}
       <div className="outletDiv">
         <Outlet
           context={{
+            user,
             userProfile,
+            forYouFeed,
+            setForYouFeed,
+            forYouFeedErr,
+            setForYouFeedErr,
           }}
         />
       </div>
