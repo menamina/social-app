@@ -615,6 +615,40 @@ async function blockThem(req, res) {
   }
 }
 
+async function getBlockedUsers(req, res) {
+  try {
+    const id = req.user.id;
+    const userID = Number(id);
+
+    const blockedRelations = await prisma.blocked.findMany({
+      where: {
+        blockerID: userID,
+      },
+      select: {
+        blockedID: true,
+      },
+    });
+
+    const blockedIDs = blockedRelations.map((b) => b.blockedID);
+
+    const blockedUsers = await prisma.user.findMany({
+      where: {
+        id: { in: blockedIDs },
+      },
+      select: {
+        id: true,
+        username: true,
+        name: true,
+        pfp: true,
+      },
+    });
+
+    return res.json({ blockedUsers });
+  } catch (error) {
+    return res.status(500).json({ errorMsg: "Internal server error :^(" });
+  }
+}
+
 async function unblockThem(req, res) {
   try {
     const id = req.user.id;
@@ -664,4 +698,5 @@ module.exports = {
 
   blockThem,
   unblockThem,
+  getBlockedUsers,
 };

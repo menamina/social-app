@@ -81,5 +81,6 @@ router.patch("/deleteMsg", isAuth, remote.deleteMsg);
 
 // user settings //
 router.patch("/update-profile", isAuth, remote.updateProfileSettings);
+router.get("/blocked-users", isAuth, remote.getBlockedUsers);
 router.post("/block/:thisID", isAuth, remote.blockThem);
 router.delete("/unblock/:thisID", isAuth, remote.unblockThem);

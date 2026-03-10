@@ -10,6 +10,7 @@ function Settings() {
   const [email, setEmail] = useState("");
   const [profilePicture, setProfilePicture] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [blockedUsers, setBlockedUsers] = useState([]);
 
   useEffect(() => {
     async function fetchUserProfile() {
@@ -48,15 +49,51 @@ function Settings() {
     setViewOpt(option);
   }
 
-  function toggledropDown(option) {
+  async function toggledropDown(option) {
     if (dropDown === option) {
       setdropDown(null);
     } else {
       setdropDown(option);
+
+      try {
+        const res = await fetch("http://localhost:5555/blocked-users", {
+          method: "GET",
+          credentials: "include",
+        });
+        const data = await res.json();
+        if (data.blockedUsers) {
+          setBlockedUsers(data.blockedUsers);
+        }
+      } catch (error) {
+        console.error("Error fetching blocked users:", error);
+      }
     }
   }
 
-  function handleSubmit(e) {
+  async function handleUnblock(userId) {
+    try {
+      const res = await fetch(`http://localhost:5555/unblock/${userId}`, {
+        method: "DELETE",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ unblockThemID: userId }),
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        setBlockedUsers(blockedUsers.filter((user) => user.id !== userId));
+        alert("User unblocked successfully");
+      }
+    } catch (error) {
+      console.error("Error unblocking user:", error);
+      alert("Failed to unblock user");
+    }
+  }
+
+  async function handleSubmit(e) {
     e.preventDefault();
 
     const formData = new FormData();
@@ -64,7 +101,31 @@ function Settings() {
     formData.append("username", username);
     formData.append("email", email);
     if (profilePicture) {
-      formData.append("profilePicture", profilePicture);
+      formData.append("pfp", profilePicture);
+    }
+
+    try {
+      const res = await fetch("http://localhost:5555/update-profile", {
+        method: "PATCH",
+        credentials: "include",
+        body: formData,
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        setUserProfile({
+          ...userProfile,
+          name,
+          username,
+          email,
+        });
+      } else {
+        alert("Failed to update profile");
+      }
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      alert("An error occurred while updating profile");
     }
   }
 
@@ -92,21 +153,6 @@ function Settings() {
             <div className="privacySettings">
               <div className="dropDownOpt">
                 <div
-                  onClick={() => toggledropDown("status")}
-                  className="privacyHeader"
-                >
-                  Status
-                </div>
-                {dropDown === "status" ? (
-                  <div className="privacyContent">
-                    {/* Add status options here */}
-                    <p>Account status settings</p>
-                  </div>
-                ) : null}
-              </div>
-
-              <div className="dropDownOpt">
-                <div
                   onClick={() => toggledropDown("blocked")}
                   className="privacyHeader"
                 >
@@ -114,8 +160,35 @@ function Settings() {
                 </div>
                 {dropDown === "blocked" ? (
                   <div className="privacyContent">
-                    {/* Add blocked accounts list here */}
-                    <p>List of blocked accounts</p>
+                    {blockedUsers.length === 0 ? (
+                      <p>No blocked accounts</p>
+                    ) : (
+                      <div className="blockedUsersList">
+                        {blockedUsers.map((blockedUser) => (
+                          <div key={blockedUser.id} className="blockedUserItem">
+                            <img
+                              src={`http://localhost:5555/pfpIMG/${blockedUser.pfp}`}
+                              alt={blockedUser.username}
+                              className="blockedUserPfp"
+                            />
+                            <div className="blockedUserInfo">
+                              <p className="blockedUserName">
+                                {blockedUser.name}
+                              </p>
+                              <p className="blockedUserUsername">
+                                @{blockedUser.username}
+                              </p>
+                            </div>
+                            <button
+                              onClick={() => handleUnblock(blockedUser.id)}
+                              className="unblockButton"
+                            >
+                              Unblock
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 ) : null}
               </div>
