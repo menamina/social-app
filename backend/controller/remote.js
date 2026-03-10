@@ -41,6 +41,9 @@ async function forYouFeed(req, res) {
         // comments: { gte: 2 },
         madeBy: { notIn: blockedIDs },
       },
+      include: {
+        postedBy: true,
+      },
       orderBy: [{ likes: "desc" }, { comments: "desc" }],
     });
     return res.status(200).json({ allPosts: allPosts });
@@ -143,7 +146,7 @@ async function viewProfile(req, res) {
     });
 
     if (userProfile.id === id) {
-      return res.json({ viewUserProfile: userProfile });
+      return res.json({ viewThisUserProfile: userProfile });
     }
     return res.json({ userProfile });
   } catch (error) {

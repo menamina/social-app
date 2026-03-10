@@ -25,6 +25,7 @@ function Feed() {
 
       <div className="feedPosts">
         <div>
+          // drop open a modal//
           <div>
             <img />
           </div>
@@ -33,7 +34,59 @@ function Feed() {
           </div>
         </div>
         {feedView === "for you" ? (
-          <div className="forYouPosts"></div>
+          <div className="forYouPosts">
+            {forYouFeedErr ? (
+              <div>{forYouFeedErr}</div>
+            ) : (
+              <div>
+                {forYouFeed.map((post) => {
+                  <div key={post.id} className="postContainer">
+                    <div className="postersPFP">
+                      <div onClick={viewProfile}>
+                        <img
+                          src={`http://localhost:5555/${post.postedBy.pfp}`}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <div className="postInfo">
+                        <div>{post.username}</div>
+                        <div>{post.createdAt}</div>
+                      </div>
+                      <div className="postMsg">
+                        <div>{post.msg}</div>
+                      </div>
+                      <div className="postImg">
+                        {post.img ? (
+                          <div>
+                            <img src={`http://localhost:5555/${post.img}`} />
+                          </div>
+                        ) : null}
+                      </div>
+                      <div className="postOptions">
+                        <div>
+                          <div></div>
+                          <div></div>
+                        </div>
+                        <div>
+                          <div></div>
+                          <div></div>
+                        </div>
+                        <div>
+                          <div></div>
+                          <div></div>
+                        </div>
+                        <div>
+                          <div></div>
+                          <div></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>;
+                })}
+              </div>
+            )}
+          </div>
         ) : (
           <div className="followingPosts"></div>
         )}
