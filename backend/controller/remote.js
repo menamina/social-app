@@ -97,6 +97,7 @@ async function getNavData(req, res) {
         id: userID,
       },
       select: {
+        id: true,
         username: true,
         name: true,
         pfp: true,
