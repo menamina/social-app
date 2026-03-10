@@ -8,6 +8,19 @@ function Nav({ navUserData }) {
     setUtilsToggle((prev) => !prev);
   }
 
+  async function refetchUserData(id) {
+    try {
+      const res = await fetch("http://localhost:5555/profile", {
+        method: "GET",
+        credentials: "include",
+      });
+      const data = await res.json();
+    } catch (error) {
+      return error;
+      //  fix later
+    }
+  }
+
   function logout() {}
 
   return (
@@ -38,7 +51,10 @@ function Nav({ navUserData }) {
           </Link> */}
         </div>
         <div>
-          <Link to={`/@${navUserData.username}`}>
+          <Link
+            to={`/@${navUserData.username}`}
+            onClick={() => refetchUserData(navUserData.id)}
+          >
             {" "}
             <img src="" alt="your profile" />
           </Link>
