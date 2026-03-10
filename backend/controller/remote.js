@@ -93,7 +93,23 @@ async function viewProfile(req, res) {
     const { profile } = req.params;
 
     const userID = Number(id);
-    const wantedProfile = Number(profile);
+
+    const username = profile.startsWith("@") ? profile.slice(1) : profile;
+
+    const wantedUser = await prisma.user.findUnique({
+      where: {
+        username: username,
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    if (!wantedUser) {
+      return res.status(404).json({ errorMsg: "User not found" });
+    }
+
+    const wantedProfile = wantedUser.id;
 
     const blockRelations = await prisma.blocked.findMany({
       where: {
@@ -149,10 +165,10 @@ async function viewProfile(req, res) {
       },
     });
 
-    if (userProfile.id === id) {
+    if (userProfile.id === userID) {
       return res.json({ viewThisUserProfile: userProfile });
     }
-    return res.json({ userProfile });
+    return res.json({ userProfile: userProfile });
   } catch (error) {
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
   }

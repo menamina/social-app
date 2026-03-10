@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { OutletContext, Link } from "react-router-dom";
+import { useOutletContext, Link } from "react-router-dom";
 
 // MAKE  MODAL TO POST A MESSAGE //
 // IMPOT THE POST JSX HERE BUT MAKE IT OVER //
@@ -12,7 +12,7 @@ function Feed() {
     forYouFeedErr,
     setForYouFeedErr,
     setClickedOnPost,
-  } = OutletContext();
+  } = useOutletContext();
 
   const [followingFeed, setFollowingFeed] = useState(null);
   const [followingFeedErr, setFollowingFeedErr] = useState(null);

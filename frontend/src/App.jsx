@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { OutletContext, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -58,7 +58,6 @@ function App() {
       <Outlet
         context={{
           user,
-          setUser,
           forYouFeed,
           setForYouFeed,
           forYouFeedErr,
