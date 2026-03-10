@@ -639,6 +639,7 @@ module.exports = {
   signup,
   forYouFeed,
   followingFeed,
+  getNavData,
   viewProfile,
   //   search,
   settings,

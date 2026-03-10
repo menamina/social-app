@@ -47,6 +47,7 @@ router.post("/logout", (req, res, next) => {
 router.get("/for-you-feed", isAuth, remote.forYouFeed);
 router.get("/for-you", isAuth, remote.forYouFeed);
 router.get("/followingFeed", isAuth, remote.followingFeed);
+router.get("/nav-data", isAuth, remote.getNavData);
 
 router.get("/:profile", isAuth, remote.viewProfile);
 router.get("/search", isAuth, remote.search);

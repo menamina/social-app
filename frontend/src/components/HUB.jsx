@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Outlet, useOutletContext } from "react-router-dom";
 import Nav from "./nav.jsx";
 
@@ -7,12 +7,32 @@ function Hub() {
     useOutletContext();
   const [userProfile, setUserProfile] = useState(null);
   const [clickedOnPost, setClickedOnPost] = useState(null);
+  const [navUserData, setNavUserData] = useState(null);
 
-  const navUserData = {
-    username: user.username,
-    name: user.name,
-    pfp: user.pfp,
-  };
+  useEffect(() => {
+    async function fetchNavData() {
+      try {
+        const res = await fetch("http://localhost:5555/nav-data", {
+          method: "GET",
+          credentials: "include",
+        });
+
+        const data = await res.json();
+
+        if (data.navData) {
+          setNavUserData(data.navData);
+        }
+      } catch (error) {
+        console.error("Error fetching nav data:", error);
+      }
+    }
+
+    fetchNavData();
+  }, []);
+
+  if (!navUserData) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div>
