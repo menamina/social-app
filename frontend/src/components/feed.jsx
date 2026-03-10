@@ -1,5 +1,8 @@
-import { useState, useEffect } from "react";
-import { OutletContext, useNavigate, Link } from "react-router-dom";
+import { useState } from "react";
+import { OutletContext, Link } from "react-router-dom";
+
+// MAKE  MODAL TO POST A MESSAGE //
+// IMPOT THE POST JSX HERE BUT MAKE IT OVER //
 
 function Feed() {
   const {
@@ -8,7 +11,6 @@ function Feed() {
     setForYouFeed,
     forYouFeedErr,
     setForYouFeedErr,
-    clickedOnPost,
     setClickedOnPost,
   } = OutletContext();
 
@@ -34,7 +36,7 @@ function Feed() {
   }
 
   async function followingRefresh() {
-    setFeedView("for you");
+    setFeedView("following");
     try {
       const res = await fetch("http://localhost:5555/followingFeed", {
         method: "GET",
@@ -63,7 +65,6 @@ function Feed() {
 
       <div className="feedPosts">
         <div>
-          // drop open a modal//
           <div>
             <img src={`http://localhost:5555/pfpIMG/${user.pfp}`} />
           </div>
@@ -79,7 +80,7 @@ function Feed() {
               <div>
                 {forYouFeed.map((post) => (
                   <Link
-                    to={`http:localhost:5555/@${post.username}/post/${post.id}`}
+                    to={`http://localhost:5555/@${post.username}/post/${post.id}`}
                     key={post.id}
                     className="postContainer"
                     onClick={() => changeClickedOnPost({ post })}
@@ -149,7 +150,7 @@ function Feed() {
               <div>
                 {followingFeed.map((post) => (
                   <Link
-                    to={`http:localhost:5555/@${post.username}/post/${post.id}`}
+                    to={`http://localhost:5555/@${post.username}/post/${post.id}`}
                     key={post.id}
                     className="postContainer"
                     onClick={() => changeClickedOnPost({ post })}
