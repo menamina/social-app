@@ -4,6 +4,7 @@ import { useOutletContext } from "react-router-dom";
 function Settings() {
   const { userProfile, setUserProfile } = useOutletContext();
   const [viewOpt, setViewOpt] = useState("privacy");
+  const [dropDown, setdropDown] = useState(null);
   const [name, setName] = useState(userProfile?.name || "");
   const [username, setUsername] = useState(userProfile?.username || "");
   const [email, setEmail] = useState(userProfile?.email || "");
@@ -11,6 +12,14 @@ function Settings() {
 
   function changeViewOpt(option) {
     setViewOpt(option);
+  }
+
+  function toggledropDown(option) {
+    if (dropDown === option) {
+      setdropDown(null);
+    } else {
+      setdropDown(option);
+    }
   }
 
   function handleSubmit(e) {
@@ -42,10 +51,36 @@ function Settings() {
         </div>
         <div>
           {viewOpt === "privacy" ? (
-            <div>
-              <div>Status</div>
-              <div>Blocked accounts</div>
-              {/* drop downs for opts */}
+            <div className="privacySettings">
+              <div className="dropDownOpt">
+                <div
+                  onClick={() => toggledropDown("status")}
+                  className="privacyHeader"
+                >
+                  Status
+                </div>
+                {dropDown === "status" ? (
+                  <div className="privacyContent">
+                    {/* Add status options here */}
+                    <p>Account status settings</p>
+                  </div>
+                ) : null}
+              </div>
+
+              <div className="dropDownOpt">
+                <div
+                  onClick={() => toggledropDown("blocked")}
+                  className="privacyHeader"
+                >
+                  Blocked accounts
+                </div>
+                {dropDown === "blocked" ? (
+                  <div className="privacyContent">
+                    {/* Add blocked accounts list here */}
+                    <p>List of blocked accounts</p>
+                  </div>
+                ) : null}
+              </div>
             </div>
           ) : null}
           {viewOpt === "account" ? (
