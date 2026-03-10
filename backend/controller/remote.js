@@ -75,9 +75,13 @@ async function followingFeed(req, res) {
       where: {
         madeBy: { in: followingIDs },
       },
+      include: {
+        postedBy: true,
+      },
+      orderBy: [{ likes: "desc" }, { comments: "desc" }],
     });
 
-    return res.status(200).json({ followingPosts });
+    return res.status(200).json({ followingPosts: followingPosts });
   } catch (error) {
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
   }

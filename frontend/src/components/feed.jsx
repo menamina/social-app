@@ -4,16 +4,45 @@ import { useState, useEffect } from "react";
 import { OutletContext, useNavigate, Link } from "react-router-dom";
 
 function Feed() {
-  const { forYouFeed, setForYouFeed, forYouFeedErr, setForYouFeedErr } =
+  const { user, forYouFeed, setForYouFeed, forYouFeedErr, setForYouFeedErr } =
     OutletContext();
 
   const [followingFeed, setFollowingFeed] = useState(null);
+  const [followingFeedErr, setFollowingFeedErr] = useState(null);
 
   const [feedView, setFeedView] = useState("for you");
 
-  async function forYouRefresh() {}
+  async function forYouRefresh() {
+    setFeedView("for you");
+    try {
+      const res = await fetch("http://localhost:5555/for-you-feed", {
+        method: "GET",
+        credentials: "include",
+      });
 
-  async function followingRefresh() {}
+      const data = await res.json();
+
+      setForYouFeed(data.allPosts);
+    } catch (error) {
+      setForYouFeedErr(error.errorMsg);
+    }
+  }
+
+  async function followingRefresh() {
+    setFeedView("for you");
+    try {
+      const res = await fetch("http://localhost:5555/followingFeed", {
+        method: "GET",
+        credentials: "include",
+      });
+
+      const data = await res.json();
+
+      setFollowingFeed(data.followingPosts);
+    } catch (error) {
+      setFollowingFeedErr(error.errorMsg);
+    }
+  }
 
   return (
     <div className="feed">
@@ -27,7 +56,7 @@ function Feed() {
         <div>
           // drop open a modal//
           <div>
-            <img />
+            <img src={`http://localhost:5555/pfpIMG/${user.pfp}`} />
           </div>
           <div>
             <input placeholder="Wanna say something?" />
@@ -48,7 +77,7 @@ function Feed() {
                     <div className="postersPFP">
                       <div onClick={viewProfile}>
                         <img
-                          src={`http://localhost:5555/${post.postedBy.pfp}`}
+                          src={`http://localhost:5555/pfpIMG/${post.postedBy.pfp}`}
                         />
                       </div>
                     </div>
@@ -103,7 +132,74 @@ function Feed() {
             )}
           </div>
         ) : (
-          <div className="followingPosts"></div>
+          <div className="followingPosts">
+            {followingFeed ? (
+              <div>{followingFeedErr}</div>
+            ) : (
+              <div>
+                {followingFeed.map((post) => {
+                  <Link
+                    to={`http:localhost:5555/@${post.username}/post/${post.id}`}
+                    key={post.id}
+                    className="postContainer"
+                  >
+                    <div className="postersPFP">
+                      <div onClick={viewProfile}>
+                        <img
+                          src={`http://localhost:5555/pfpIMG/${post.postedBy.pfp}`}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <div className="postInfo">
+                        <div>{post.username}</div>
+                        <div>{post.createdAt}</div>
+                      </div>
+                      <div className="postMsg">
+                        <div>{post.msg}</div>
+                      </div>
+                      <div className="postImg">
+                        {post.img ? (
+                          <div>
+                            <img src={`http://localhost:5555/${post.img}`} />
+                          </div>
+                        ) : null}
+                      </div>
+                      <div className="postOptions">
+                        <div className="likes">
+                          <div>
+                            <img />
+                          </div>
+                          <div>{post.likes.length()}</div>
+                        </div>
+
+                        <div className="comments">
+                          <div>
+                            <img />
+                          </div>
+                          <div>{post.comments.length()}</div>
+                        </div>
+
+                        <div className="reposts">
+                          <div>
+                            <img />
+                          </div>
+                          <div>{post.likes.length()}</div>
+                        </div>
+
+                        <div className="share">
+                          <div>
+                            <img />
+                          </div>
+                          <div>Share</div>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>;
+                })}
+              </div>
+            )}
+          </div>
         )}
       </div>
     </div>
