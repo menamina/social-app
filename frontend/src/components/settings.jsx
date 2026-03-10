@@ -251,7 +251,24 @@ function Settings() {
               </form>
             </div>
           ) : null}
-          {viewOpt === "help" ? <div></div> : null}
+          {viewOpt === "help" ? (
+            <div>
+              <div>Send us a message</div>
+              <form>
+                <div>
+                  <label>Email:</label>
+                  <input />
+                </div>
+                <div>
+                  <label>Message:</label>
+                  <input />
+                </div>
+                <div>
+                  <button>submit</button>
+                </div>
+              </form>
+            </div>
+          ) : null}
         </div>
       </div>
     </div>
