@@ -1,9 +1,6 @@
 import { useState, useEffect } from "react";
-import { OutletContext, useNavigate } from "react-router-dom";
+import { OutletContext } from "react-router-dom";
 import Nav from "./nav.jsx";
-
-// this is where i put in all components
-// put loaded feed here + mini profile view
 
 function Hub() {
   const { user, forYouFeed, setForYouFeed, forYouFeedErr, setForYouFeedErr } =
