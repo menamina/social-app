@@ -1,8 +1,7 @@
-import { useState, useEffect } from "react";
-import { OutletContext, useNavigate, Link } from "react-router-dom";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 
-function Nav() {
-  const { user } = OutletContext();
+function Nav({ navUserData }) {
   const [utilsToggle, setUtilsToggle] = useState(false);
 
   function utilToggle() {
@@ -19,7 +18,10 @@ function Nav() {
         <div>
           <Link to="/">
             {" "}
-            <img src="" alt="home image for main feed" />
+            <img
+              src={`http://localhost:5555/pfpIMG/${navUserData.pfp}`}
+              alt="home image for main feed"
+            />
           </Link>
         </div>
         <div>
@@ -36,7 +38,7 @@ function Nav() {
           </Link> */}
         </div>
         <div>
-          <Link to={`/@${user.username}`}>
+          <Link to={`/@${navUserData.username}`}>
             {" "}
             <img src="" alt="your profile" />
           </Link>

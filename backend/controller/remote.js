@@ -87,6 +87,32 @@ async function followingFeed(req, res) {
   }
 }
 
+async function getNavData(req, res) {
+  try {
+    const id = req.user.id;
+    const userID = Number(id);
+
+    const navData = await prisma.user.findUnique({
+      where: {
+        id: userID,
+      },
+      select: {
+        username: true,
+        name: true,
+        pfp: true,
+      },
+    });
+
+    if (!navData) {
+      return res.status(404).json({ errorMsg: "User not found" });
+    }
+
+    return res.json({ navData });
+  } catch (error) {
+    return res.status(500).json({ errorMsg: "Internal server error :^(" });
+  }
+}
+
 async function viewProfile(req, res) {
   try {
     const id = req.user.id;

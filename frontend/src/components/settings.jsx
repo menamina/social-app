@@ -2,13 +2,47 @@ import { useState, useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
 
 function Settings() {
-  const { userProfile, setUserProfile } = useOutletContext();
+  const { user, userProfile, setUserProfile } = useOutletContext();
   const [viewOpt, setViewOpt] = useState("privacy");
   const [dropDown, setdropDown] = useState(null);
-  const [name, setName] = useState(userProfile?.name || "");
-  const [username, setUsername] = useState(userProfile?.username || "");
-  const [email, setEmail] = useState(userProfile?.email || "");
+  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [profilePicture, setProfilePicture] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchUserProfile() {
+      if (!userProfile) {
+        try {
+          const res = await fetch(`http://localhost:5555/@${user.username}`, {
+            method: "GET",
+            credentials: "include",
+          });
+
+          const data = await res.json();
+
+          if (data.viewThisUserProfile) {
+            setUserProfile(data.viewThisUserProfile);
+            setName(data.viewThisUserProfile.name || "");
+            setUsername(data.viewThisUserProfile.username || "");
+            setEmail(data.viewThisUserProfile.email || "");
+          }
+        } catch (error) {
+          console.error("Error fetching profile:", error);
+        } finally {
+          setLoading(false);
+        }
+      } else {
+        setName(userProfile.name || "");
+        setUsername(userProfile.username || "");
+        setEmail(userProfile.email || "");
+        setLoading(false);
+      }
+    }
+
+    fetchUserProfile();
+  }, [user.username, userProfile, setUserProfile]);
 
   function changeViewOpt(option) {
     setViewOpt(option);
@@ -32,6 +66,10 @@ function Settings() {
     if (profilePicture) {
       formData.append("profilePicture", profilePicture);
     }
+  }
+
+  if (loading) {
+    return <div>Loading profile...</div>;
   }
 
   return (
