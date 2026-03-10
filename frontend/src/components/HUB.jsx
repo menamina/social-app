@@ -6,6 +6,7 @@ function Hub() {
   const { user, forYouFeed, setForYouFeed, forYouFeedErr, setForYouFeedErr } =
     OutletContext();
   const [userProfile, setUserProfile] = useState(null);
+  const [clickedOnPost, setClickedOnPost] = useState(null);
 
   useEffect(() => {
     async function fetchThisUsersProfile() {
@@ -32,6 +33,8 @@ function Hub() {
             setForYouFeed,
             forYouFeedErr,
             setForYouFeedErr,
+            clickedOnPost,
+            setClickedOnPost,
           }}
         />
       </div>

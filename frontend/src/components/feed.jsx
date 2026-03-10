@@ -1,11 +1,16 @@
-// this is what will fetch api to view other users profiles as well
-
 import { useState, useEffect } from "react";
 import { OutletContext, useNavigate, Link } from "react-router-dom";
 
 function Feed() {
-  const { user, forYouFeed, setForYouFeed, forYouFeedErr, setForYouFeedErr } =
-    OutletContext();
+  const {
+    user,
+    forYouFeed,
+    setForYouFeed,
+    forYouFeedErr,
+    setForYouFeedErr,
+    clickedOnPost,
+    setClickedOnPost,
+  } = OutletContext();
 
   const [followingFeed, setFollowingFeed] = useState(null);
   const [followingFeedErr, setFollowingFeedErr] = useState(null);
@@ -44,6 +49,10 @@ function Feed() {
     }
   }
 
+  function changeClickedOnPost({ post }) {
+    setClickedOnPost(post);
+  }
+
   return (
     <div className="feed">
       <div className="feedOpts">
@@ -68,18 +77,19 @@ function Feed() {
               <div>{forYouFeedErr}</div>
             ) : (
               <div>
-                {forYouFeed.map((post) => {
+                {forYouFeed.map((post) => (
                   <Link
                     to={`http:localhost:5555/@${post.username}/post/${post.id}`}
                     key={post.id}
                     className="postContainer"
+                    onClick={() => changeClickedOnPost({ post })}
                   >
                     <div className="postersPFP">
-                      <div onClick={viewProfile}>
+                      <Link to={`http://localhost:5555/${post.madeBy}`}>
                         <img
                           src={`http://localhost:5555/pfpIMG/${post.postedBy.pfp}`}
                         />
-                      </div>
+                      </Link>
                     </div>
                     <div>
                       <div className="postInfo">
@@ -101,21 +111,21 @@ function Feed() {
                           <div>
                             <img />
                           </div>
-                          <div>{post.likes.length()}</div>
+                          <div>{post.likes.length}</div>
                         </div>
 
                         <div className="comments">
                           <div>
                             <img />
                           </div>
-                          <div>{post.comments.length()}</div>
+                          <div>{post.comments.length}</div>
                         </div>
 
                         <div className="reposts">
                           <div>
                             <img />
                           </div>
-                          <div>{post.likes.length()}</div>
+                          <div>{post.likes.length}</div>
                         </div>
 
                         <div className="share">
@@ -126,29 +136,30 @@ function Feed() {
                         </div>
                       </div>
                     </div>
-                  </Link>;
-                })}
+                  </Link>
+                ))}
               </div>
             )}
           </div>
         ) : (
           <div className="followingPosts">
-            {followingFeed ? (
+            {followingFeedErr ? (
               <div>{followingFeedErr}</div>
             ) : (
               <div>
-                {followingFeed.map((post) => {
+                {followingFeed.map((post) => (
                   <Link
                     to={`http:localhost:5555/@${post.username}/post/${post.id}`}
                     key={post.id}
                     className="postContainer"
+                    onClick={() => changeClickedOnPost({ post })}
                   >
                     <div className="postersPFP">
-                      <div onClick={viewProfile}>
+                      <Link to={`http://localhost:5555/${post.madeBy}`}>
                         <img
                           src={`http://localhost:5555/pfpIMG/${post.postedBy.pfp}`}
                         />
-                      </div>
+                      </Link>
                     </div>
                     <div>
                       <div className="postInfo">
@@ -170,21 +181,21 @@ function Feed() {
                           <div>
                             <img />
                           </div>
-                          <div>{post.likes.length()}</div>
+                          <div>{post.likes.length}</div>
                         </div>
 
                         <div className="comments">
                           <div>
                             <img />
                           </div>
-                          <div>{post.comments.length()}</div>
+                          <div>{post.comments.length}</div>
                         </div>
 
                         <div className="reposts">
                           <div>
                             <img />
                           </div>
-                          <div>{post.likes.length()}</div>
+                          <div>{post.likes.length}</div>
                         </div>
 
                         <div className="share">
@@ -195,8 +206,8 @@ function Feed() {
                         </div>
                       </div>
                     </div>
-                  </Link>;
-                })}
+                  </Link>
+                ))}
               </div>
             )}
           </div>
