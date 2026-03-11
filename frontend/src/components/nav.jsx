@@ -1,14 +1,32 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useOutletContext } from "react-router-dom";
 
-function Nav({ navUserData }) {
+function Nav({ navUserData, setNavUserData }) {
+  const { setForYouFeed, setUserProfile } = useOutletContext();
   const [utilsToggle, setUtilsToggle] = useState(false);
+  const nav = useNavigate();
 
   function utilToggle() {
     setUtilsToggle((prev) => !prev);
   }
 
-  function logout() {}
+  async function logout() {
+    try {
+      const res = await fetch("http://localhost:5555/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+      if (res.status === 200) {
+        setNavUserData(null);
+        setForYouFeed(null);
+        setUserProfile(null);
+
+        nav("/");
+      }
+    } catch (error) {
+      alert("Error logging out:", error);
+    }
+  }
 
   return (
     <div>

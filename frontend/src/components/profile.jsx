@@ -6,7 +6,7 @@ function Profile() {
     useOutletContext();
 
   useEffect(() => {
-    async function refetchUserData(username) {
+    async function refetchUserData() {
       try {
         const res = await fetch(
           `http://localhost:5555/@${navUserData.username}`,

@@ -12,10 +12,11 @@ function Feed() {
     forYouFeedErr,
     setForYouFeedErr,
     setClickedOnPost,
+    followingFeed,
+    setFollowingFeed,
+    followingFeedErr,
+    setFollowingFeedErr,
   } = useOutletContext();
-
-  const [followingFeed, setFollowingFeed] = useState(null);
-  const [followingFeedErr, setFollowingFeedErr] = useState(null);
 
   const [feedView, setFeedView] = useState("for you");
 

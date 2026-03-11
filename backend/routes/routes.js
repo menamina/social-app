@@ -49,7 +49,7 @@ router.get("/for-you", isAuth, remote.forYouFeed);
 router.get("/followingFeed", isAuth, remote.followingFeed);
 router.get("/nav-data", isAuth, remote.getNavData);
 
-router.get("/:profile", isAuth, remote.viewProfile);
+router.get("/@:profile", isAuth, remote.viewProfile);
 router.get("/search", isAuth, remote.search);
 router.get("/settings", isAuth, remote.settings);
 router.get("/dms", isAuth, remote.dms);

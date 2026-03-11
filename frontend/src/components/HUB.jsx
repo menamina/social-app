@@ -8,6 +8,8 @@ function Hub() {
   const [userProfile, setUserProfile] = useState(null);
   const [clickedOnPost, setClickedOnPost] = useState(null);
   const [navUserData, setNavUserData] = useState(null);
+  const [followingFeed, setFollowingFeed] = useState(null);
+  const [followingFeedErr, setFollowingFeedErr] = useState(null);
 
   useEffect(() => {
     async function fetchNavData() {
@@ -47,6 +49,10 @@ function Hub() {
             setForYouFeed,
             forYouFeedErr,
             setForYouFeedErr,
+            followingFeed,
+            setFollowingFeed,
+            followingFeedErr,
+            setFollowingFeedErr,
             clickedOnPost,
             setClickedOnPost,
             navUserData,
