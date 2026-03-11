@@ -5,6 +5,7 @@ function App() {
   const [user, setUser] = useState(null);
   const [forYouFeed, setForYouFeed] = useState(null);
   const [forYouFeedErr, setForYouFeedErr] = useState(null);
+  const [userProfile, setUseProfile] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -62,6 +63,8 @@ function App() {
           setForYouFeed,
           forYouFeedErr,
           setForYouFeedErr,
+          userProfile,
+          setUseProfile,
         }}
       />
     </div>

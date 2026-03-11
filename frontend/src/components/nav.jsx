@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-function Nav({ navUserData }) {
+function Nav({ navUserData, userProfile, setUserProfile }) {
   const [utilsToggle, setUtilsToggle] = useState(false);
 
   function utilToggle() {
@@ -13,8 +13,12 @@ function Nav({ navUserData }) {
       const res = await fetch("http://localhost:5555/profile", {
         method: "GET",
         credentials: "include",
+        body: JSON.stringify({
+          id,
+        }),
       });
       const data = await res.json();
+      setUserProfile(data.userProf);
     } catch (error) {
       return error;
       //  fix later
