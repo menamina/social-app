@@ -1,28 +1,11 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-function Nav({ navUserData, userProfile, setUserProfile }) {
+function Nav({ navUserData }) {
   const [utilsToggle, setUtilsToggle] = useState(false);
 
   function utilToggle() {
     setUtilsToggle((prev) => !prev);
-  }
-
-  async function refetchUserData(id) {
-    try {
-      const res = await fetch("http://localhost:5555/profile", {
-        method: "GET",
-        credentials: "include",
-        body: JSON.stringify({
-          id,
-        }),
-      });
-      const data = await res.json();
-      setUserProfile(data.userProf);
-    } catch (error) {
-      return error;
-      //  fix later
-    }
   }
 
   function logout() {}
@@ -55,10 +38,7 @@ function Nav({ navUserData, userProfile, setUserProfile }) {
           </Link> */}
         </div>
         <div>
-          <Link
-            to={`/@${navUserData.username}`}
-            onClick={() => refetchUserData(navUserData.id)}
-          >
+          <Link to={`/@${navUserData.username}`}>
             {" "}
             <img src="" alt="your profile" />
           </Link>

@@ -49,6 +49,8 @@ function Hub() {
             setForYouFeedErr,
             clickedOnPost,
             setClickedOnPost,
+            navUserData,
+            setNavUserData,
           }}
         />
       </div>
