@@ -6,6 +6,7 @@ function Profile() {
   const { username } = useParams();
   const [profileViewOption, setProfileViewOption] = useState("posts");
   const [profileData, setProfileData] = useState(null);
+  const [allPosts, setAllPosts] = useState([]);
   const [isOwnProfile, setIsOwnProfile] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -36,9 +37,17 @@ function Profile() {
         }
         if (data.viewThisUserProfile) {
           setProfileData(data.viewThisUserProfile);
+          setAllPosts([
+            ...data.viewThisUserProfile.posts,
+            ...data.viewThisUserProfile.reposts.map((repost) => repost.post),
+          ]);
           setIsOwnProfile(true);
         } else if (data.userProfile) {
           setProfileData(data.userProfile);
+          setAllPosts([
+            ...data.userProfile.posts,
+            ...data.userProfile.reposts.map((repost) => repost.post),
+          ]);
           setIsOwnProfile(false);
         }
 
@@ -100,9 +109,7 @@ function Profile() {
           </div>
           <div>
             {profileViewOption === "posts"
-              ? profileData.posts.map((post) => (
-                  <PostCard key={post.id} post={post} />
-                ))
+              ? allPosts.map((post) => <PostCard key={post.id} post={post} />)
               : null}
             {profileViewOption === "comments"
               ? profileData.comments.map((comment) => (
