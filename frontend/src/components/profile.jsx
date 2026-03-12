@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
-import { useOutletContext, Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import PostCard from "./PostCard";
 
 function Profile() {
-  const { userProfile, setUserProfile, navUserData, setNavUserData } =
-    useOutletContext();
+  const { username } = useParams();
   const [profileViewOption, setProfileViewOption] = useState("posts");
+  const [profileData, setProfileData] = useState(null);
+  const [isOwnProfile, setIsOwnProfile] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   function profileViewOpt(option) {
     if (option === "posts") setProfileViewOption("posts");
@@ -14,27 +17,53 @@ function Profile() {
   }
 
   useEffect(() => {
-    async function refetchUserData() {
+    async function fetchProfileData() {
+      setLoading(true);
+      setError(null);
+
       try {
-        const res = await fetch(
-          `http://localhost:5555/@${navUserData.username}`,
-          {
-            method: "GET",
-            credentials: "include",
-          },
-        );
+        const res = await fetch(`http://localhost:5555/@${username}`, {
+          method: "GET",
+          credentials: "include",
+        });
+
         const data = await res.json();
-        setUserProfile(data.viewThisUserProfile);
+
+        if (res.status === 403 || res.status === 404) {
+          setError(data.errorMsg || "Profile not found");
+          setLoading(false);
+          return;
+        }
+        if (data.viewThisUserProfile) {
+          setProfileData(data.viewThisUserProfile);
+          setIsOwnProfile(true);
+        } else if (data.userProfile) {
+          setProfileData(data.userProfile);
+          setIsOwnProfile(false);
+        }
+
+        setLoading(false);
       } catch (error) {
-        return error;
-        //  fix later
+        setError("Failed to load profile");
+        setLoading(false);
       }
     }
-    refetchUserData;
-  }, []);
 
-  if (!userProfile) {
-    return <div>loading..</div>;
+    if (username) {
+      fetchProfileData();
+    }
+  }, [username]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>{error}</div>;
+  }
+
+  if (!profileData) {
+    return <div>Profile not found</div>;
   }
 
   return (
@@ -44,20 +73,24 @@ function Profile() {
         <div>
           <div>
             <div>
-              <div>{userProfile.name}</div>
-              <div>{userProfile.username}</div>
+              <div>{profileData.name}</div>
+              <div>{profileData.username}</div>
               <div>
-                <div>{userProfile.followers.length}</div>
-                <div>{userProfile.following.length}</div>
+                <div>{profileData.followers.length}</div>
+                <div>{profileData.following.length}</div>
               </div>
             </div>
             <div>
               <div>
-                <img src={`http://localhost:5555/pfpIMG/${userProfile.profile?.pfp || userProfile.pfp}`} />
+                <img
+                  src={`http://localhost:5555/pfpIMG/${profileData.profile?.pfp || profileData.pfp}`}
+                />
               </div>
-              <div>
-                <Link to="/settings">edit</Link>
-              </div>
+              {isOwnProfile && (
+                <div>
+                  <Link to="/settings">edit</Link>
+                </div>
+              )}
             </div>
           </div>
           <div>
@@ -67,18 +100,18 @@ function Profile() {
           </div>
           <div>
             {profileViewOption === "posts"
-              ? userProfile.posts.map((post) => (
+              ? profileData.posts.map((post) => (
                   <PostCard key={post.id} post={post} />
                 ))
               : null}
             {profileViewOption === "comments"
-              ? userProfile.comments.map((comment) => (
+              ? profileData.comments.map((comment) => (
                   <PostCard key={comment.id} post={comment.post} />
                 ))
               : null}
 
             {profileViewOption === "likes"
-              ? userProfile.likes.map((like) => (
+              ? profileData.likes.map((like) => (
                   <PostCard key={like.id} post={like.post} />
                 ))
               : null}

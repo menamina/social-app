@@ -11,18 +11,21 @@ import Settings from "./components/settings.jsx";
 
 const routes = createBrowserRouter([
   {
+    path: "/login",
+    element: <LoginSignUp />,
+  },
+  {
     path: "/",
     element: <App />,
     children: [
-      { path: "/", element: <LoginSignUp /> }, /// index true?
       {
         path: "/",
         element: <Hub />,
         children: [
-          { path: "/", element: <Feed /> },
-          { path: "/search", element: <Search /> },
-          { path: "/profile", element: <Profile /> },
-          { path: "/settings", element: <Settings /> },
+          { index: true, element: <Feed /> },
+          { path: "search", element: <Search /> },
+          { path: "@:username", element: <Profile /> },
+          { path: "settings", element: <Settings /> },
         ],
       },
     ],

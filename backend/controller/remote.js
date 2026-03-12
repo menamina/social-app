@@ -55,7 +55,25 @@ async function forYouFeed(req, res) {
           },
         },
         likes: true,
-        comments: true,
+        comments: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                username: true,
+                name: true,
+                profile: {
+                  select: {
+                    pfp: true,
+                  },
+                },
+              },
+            },
+          },
+          orderBy: {
+            createdAt: "asc",
+          },
+        },
         reposts: true,
       },
       orderBy: [{ likes: "desc" }, { comments: "desc" }],
@@ -103,7 +121,25 @@ async function followingFeed(req, res) {
           },
         },
         likes: true,
-        comments: true,
+        comments: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                username: true,
+                name: true,
+                profile: {
+                  select: {
+                    pfp: true,
+                  },
+                },
+              },
+            },
+          },
+          orderBy: {
+            createdAt: "asc",
+          },
+        },
         reposts: true,
       },
       orderBy: [{ likes: "desc" }, { comments: "desc" }],
