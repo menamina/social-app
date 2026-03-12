@@ -40,14 +40,14 @@ function Profile() {
           setAllPosts([
             ...data.viewThisUserProfile.posts,
             ...data.viewThisUserProfile.reposts.map((repost) => repost.post),
-          ]);
+          ].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
           setIsOwnProfile(true);
         } else if (data.userProfile) {
           setProfileData(data.userProfile);
           setAllPosts([
             ...data.userProfile.posts,
             ...data.userProfile.reposts.map((repost) => repost.post),
-          ]);
+          ].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
           setIsOwnProfile(false);
         }
 
