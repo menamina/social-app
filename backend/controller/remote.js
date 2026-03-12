@@ -378,7 +378,7 @@ async function updateProfileSettings(req, res) {
     const userID = Number(id);
 
     const { name, username, email, accountStatus } = req.body;
-    const { pfp } = req.file;
+    const pfp = req.file ? req.file.path : null;
 
     await prisma.profile.update({
       where: {
@@ -482,7 +482,7 @@ async function one2oneDMS(req, res) {
 async function sendMsg(req, res) {
   try {
     const { sendToID, msg } = req.body;
-    const { image } = req.file;
+    const files = req.files ? req.files.map(file => file.path) : [];
     const { id } = req.user;
 
     const sendTo = Number(sendToID);
@@ -508,7 +508,7 @@ async function sendMsg(req, res) {
         senderID: thisUsersID,
         receiverID: sendTo,
         message: msg,
-        image: image ? image : null,
+        images: files.length > 0 ? files : null,
       },
     });
 
@@ -550,9 +550,10 @@ async function deleteMsg(req, res) {
   }
 }
 
-async function post(res, res) {
+async function post(req, res) {
   try {
     const { body } = req.body;
+    const files = req.files ? req.files.map(file => file.path) : [];
 
     const id = req.user.id;
     const userID = Number(id);
@@ -561,47 +562,52 @@ async function post(res, res) {
       data: {
         madeBy: userID,
         msg: body,
+        images: files.length > 0 ? files : null,
       },
     });
 
-    res.status(200).json({ success: true });
+    return res.status(200).json({ success: true });
   } catch (error) {
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
   }
 }
 
-async function deletePost(res, res) {
+async function deletePost(req, res) {
   try {
     const id = req.user.id;
+    const { postID } = req.body;
+
     const userID = Number(id);
+    const deleteThisPost = Number(postID);
 
     await prisma.posts.delete({
       where: {
+        id: deleteThisPost,
         madeBy: userID,
       },
     });
 
-    return res.status(200).jjson({ success: true });
+    return res.status(200).json({ success: true });
   } catch (error) {
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
   }
 }
 
-async function repost(res, res) {
+async function repost(req, res) {
   try {
   } catch (error) {
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
   }
 }
 
-async function removeRepost(res, res) {
+async function removeRepost(req, res) {
   try {
   } catch (error) {
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
   }
 }
 
-async function like(res, res) {
+async function like(req, res) {
   try {
     const post = req.body.postID;
     const postID = Number(post);
@@ -614,7 +620,7 @@ async function like(res, res) {
         idOfLiker: userID,
       },
     });
-    return res.status(200).jjson({ success: true });
+    return res.status(200).json({ success: true });
   } catch (error) {
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
   }
@@ -815,6 +821,7 @@ async function unblockThem(req, res) {
 
 module.exports = {
   signup,
+  sendIMGS,
   forYouFeed,
   followingFeed,
   getNavData,

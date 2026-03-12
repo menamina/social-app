@@ -25,9 +25,9 @@ function Settings() {
 
           if (data.viewThisUserProfile) {
             setUserProfile(data.viewThisUserProfile);
-            setName(data.viewThisUserProfile.name || "");
-            setUsername(data.viewThisUserProfile.username || "");
-            setEmail(data.viewThisUserProfile.email || "");
+            setName(data.viewThisUserProfile.name);
+            setUsername(data.viewThisUserProfile.username);
+            setEmail(data.viewThisUserProfile.email);
           }
         } catch (error) {
           console.error("Error fetching profile:", error);
@@ -35,9 +35,9 @@ function Settings() {
           setLoading(false);
         }
       } else {
-        setName(userProfile.name || "");
-        setUsername(userProfile.username || "");
-        setEmail(userProfile.email || "");
+        setName(userProfile.name);
+        setUsername(userProfile.username);
+        setEmail(userProfile.email);
         setLoading(false);
       }
     }
@@ -138,7 +138,6 @@ function Settings() {
       <div>
         <div>
           <p>back</p>
-          {/* change to back error */}
         </div>
         <div>Settings</div>
       </div>
