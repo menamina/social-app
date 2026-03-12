@@ -127,7 +127,7 @@ function Feed() {
                           <div>
                             <img />
                           </div>
-                          <div>{post.likes.length}</div>
+                          <div>{post.reposts.length}</div>
                         </div>
 
                         <div className="share">
@@ -197,7 +197,7 @@ function Feed() {
                           <div>
                             <img />
                           </div>
-                          <div>{post.likes.length}</div>
+                          <div>{post.reposts.length}</div>
                         </div>
 
                         <div className="share">

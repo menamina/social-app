@@ -6,7 +6,11 @@ function Profile() {
     useOutletContext();
   const [profileViewOption, setProfileViewOption] = useState("posts");
 
-  function profileViewOption() {}
+  function profileViewOpt(option) {
+    if (option === "posts") setProfileViewOption("posts");
+    if (option === "comments") setProfileViewOption("comments");
+    if (option === "likes") setProfileViewOption("likes");
+  }
 
   useEffect(() => {
     async function refetchUserData() {
@@ -56,11 +60,74 @@ function Profile() {
             </div>
           </div>
           <div>
-            <div onClick={profileViewOption}>Posts</div>
-            <div onClick={profileViewOption}>Comments</div>
-            <div onClick={profileViewOption}>Likes</div>
+            <div onClick={() => profileViewOpt("posts")}>Posts</div>
+            <div onClick={() => profileViewOpt("comments")}>Comments</div>
+            <div onClick={() => profileViewOpt("likes")}>Likes</div>
           </div>
-          <div>{}</div>
+          <div>
+            {profileViewOpt === "posts"
+              ? userProfile.posts.map((post) => {
+                  <Link
+                    to={`http://localhost:5555/@${post.username}/post/${post.id}`}
+                    key={post.id}
+                    className="postContainer"
+                  >
+                    <div className="postersPFP">
+                      <Link to={`http://localhost:5555/@${post.username}`}>
+                        <img src={`http://localhost:5555/pfpIMG/${post.pfp}`} />
+                      </Link>
+                    </div>
+                    <div>
+                      <div className="postInfo">
+                        <div>{post.username}</div>
+                        <div>{post.createdAt}</div>
+                      </div>
+                      <div className="postMsg">
+                        <div>{post.msg}</div>
+                      </div>
+                      <div className="postImg">
+                        {post.img ? (
+                          <div>
+                            <img
+                              src={`http://localhost:5555/img/${post.img}`}
+                            />
+                          </div>
+                        ) : null}
+                      </div>
+                      <div className="postOptions">
+                        <div className="likes">
+                          <div>
+                            <img />
+                          </div>
+                          <div>{post.likes.length}</div>
+                        </div>
+
+                        <div className="comments">
+                          <div>
+                            <img />
+                          </div>
+                          <div>{post.comments.length}</div>
+                        </div>
+
+                        <div className="reposts">
+                          <div>
+                            <img />
+                          </div>
+                          <div>{post.reposts.length}</div>
+                        </div>
+
+                        <div className="share">
+                          <div>
+                            <img />
+                          </div>
+                          <div>Share</div>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>;
+                })
+              : null}
+          </div>
         </div>
       </div>
     </div>
