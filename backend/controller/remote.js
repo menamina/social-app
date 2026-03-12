@@ -1,6 +1,7 @@
 const prisma = require("../prisma/client");
 const { hashPass } = require("../utils/password");
 const path = require("path");
+const fs = require("fs").promises;
 
 async function signup(req, res) {
   try {
@@ -482,7 +483,7 @@ async function one2oneDMS(req, res) {
 async function sendMsg(req, res) {
   try {
     const { sendToID, msg } = req.body;
-    const files = req.files ? req.files.map(file => file.path) : [];
+    const files = req.files ? req.files.map((file) => file.path) : [];
     const { id } = req.user;
 
     const sendTo = Number(sendToID);
@@ -553,7 +554,7 @@ async function deleteMsg(req, res) {
 async function post(req, res) {
   try {
     const { body } = req.body;
-    const files = req.files ? req.files.map(file => file.path) : [];
+    const files = req.files ? req.files.map((file) => file.path) : [];
 
     const id = req.user.id;
     const userID = Number(id);
@@ -579,6 +580,26 @@ async function deletePost(req, res) {
 
     const userID = Number(id);
     const deleteThisPost = Number(postID);
+
+    const post = await prisma.posts.findUnique({
+      where: {
+        id: deleteThisPost,
+        madeBy: userID,
+      },
+      select: {
+        img: true,
+      },
+    });
+
+    if (post && post.img) {
+      for (const imagePath of post.img) {
+        try {
+          await fs.unlink(imagePath);
+        } catch (err) {
+          console.error(`Failed to delete image: ${imagePath}`, err);
+        }
+      }
+    }
 
     await prisma.posts.delete({
       where: {
@@ -626,7 +647,7 @@ async function like(req, res) {
   }
 }
 
-async function removeLike(res, res) {
+async function removeLike(req, res) {
   try {
     const post = req.body.postID;
     const postID = Number(post);
@@ -639,7 +660,7 @@ async function removeLike(res, res) {
         idOfLiker: userID,
       },
     });
-    return res.status(200).jjson({ success: true });
+    return res.status(200).json({ success: true });
   } catch (error) {
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
   }
@@ -661,7 +682,7 @@ async function comment(req, res) {
         comment: commentBody,
       },
     });
-    return res.status(200).jjson({ success: true });
+    return res.status(200).json({ success: true });
   } catch (error) {
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
   }
