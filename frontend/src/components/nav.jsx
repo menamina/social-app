@@ -36,7 +36,7 @@ function Nav({ navUserData, setNavUserData }) {
           <Link to="/">
             {" "}
             <img
-              src={`http://localhost:5555/pfpIMG/${navUserData.pfp}`}
+              src={`http://localhost:5555/pfpIMG/${navUserData.profile?.pfp || navUserData.pfp}`}
               alt="home image for main feed"
             />
           </Link>

@@ -71,9 +71,18 @@ model Comments {
     commenterID Int
     comment String
     createdAt DateTime @default(now())
-    
+
     post Posts @relation(fields: [postID], references: [id])
     user User @relation(fields: [commenterID], references: [id])
+}
+
+model Reposts {
+    id Int @id @default(autoincrement())
+    postID Int
+    repostedBy Int
+    repostedAt DateTime @default(now())
+
+    post Posts @relation(fields: [postID], references: [id])
 }
 
 model Msgs {
