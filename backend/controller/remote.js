@@ -281,6 +281,32 @@ async function viewProfile(req, res) {
             createdAt: "desc",
           },
         },
+        reposts: {
+          include: {
+            post: {
+              include: {
+                postedBy: {
+                  select: {
+                    id: true,
+                    username: true,
+                    name: true,
+                    profile: {
+                      select: {
+                        pfp: true,
+                      },
+                    },
+                  },
+                },
+                likes: true,
+                comments: true,
+                reposts: true,
+              },
+            },
+          },
+          orderBy: {
+            repostedAt: "desc",
+          },
+        },
         likes: {
           include: {
             post: {

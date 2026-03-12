@@ -34,7 +34,6 @@ model Profile {
     username String
     email String
 
-
     blockedAccounts Blocked []
 
     userProfile User @relation(fields: [user], references: [id])
@@ -97,8 +96,8 @@ model Msgs {
   createdAt DateTime @default(now())
   deletedBySender Boolean @default(false)
 
-  sender    User @relation("SentMessages", fields: [senderId], references: [id])
-  receiver  User @relation("ReceivedMessages", fields: [receiverId], references: [id])
+  sender    User @relation("SentMessages", fields: [senderID], references: [id])
+  receiver  User @relation("ReceivedMessages", fields: [receiverID], references: [id])
 
 }
 
