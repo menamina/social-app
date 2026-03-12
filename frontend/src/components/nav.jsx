@@ -20,7 +20,6 @@ function Nav({ navUserData, setNavUserData }) {
         setNavUserData(null);
         setForYouFeed(null);
         setUserProfile(null);
-
         nav("/");
       }
     } catch (error) {

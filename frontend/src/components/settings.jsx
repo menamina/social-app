@@ -43,7 +43,7 @@ function Settings() {
     }
 
     fetchUserProfile();
-  }, [user.username, userProfile, setUserProfile]);
+  }, [user]);
 
   function changeViewOpt(option) {
     setViewOpt(option);
