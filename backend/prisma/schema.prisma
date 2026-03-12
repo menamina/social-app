@@ -18,6 +18,7 @@ model User {
   posts Posts[]
   likes Likes []
   comments Comments []
+  reposts Reposts[]
   following Follow[] @relation("UserFollowing")
   followers Follow[] @relation("UserFollowers")
   sentMessages Msgs[] @relation("SentMessages")
@@ -48,7 +49,6 @@ model Posts {
   createdAt DateTime @default(now())
   likes Likes[]
   comments Comments[]
-  reposts Reposts []
 
   postedBy User @relation(fields: [madeBy], references: [id])
 
@@ -83,6 +83,9 @@ model Reposts {
     repostedAt DateTime @default(now())
 
     post Posts @relation(fields: [postID], references: [id])
+    user User @relation(fields: [repostedBy], references: [id])
+
+    @@unique([postID, repostedBy])
 }
 
 model Msgs {
