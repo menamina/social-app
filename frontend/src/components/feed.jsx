@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { useOutletContext, Link } from "react-router-dom";
+import { useOutletContext } from "react-router-dom";
+import PostCard from "./PostCard";
 
 // MAKE  MODAL TO POST A MESSAGE //
 // IMPOT THE POST JSX HERE BUT MAKE IT OVER //
@@ -67,7 +68,7 @@ function Feed() {
       <div className="feedPosts">
         <div>
           <div>
-            <img src={`http://localhost:5555/pfpIMG/${user.pfp}`} />
+            <img src={`http://localhost:5555/pfpIMG/${user.profile?.pfp || user.pfp}`} />
           </div>
           <div>
             <input placeholder="Wanna say something?" />
@@ -80,65 +81,11 @@ function Feed() {
             ) : (
               <div>
                 {forYouFeed.map((post) => (
-                  <Link
-                    to={`http://localhost:5555/@${post.username}/post/${post.id}`}
+                  <PostCard
                     key={post.id}
-                    className="postContainer"
+                    post={post}
                     onClick={() => changeClickedOnPost({ post })}
-                  >
-                    <div className="postersPFP">
-                      <Link to={`http://localhost:5555/${post.madeBy}`}>
-                        <img
-                          src={`http://localhost:5555/pfpIMG/${post.postedBy.pfp}`}
-                        />
-                      </Link>
-                    </div>
-                    <div>
-                      <div className="postInfo">
-                        <div>{post.username}</div>
-                        <div>{post.createdAt}</div>
-                      </div>
-                      <div className="postMsg">
-                        <div>{post.msg}</div>
-                      </div>
-                      <div className="postImg">
-                        {post.img ? (
-                          <div>
-                            <img src={`http://localhost:5555/${post.img}`} />
-                          </div>
-                        ) : null}
-                      </div>
-                      <div className="postOptions">
-                        <div className="likes">
-                          <div>
-                            <img />
-                          </div>
-                          <div>{post.likes.length}</div>
-                        </div>
-
-                        <div className="comments">
-                          <div>
-                            <img />
-                          </div>
-                          <div>{post.comments.length}</div>
-                        </div>
-
-                        <div className="reposts">
-                          <div>
-                            <img />
-                          </div>
-                          <div>{post.reposts.length}</div>
-                        </div>
-
-                        <div className="share">
-                          <div>
-                            <img />
-                          </div>
-                          <div>Share</div>
-                        </div>
-                      </div>
-                    </div>
-                  </Link>
+                  />
                 ))}
               </div>
             )}
@@ -150,65 +97,11 @@ function Feed() {
             ) : (
               <div>
                 {followingFeed.map((post) => (
-                  <Link
-                    to={`http://localhost:5555/@${post.username}/post/${post.id}`}
+                  <PostCard
                     key={post.id}
-                    className="postContainer"
+                    post={post}
                     onClick={() => changeClickedOnPost({ post })}
-                  >
-                    <div className="postersPFP">
-                      <Link to={`http://localhost:5555/${post.madeBy}`}>
-                        <img
-                          src={`http://localhost:5555/pfpIMG/${post.postedBy.pfp}`}
-                        />
-                      </Link>
-                    </div>
-                    <div>
-                      <div className="postInfo">
-                        <div>{post.username}</div>
-                        <div>{post.createdAt}</div>
-                      </div>
-                      <div className="postMsg">
-                        <div>{post.msg}</div>
-                      </div>
-                      <div className="postImg">
-                        {post.img ? (
-                          <div>
-                            <img src={`http://localhost:5555/${post.img}`} />
-                          </div>
-                        ) : null}
-                      </div>
-                      <div className="postOptions">
-                        <div className="likes">
-                          <div>
-                            <img />
-                          </div>
-                          <div>{post.likes.length}</div>
-                        </div>
-
-                        <div className="comments">
-                          <div>
-                            <img />
-                          </div>
-                          <div>{post.comments.length}</div>
-                        </div>
-
-                        <div className="reposts">
-                          <div>
-                            <img />
-                          </div>
-                          <div>{post.reposts.length}</div>
-                        </div>
-
-                        <div className="share">
-                          <div>
-                            <img />
-                          </div>
-                          <div>Share</div>
-                        </div>
-                      </div>
-                    </div>
-                  </Link>
+                  />
                 ))}
               </div>
             )}

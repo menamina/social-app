@@ -42,7 +42,21 @@ async function forYouFeed(req, res) {
         madeBy: { notIn: blockedIDs },
       },
       include: {
-        postedBy: true,
+        postedBy: {
+          select: {
+            id: true,
+            username: true,
+            name: true,
+            profile: {
+              select: {
+                pfp: true,
+              },
+            },
+          },
+        },
+        likes: true,
+        comments: true,
+        reposts: true,
       },
       orderBy: [{ likes: "desc" }, { comments: "desc" }],
     });
@@ -76,7 +90,21 @@ async function followingFeed(req, res) {
         madeBy: { in: followingIDs },
       },
       include: {
-        postedBy: true,
+        postedBy: {
+          select: {
+            id: true,
+            username: true,
+            name: true,
+            profile: {
+              select: {
+                pfp: true,
+              },
+            },
+          },
+        },
+        likes: true,
+        comments: true,
+        reposts: true,
       },
       orderBy: [{ likes: "desc" }, { comments: "desc" }],
     });
@@ -100,7 +128,11 @@ async function getNavData(req, res) {
         id: true,
         username: true,
         name: true,
-        pfp: true,
+        profile: {
+          select: {
+            pfp: true,
+          },
+        },
       },
     });
 
@@ -172,19 +204,83 @@ async function viewProfile(req, res) {
         id: true,
         name: true,
         username: true,
+        profile: {
+          select: {
+            pfp: true,
+          },
+        },
         following: true,
         followers: true,
         posts: {
+          include: {
+            postedBy: {
+              select: {
+                id: true,
+                username: true,
+                name: true,
+                profile: {
+                  select: {
+                    pfp: true,
+                  },
+                },
+              },
+            },
+            likes: true,
+            comments: true,
+            reposts: true,
+          },
           orderBy: {
             createdAt: "desc",
           },
         },
         likes: {
+          include: {
+            post: {
+              include: {
+                postedBy: {
+                  select: {
+                    id: true,
+                    username: true,
+                    name: true,
+                    profile: {
+                      select: {
+                        pfp: true,
+                      },
+                    },
+                  },
+                },
+                likes: true,
+                comments: true,
+                reposts: true,
+              },
+            },
+          },
           orderBy: {
             likedAt: "desc",
           },
         },
         comments: {
+          include: {
+            post: {
+              include: {
+                postedBy: {
+                  select: {
+                    id: true,
+                    username: true,
+                    name: true,
+                    profile: {
+                      select: {
+                        pfp: true,
+                      },
+                    },
+                  },
+                },
+                likes: true,
+                comments: true,
+                reposts: true,
+              },
+            },
+          },
           orderBy: {
             createdAt: "desc",
           },

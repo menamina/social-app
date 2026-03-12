@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useOutletContext, Link } from "react-router-dom";
+import PostCard from "./PostCard";
 
 function Profile() {
   const { userProfile, setUserProfile, navUserData, setNavUserData } =
@@ -52,7 +53,7 @@ function Profile() {
             </div>
             <div>
               <div>
-                <img src={`http://localhost:5555/pfpIMG/${userProfile.pfp}`} />
+                <img src={`http://localhost:5555/pfpIMG/${userProfile.profile?.pfp || userProfile.pfp}`} />
               </div>
               <div>
                 <Link to="/settings">edit</Link>
@@ -65,67 +66,21 @@ function Profile() {
             <div onClick={() => profileViewOpt("likes")}>Likes</div>
           </div>
           <div>
-            {profileViewOpt === "posts"
-              ? userProfile.posts.map((post) => {
-                  <Link
-                    to={`http://localhost:5555/@${post.username}/post/${post.id}`}
-                    key={post.id}
-                    className="postContainer"
-                  >
-                    <div className="postersPFP">
-                      <Link to={`http://localhost:5555/@${post.username}`}>
-                        <img src={`http://localhost:5555/pfpIMG/${post.pfp}`} />
-                      </Link>
-                    </div>
-                    <div>
-                      <div className="postInfo">
-                        <div>{post.username}</div>
-                        <div>{post.createdAt}</div>
-                      </div>
-                      <div className="postMsg">
-                        <div>{post.msg}</div>
-                      </div>
-                      <div className="postImg">
-                        {post.img ? (
-                          <div>
-                            <img
-                              src={`http://localhost:5555/img/${post.img}`}
-                            />
-                          </div>
-                        ) : null}
-                      </div>
-                      <div className="postOptions">
-                        <div className="likes">
-                          <div>
-                            <img />
-                          </div>
-                          <div>{post.likes.length}</div>
-                        </div>
+            {profileViewOption === "posts"
+              ? userProfile.posts.map((post) => (
+                  <PostCard key={post.id} post={post} />
+                ))
+              : null}
+            {profileViewOption === "comments"
+              ? userProfile.comments.map((comment) => (
+                  <PostCard key={comment.id} post={comment.post} />
+                ))
+              : null}
 
-                        <div className="comments">
-                          <div>
-                            <img />
-                          </div>
-                          <div>{post.comments.length}</div>
-                        </div>
-
-                        <div className="reposts">
-                          <div>
-                            <img />
-                          </div>
-                          <div>{post.reposts.length}</div>
-                        </div>
-
-                        <div className="share">
-                          <div>
-                            <img />
-                          </div>
-                          <div>Share</div>
-                        </div>
-                      </div>
-                    </div>
-                  </Link>;
-                })
+            {profileViewOption === "likes"
+              ? userProfile.likes.map((like) => (
+                  <PostCard key={like.id} post={like.post} />
+                ))
               : null}
           </div>
         </div>
