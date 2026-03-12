@@ -1,5 +1,6 @@
 const prisma = require("../prisma/client");
 const { hashPass } = require("../utils/password");
+const path = require("path");
 
 async function signup(req, res) {
   try {
@@ -16,6 +17,16 @@ async function signup(req, res) {
     return res.status(200).json({ success: true });
   } catch (error) {
     return res.status(400).json({ errorMsg: "Internal server error :^(" });
+  }
+}
+
+async function sendIMGS(req, res) {
+  try {
+    const img = req.params.image;
+    const imgPath = path.resolve("uploads", img);
+    return res.sendFile(imgPath);
+  } catch (error) {
+    console.log(error);
   }
 }
 

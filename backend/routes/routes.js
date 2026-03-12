@@ -4,6 +4,7 @@ const { isAuth } = require("../utils/passportAuth");
 const remote = require("../controller/remote");
 const passport = require("../passport/passport");
 const validator = require("../utils/validator");
+const multer = require("../multer/multer");
 
 router.get("/api/isAuth", isAuth, (req, res) => {
   res.status(200).json({
@@ -25,6 +26,7 @@ router.post("/login", (req, res, next) => {
         user: {
           id: user.id,
           name: user.name,
+          usename: user.name,
           email: user.email,
         },
       });
@@ -55,7 +57,7 @@ router.get("/settings", isAuth, remote.settings);
 router.get("/dms", isAuth, remote.dms);
 
 // posts //
-router.post("/post", isAuth, remote.post);
+router.post("/post", isAuth, multer.array("files", 4), remote.post);
 router.delete("/deletePost", isAuth, remote.deletePost);
 
 router.post("/repost", isAuth, remote.repost);
@@ -76,7 +78,7 @@ router.delete("/unfollow:/:thisID", isAuth, remote.unfollowThem);
 // dms //
 
 router.get("/dms/:wUser", isAuth, remote.one2oneDMS);
-router.post("/msg", isAuth, remote.sendMsg);
+router.post("/msg", isAuth, multer.array("files", 4), remote.sendMsg);
 router.patch("/deleteMsg", isAuth, remote.deleteMsg);
 
 // user settings //

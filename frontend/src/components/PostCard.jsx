@@ -66,7 +66,7 @@ function PostCard({ post, onClick }) {
       {post.comments && post.comments.length > 0 && (
         <div className="commentsSection">
           {post.comments.map((comment) => (
-            <Link to= key={comment.id} className="comment" >
+            <div key={comment.id} className="comment">
               <div className="commentUser">
                 <Link to={`/@${comment.user?.username}`}>
                   <img
@@ -80,7 +80,7 @@ function PostCard({ post, onClick }) {
                 </div>
               </div>
               <div className="commentText">{comment.comment}</div>
-            </Link>
+            </div>
           ))}
         </div>
       )}
