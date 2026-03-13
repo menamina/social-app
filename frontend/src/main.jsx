@@ -8,6 +8,7 @@ import Feed from "./components/feed.jsx";
 import Search from "./components/search.jsx";
 import Profile from "./components/profile.jsx";
 import Settings from "./components/settings.jsx";
+import Dms from "./components/dms.jsx";
 
 const routes = createBrowserRouter([
   {
@@ -26,6 +27,7 @@ const routes = createBrowserRouter([
           { path: "search", element: <Search /> },
           { path: "@:username", element: <Profile /> },
           { path: "settings", element: <Settings /> },
+          { path: "dms", element: <Dms /> },
         ],
       },
     ],
