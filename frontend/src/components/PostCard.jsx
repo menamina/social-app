@@ -2,10 +2,9 @@ import { Link } from "react-router-dom";
 import { useOutletContext } from "react-router-dom";
 
 function PostCard({ post, onClick }) {
-  const { openPostId } = useOutletContext();
+  const { showPostComments } = useOutletContext();
   const username = post.postedBy?.username || post.username;
   const pfp = post.postedBy?.profile?.pfp || post.pfp;
-  const showComments = openPostId === post.id;
 
   return (
     <div>
@@ -65,7 +64,7 @@ function PostCard({ post, onClick }) {
         </div>
       </div>
 
-      {showComments && post.comments && post.comments.length > 0 && (
+      {showPostComments && post.comments && post.comments.length > 0 && (
         <div className="commentsSection">
           {post.comments.map((comment) => (
             <div key={comment.id} className="comment">

@@ -2,9 +2,6 @@ import { useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import PostCard from "./PostCard";
 
-// MAKE  MODAL TO POST A MESSAGE //
-// IMPOT THE POST JSX HERE BUT MAKE IT OVER //
-
 function Feed() {
   const {
     user,
@@ -16,10 +13,10 @@ function Feed() {
     setFollowingFeed,
     followingFeedErr,
     setFollowingFeedErr,
+    setShowPostComments,
   } = useOutletContext();
 
   const [feedView, setFeedView] = useState("for you");
-  const [openPostId, setOpenPostId] = useState(null);
 
   async function forYouRefresh() {
     setFeedView("for you");
@@ -53,10 +50,6 @@ function Feed() {
     }
   }
 
-  function togglePostOpen(postId) {
-    setOpenPostId(openPostId === postId ? null : postId);
-  }
-
   return (
     <div className="feed">
       <div className="feedOpts">
@@ -86,7 +79,7 @@ function Feed() {
                   <PostCard
                     key={post.id}
                     post={post}
-                    onClick={() => togglePostOpen(post.id)}
+                    onClick={() => setShowPostComments(true)}
                   />
                 ))}
               </div>
@@ -102,7 +95,7 @@ function Feed() {
                   <PostCard
                     key={post.id}
                     post={post}
-                    onClick={() => togglePostOpen(post.id)}
+                    onClick={() => setShowPostComments(true)}
                   />
                 ))}
               </div>

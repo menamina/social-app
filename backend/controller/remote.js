@@ -657,20 +657,6 @@ async function post(req, res) {
   }
 }
 
-async function repost(req, res) {
-  try {
-  } catch (error) {
-    return res.status(500).json({ errorMsg: "Internal server error :^(" });
-  }
-}
-
-async function removeRepost(req, res) {
-  try {
-  } catch (error) {
-    return res.status(500).json({ errorMsg: "Internal server error :^(" });
-  }
-}
-
 async function deletePost(req, res) {
   try {
     const id = req.user.id;
@@ -703,6 +689,49 @@ async function deletePost(req, res) {
       where: {
         id: deleteThisPost,
         madeBy: userID,
+      },
+    });
+
+    return res.status(200).json({ success: true });
+  } catch (error) {
+    return res.status(500).json({ errorMsg: "Internal server error :^(" });
+  }
+}
+
+async function repost(req, res) {
+  try {
+    const { idtorep } = req.body;
+    const uID = req.user.id;
+
+    const userID = Number(uID);
+    const repostID = Number(idtorep);
+
+    await prisma.reposts.create({
+      data: {
+        postID: repostID,
+        repostedBy: userID,
+      },
+    });
+
+    return res.status(200).json({ success: true });
+  } catch (error) {
+  } catch (error) {
+    return res.status(500).json({ errorMsg: "Internal server error :^(" });
+  }
+}
+
+async function removeRepost(req, res) {
+  try {
+     const { idtorep } = req.body;
+    const uID = req.user.id;
+
+    const userID = Number(uID);
+    const repostID = Number(idtorep);
+
+    await prisma.reposts.delete({
+      where: {
+        postID: repostID,
+        repostedBy: userID,
       },
     });
 
@@ -926,11 +955,14 @@ async function unblockThem(req, res) {
 
 module.exports = {
   signup,
+
   sendIMGS,
+
   forYouFeed,
   followingFeed,
   getNavData,
   viewProfile,
+
   getPost,
   //   search,
   settings,
@@ -941,8 +973,8 @@ module.exports = {
 
   like,
   removeLike,
-  //   repost,
-  //   removeRepost,
+  repost,
+  removeRepost,
   comment,
   deleteComment,
   post,

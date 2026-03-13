@@ -5,7 +5,7 @@ function App() {
   const [user, setUser] = useState(null);
   const [forYouFeed, setForYouFeed] = useState(null);
   const [forYouFeedErr, setForYouFeedErr] = useState(null);
-  const [openPostId, setOpenPostId] = useState(null);
+  const [showPostComments, setShowPostComments] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -63,8 +63,8 @@ function App() {
           setForYouFeed,
           forYouFeedErr,
           setForYouFeedErr,
-          openPostId,
-          setOpenPostId,
+          showPostComments,
+          setShowPostComments,
         }}
       />
     </div>

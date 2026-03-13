@@ -37,17 +37,21 @@ function Profile() {
         }
         if (data.viewThisUserProfile) {
           setProfileData(data.viewThisUserProfile);
-          setAllPosts([
-            ...data.viewThisUserProfile.posts,
-            ...data.viewThisUserProfile.reposts.map((repost) => repost.post),
-          ].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
+          setAllPosts(
+            [
+              ...data.viewThisUserProfile.posts,
+              ...data.viewThisUserProfile.reposts.map((repost) => repost.post),
+            ].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)),
+          );
           setIsOwnProfile(true);
         } else if (data.userProfile) {
           setProfileData(data.userProfile);
-          setAllPosts([
-            ...data.userProfile.posts,
-            ...data.userProfile.reposts.map((repost) => repost.post),
-          ].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
+          setAllPosts(
+            [
+              ...data.userProfile.posts,
+              ...data.userProfile.reposts.map((repost) => repost.post),
+            ].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)),
+          );
           setIsOwnProfile(false);
         }
 
@@ -111,6 +115,7 @@ function Profile() {
             {profileViewOption === "posts"
               ? allPosts.map((post) => <PostCard key={post.id} post={post} />)
               : null}
+
             {profileViewOption === "comments"
               ? profileData.comments.map((comment) => (
                   <PostCard key={comment.id} post={comment.post} />
