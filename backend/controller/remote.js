@@ -431,7 +431,32 @@ async function getPost(req, res) {
 
 async function search(req, res) {
   try {
-    const { query } = req.params.search;
+    const { query } = req.query;
+    const userSearchRes = await prisma.user.findMany({
+      where: {
+        username: {
+          in: query
+        }
+      }
+    })
+
+    const postSearchRes = await prisma.posts.findMany({
+      where: {
+        msg: {
+          in: query
+        }
+      }
+    })
+
+    if (!userSearchRes && !postSearchRes){
+      return res.status(404).json({ errorMsg: "no search results found" });
+    }
+
+    return res.status(200).json({
+      userSearchRes, postSearchRes
+    })
+
+
   } catch (error) {
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
   }
@@ -964,7 +989,7 @@ module.exports = {
   viewProfile,
 
   getPost,
-  //   search,
+  search,
   settings,
   updateProfileSettings,
 
