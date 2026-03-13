@@ -2,14 +2,16 @@ import { Link } from "react-router-dom";
 import { useOutletContext } from "react-router-dom";
 
 function PostCard({ post, onClick }) {
-  const { showPostComments } = useOutletContext();
+  const { showPostComments, setShowPostComments } = useOutletContext();
   const username = post.postedBy?.username || post.username;
   const pfp = post.postedBy?.profile?.pfp || post.pfp;
 
   return (
     <div>
       <div>
-        <Link to="/">go back</Link>
+        <Link to="/" onClick={() => setShowPostComments(false)}>
+          go back
+        </Link>
       </div>
       <div className="postContainer" onClick={onClick}>
         <div className="postersPFP">
