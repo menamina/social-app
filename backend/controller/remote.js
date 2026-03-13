@@ -371,6 +371,64 @@ async function viewProfile(req, res) {
   }
 }
 
+async function getPost(req, res) {
+  try {
+    const { postId } = req.params;
+    const id = req.user.id;
+    const userID = Number(id);
+    const postID = Number(postId);
+
+    const post = await prisma.posts.findUnique({
+      where: {
+        id: postID,
+      },
+      include: {
+        postedBy: {
+          select: {
+            id: true,
+            username: true,
+            name: true,
+            profile: {
+              select: {
+                pfp: true,
+              },
+            },
+          },
+        },
+        likes: true,
+        comments: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                username: true,
+                name: true,
+                profile: {
+                  select: {
+                    pfp: true,
+                  },
+                },
+              },
+            },
+          },
+          orderBy: {
+            createdAt: "desc",
+          },
+        },
+        reposts: true,
+      },
+    });
+
+    if (!post) {
+      return res.status(404).json({ errorMsg: "Post not found" });
+    }
+
+    return res.json({ post });
+  } catch (error) {
+    return res.status(500).json({ errorMsg: "Internal server error :^(" });
+  }
+}
+
 async function search(req, res) {
   try {
     const { query } = req.params.search;
@@ -599,6 +657,20 @@ async function post(req, res) {
   }
 }
 
+async function repost(req, res) {
+  try {
+  } catch (error) {
+    return res.status(500).json({ errorMsg: "Internal server error :^(" });
+  }
+}
+
+async function removeRepost(req, res) {
+  try {
+  } catch (error) {
+    return res.status(500).json({ errorMsg: "Internal server error :^(" });
+  }
+}
+
 async function deletePost(req, res) {
   try {
     const id = req.user.id;
@@ -635,20 +707,6 @@ async function deletePost(req, res) {
     });
 
     return res.status(200).json({ success: true });
-  } catch (error) {
-    return res.status(500).json({ errorMsg: "Internal server error :^(" });
-  }
-}
-
-async function repost(req, res) {
-  try {
-  } catch (error) {
-    return res.status(500).json({ errorMsg: "Internal server error :^(" });
-  }
-}
-
-async function removeRepost(req, res) {
-  try {
   } catch (error) {
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
   }
@@ -873,6 +931,7 @@ module.exports = {
   followingFeed,
   getNavData,
   viewProfile,
+  getPost,
   //   search,
   settings,
   updateProfileSettings,

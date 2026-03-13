@@ -1,18 +1,18 @@
 import { Link } from "react-router-dom";
+import { useOutletContext } from "react-router-dom";
 
-function PostCard({ post, onClick, showComments = false }) {
-  const username = post.username;
-  const pfp = post.pfp;
+function PostCard({ post, onClick }) {
+  const { openPostId } = useOutletContext();
+  const username = post.postedBy?.username || post.username;
+  const pfp = post.postedBy?.profile?.pfp || post.pfp;
+  const showComments = openPostId === post.id;
 
   return (
     <div>
       <div>
         <Link to="/">go back</Link>
       </div>
-      <Link
-        to={`http://localhost:5555/@${username}/post/${post.id}`}
-        className="postContainer"
-      >
+      <div className="postContainer" onClick={onClick}>
         <div className="postersPFP">
           <Link to={`http://localhost:5555/@${username}`}>
             <img src={`http://localhost:5555/pfpIMG/${pfp}`} />
@@ -34,7 +34,7 @@ function PostCard({ post, onClick, showComments = false }) {
             ) : null}
           </div>
           <div className="postOptions">
-            <div className="likes" onClick={() => likeOpt(post.id)}>
+            <div className="likes">
               <div>
                 <img />
               </div>
@@ -49,7 +49,7 @@ function PostCard({ post, onClick, showComments = false }) {
             </div>
 
             <div className="reposts">
-              <div onClick={() => repostOpt(post.id)}>
+              <div>
                 <img />
               </div>
               <div>{post.reposts?.length || 0}</div>
@@ -63,7 +63,7 @@ function PostCard({ post, onClick, showComments = false }) {
             </div>
           </div>
         </div>
-      </Link>
+      </div>
 
       {showComments && post.comments && post.comments.length > 0 && (
         <div className="commentsSection">

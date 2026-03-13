@@ -12,7 +12,6 @@ function Feed() {
     setForYouFeed,
     forYouFeedErr,
     setForYouFeedErr,
-    setClickedOnPost,
     followingFeed,
     setFollowingFeed,
     followingFeedErr,
@@ -20,6 +19,7 @@ function Feed() {
   } = useOutletContext();
 
   const [feedView, setFeedView] = useState("for you");
+  const [openPostId, setOpenPostId] = useState(null);
 
   async function forYouRefresh() {
     setFeedView("for you");
@@ -53,8 +53,8 @@ function Feed() {
     }
   }
 
-  function changeClickedOnPost({ post }) {
-    setClickedOnPost(post);
+  function togglePostOpen(postId) {
+    setOpenPostId(openPostId === postId ? null : postId);
   }
 
   return (
@@ -86,7 +86,7 @@ function Feed() {
                   <PostCard
                     key={post.id}
                     post={post}
-                    onClick={() => setClickedOnPost({ post })}
+                    onClick={() => togglePostOpen(post.id)}
                   />
                 ))}
               </div>
@@ -102,7 +102,7 @@ function Feed() {
                   <PostCard
                     key={post.id}
                     post={post}
-                    onClick={() => changeClickedOnPost({ post })}
+                    onClick={() => togglePostOpen(post.id)}
                   />
                 ))}
               </div>
