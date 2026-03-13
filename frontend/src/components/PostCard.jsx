@@ -1,15 +1,17 @@
 import { Link } from "react-router-dom";
 
-function PostCard({ post, onClick }) {
-  const username = post.postedBy?.username || post.username;
-  const pfp = post.postedBy?.profile?.pfp || post.pfp;
+function PostCard({ post, onClick, showComments = false }) {
+  const username = post.username;
+  const pfp = post.pfp;
 
   return (
     <div>
+      <div>
+        <Link to="/">go back</Link>
+      </div>
       <Link
         to={`http://localhost:5555/@${username}/post/${post.id}`}
         className="postContainer"
-        onClick={onClick}
       >
         <div className="postersPFP">
           <Link to={`http://localhost:5555/@${username}`}>
@@ -32,7 +34,7 @@ function PostCard({ post, onClick }) {
             ) : null}
           </div>
           <div className="postOptions">
-            <div className="likes">
+            <div className="likes" onClick={() => likeOpt(post.id)}>
               <div>
                 <img />
               </div>
@@ -47,7 +49,7 @@ function PostCard({ post, onClick }) {
             </div>
 
             <div className="reposts">
-              <div>
+              <div onClick={() => repostOpt(post.id)}>
                 <img />
               </div>
               <div>{post.reposts?.length || 0}</div>
@@ -63,7 +65,7 @@ function PostCard({ post, onClick }) {
         </div>
       </Link>
 
-      {post.comments && post.comments.length > 0 && (
+      {showComments && post.comments && post.comments.length > 0 && (
         <div className="commentsSection">
           {post.comments.map((comment) => (
             <div key={comment.id} className="comment">
@@ -75,7 +77,9 @@ function PostCard({ post, onClick }) {
                   />
                 </Link>
                 <div>
-                  <div className="commentUsername">{comment.user?.username}</div>
+                  <div className="commentUsername">
+                    {comment.user?.username}
+                  </div>
                   <div className="commentTime">{comment.createdAt}</div>
                 </div>
               </div>

@@ -68,7 +68,9 @@ function Feed() {
       <div className="feedPosts">
         <div>
           <div>
-            <img src={`http://localhost:5555/pfpIMG/${user.profile?.pfp || user.pfp}`} />
+            <img
+              src={`http://localhost:5555/pfpIMG/${user.profile?.pfp || user.pfp}`}
+            />
           </div>
           <div>
             <input placeholder="Wanna say something?" />
@@ -84,7 +86,7 @@ function Feed() {
                   <PostCard
                     key={post.id}
                     post={post}
-                    onClick={() => changeClickedOnPost({ post })}
+                    onClick={() => setClickedOnPost({ post })}
                   />
                 ))}
               </div>

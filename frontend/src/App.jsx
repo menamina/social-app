@@ -62,8 +62,6 @@ function App() {
           setForYouFeed,
           forYouFeedErr,
           setForYouFeedErr,
-          userProfile,
-          setUseProfile,
         }}
       />
     </div>
