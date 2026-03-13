@@ -3,7 +3,8 @@ import { useOutletContext } from "react-router-dom";
 
 function Search() {
   const [query, setQuery] = useState("");
-  const [queryResults, setQueryResults] = useState(null);
+  const [queryResultsUsername, setQueryResultsUserName] = useState(null);
+  const [queryResultsPosts, setQueryResultsPosts] = useState(null);
   const [noQueryToReturn, setNoQueryToReturn] = useState(null);
   const [queryError, setQueryError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -28,7 +29,8 @@ function Search() {
           return;
         }
 
-        setQueryResults(data.queryResults);
+        setQueryResultsUserName(data.userSearchRes);
+        setQueryResultsPosts(data.postSearchRes);
         setLoading(false);
         return;
       } catch (error) {
