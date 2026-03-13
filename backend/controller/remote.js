@@ -437,6 +437,16 @@ async function search(req, res) {
         username: {
           in: query
         }
+      },
+      select: {
+        id: true,
+        name: true,
+        username: true,
+        profile: {
+          select: {
+            pfp: true
+          }
+        }
       }
     })
 

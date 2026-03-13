@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
+import PostCard from "./PostCard";
 
 function Search() {
+  const { setShowPostComments } = useOutletContext();
+
   const [query, setQuery] = useState("");
   const [queryResultsUsername, setQueryResultsUserName] = useState(null);
   const [queryResultsPosts, setQueryResultsPosts] = useState(null);
@@ -29,8 +32,20 @@ function Search() {
           return;
         }
 
-        setQueryResultsUserName(data.userSearchRes);
-        setQueryResultsPosts(data.postSearchRes);
+        const userResults = data.userSearchRes || [];
+        const postResults = data.postSearchRes || [];
+
+        if (userResults.length === 0 && postResults.length === 0) {
+          setNoQueryToReturn("No results found");
+          setQueryResultsUserName(null);
+          setQueryResultsPosts(null);
+          setLoading(false);
+          return;
+        }
+
+        setQueryResultsUserName(userResults.length > 0 ? userResults : null);
+        setQueryResultsPosts(postResults.length > 0 ? postResults : null);
+        setNoQueryToReturn(null);
         setLoading(false);
         return;
       } catch (error) {
@@ -57,11 +72,40 @@ function Search() {
         <div>
           {loading && <div>...</div>}
           {noQueryToReturn && <div>{noQueryToReturn}</div>}
-          {queryError && <div>{noQueryToReturn}</div>}
-          {queryResults &&
-            queryResults.map((result) => {
-              <div key={result.id} id={result.id}></div>;
-            })}
+          {queryError && <div>{queryError}</div>}
+          {queryResultsUsername && (
+            <div>
+              {queryResultsUsername.map((user) => (
+                <Link
+                  to={`http://localhost:5555/@${user.username}`}
+                  key={user.id}
+                  id={user.id}
+                >
+                  <div>
+                    <img
+                      src={`http://localhost:5555/img/${user.profile.pfp}`}
+                    />
+                  </div>
+                  <div>
+                    <div>{user.name}</div>
+                    <div>{user.username}</div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
+          {queryResultsPosts && (
+            <div>
+              {queryResultsPosts.map((post) => (
+                <PostCard
+                  key={post.id}
+                  id={post.id}
+                  post={post}
+                  onClick={() => setShowPostComments(true)}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>
