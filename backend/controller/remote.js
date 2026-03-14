@@ -519,7 +519,8 @@ async function dms(req, res) {
   try {
     const id = req.user.id;
     const thisUsersID = Number(id);
-    let filteredDMs = [];
+    const seenUserIDs = new Set();
+    const noDupesList = [];
 
     const queryRes = await prisma.msgs.findMany({
       where: {
@@ -532,6 +533,11 @@ async function dms(req, res) {
             id: true,
             name: true,
             username: true,
+             profile: {
+              select: {
+                pfp: true
+              }
+            }
           },
         },
         receiver: {
@@ -539,6 +545,11 @@ async function dms(req, res) {
             id: true,
             name: true,
             username: true,
+            profile: {
+              select: {
+                pfp: true
+              }
+            }
           },
         },
       },
@@ -547,16 +558,21 @@ async function dms(req, res) {
       },
     });
 
-    queryRes.forEach((msgs) => {
+    queryRes.forEach((msg) => {
       const otherUser =
-        msgs.receiverID === thisUsersID ? msgs.senderID : receiverID;
-      if (!filteredDMs.has(otherUser)) {
-        filteredDMs.push(otherUser);
+        msg.receiverID === thisUsersID ? msg.sender : msg.receiver;
+
+      if (!seenUserIDs.has(otherUser.id)) {
+        seenUserIDs.add(otherUser.id);
+        noDupesList.push({
+          id: otherUser.id,
+          username: otherUser.username,
+          name: otherUser.name,
+        });
       }
     });
 
-    const newSetFilteredDms = new Set(filteredDMs);
-    return res.status(200).json({ sideBarDMS: newSetFilteredDms });
+    return res.status(200).json({ sideBarDMS: noDupesList });
   } catch (error) {
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
   }
