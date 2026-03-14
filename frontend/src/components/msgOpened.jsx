@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
+import SendMsg from "./sendMsg.jsx";
 
 function MsgOpened({ id }) {
   const { user } = useOutletContext();
@@ -68,6 +69,7 @@ function MsgOpened({ id }) {
             })}
           </div>
         )}
+        <SendMsg />
       </div>
     </div>
   );
