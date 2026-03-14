@@ -6,15 +6,34 @@ import { useNavigate } from "react-router-dom";
 
 function Dms() {
   const [getDmError, setGetDmError] = useState(null);
+  const [sideBarDMS, setsideBarDMS] = useState(null);
 
   useEffect(() => {
-    async function getDmList() {
+    async function getsideBarDMS() {
       try {
+        const res = await fetch("http://localhost:5555/logout", {
+          method: "POST",
+          credentials: "include",
+        });
+
+        const data = await res.json();
+        setsideBarDMS(data.sideBarDMS);
       } catch (error) {
         setGetDmError(error.errorMsg);
       }
     }
-    getDmList();
+    getsideBarDMS();
   }, []);
+
+  if (!sideBarDMS) {
+    return <div>loading..</div>;
+  }
+
+  return (
+    <div className="dms div">
+      {getDmError && <div>{getDmError}</div>}
+      {sideBarDMS && <div></div>}
+    </div>
+  );
 }
 export default Dms;

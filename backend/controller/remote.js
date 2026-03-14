@@ -556,8 +556,7 @@ async function dms(req, res) {
     });
 
     const newSetFilteredDms = new Set(filteredDMs);
-
-    return res.json({ sideBarDMS: newSetFilteredDms });
+    return res.status(200).json({ sideBarDMS: newSetFilteredDms });
   } catch (error) {
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
   }
