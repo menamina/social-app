@@ -606,7 +606,8 @@ async function one2oneDMS(req, res) {
       },
     });
 
-    return res.json({ one2one: queryRes });
+      return res.status(200).json({ one2one: queryRes });
+
   } catch (error) {
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
   }

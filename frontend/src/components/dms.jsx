@@ -14,7 +14,7 @@ function Dms() {
   useEffect(() => {
     async function getsideBarDMS() {
       try {
-        const res = await fetch("http://localhost:5555/logout", {
+        const res = await fetch("http://localhost:5555/dms", {
           method: "POST",
           credentials: "include",
         });
@@ -29,8 +29,8 @@ function Dms() {
   }, []);
 
   function openMsgTrue(id) {
-    setOpenMsg(true);
     setOpenMsgWith(id);
+    setOpenMsg(true);
   }
 
   if (!sideBarDMS) {

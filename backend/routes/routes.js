@@ -56,6 +56,7 @@ router.get("/@:username/post/:postId", isAuth, remote.getPost);
 router.get("/search", isAuth, remote.search);
 router.get("/settings", isAuth, remote.settings);
 router.get("/dms", isAuth, remote.dms);
+router.get("/dms/:wUser", isAuth, remote.dms);
 
 // posts //
 router.post("/post", isAuth, multer.array("files", 4), remote.post);
