@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
 
 function MsgOpened({ id }) {
+  const { user } = useOutletContext();
   const [msgAPIError, setMsgsAPIError] = useState(null);
   const [msgs, setMsgs] = useState(null);
   const [otherUser, setOtherUser] = useState(null);
@@ -46,13 +47,28 @@ function MsgOpened({ id }) {
           />
         </Link>
       </div>
-      {msgs && (
-        <div>
-          {msgs.map((msg) => {
-            <div></div>;
-          })}
-        </div>
-      )}
+      <div className="renderedMsgs">
+        {msgs && (
+          <div>
+            {msgs.map((msg) => {
+              const isSent = msg.senderID === user.id;
+              return (
+                <div className={isSent ? "msgSent" : "msgReceived"}>
+                  <div>
+                    {msg.image && (
+                      <div>
+                        <img src={`http://localhost:5555/img/${msg.image}`} />
+                      </div>
+                    )}
+                    {msg.message && <div>{msg.message}</div>}
+                  </div>
+                  <div>{msg.createdAt}</div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

@@ -80,7 +80,7 @@ router.delete("/unfollow:/:thisID", isAuth, remote.unfollowThem);
 // dms //
 
 router.get("/dms/:wUser", isAuth, remote.one2oneDMS);
-router.post("/msg", isAuth, multer.array("files", 4), remote.sendMsg);
+router.post("/send-msg", isAuth, multer.array("files", 4), remote.sendMsg);
 router.patch("/deleteMsg", isAuth, remote.deleteMsg);
 
 // user settings //
