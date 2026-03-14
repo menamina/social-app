@@ -8,6 +8,8 @@ import MsgOpened from "./msgOpened";
 function Dms() {
   const [getDmError, setGetDmError] = useState(null);
   const [sideBarDMS, setsideBarDMS] = useState(null);
+  const [openMsg, setOpenMsg] = useState(false);
+  const [openMsgWith, setOpenMsgWith] = useState(null);
 
   useEffect(() => {
     async function getsideBarDMS() {
@@ -26,6 +28,11 @@ function Dms() {
     getsideBarDMS();
   }, []);
 
+  function openMsgTrue(id) {
+    setOpenMsg(true);
+    setOpenMsgWith(id);
+  }
+
   if (!sideBarDMS) {
     return <div>loading..</div>;
   }
@@ -36,7 +43,7 @@ function Dms() {
       <div>
         {sideBarDMS &&
           sideBarDMS.map((obj) => {
-            <div onClick>
+            <div onClick={() => openMsgTrue(obj.id)}>
               <div>
                 <img src={`${obj.pfp}`} />
               </div>
@@ -47,7 +54,7 @@ function Dms() {
             </div>;
           })}
       </div>
-      <MsgOpened />
+      {openMsg && <MsgOpened id={openMsgWith} />}
     </div>
   );
 }
