@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import MsgOpened from "./msgOpened";
 
 // add a search for user functionality IN the dms
 // when adding message from here check blocked
@@ -32,7 +33,21 @@ function Dms() {
   return (
     <div className="dms div">
       {getDmError && <div>{getDmError}</div>}
-      {sideBarDMS && <div></div>}
+      <div>
+        {sideBarDMS &&
+          sideBarDMS.map((obj) => {
+            <div onClick>
+              <div>
+                <img src={`${obj.pfp}`} />
+              </div>
+              <div>
+                <p>{obj.name}</p>
+                <p>{obj.username}</p>
+              </div>
+            </div>;
+          })}
+      </div>
+      <MsgOpened />
     </div>
   );
 }

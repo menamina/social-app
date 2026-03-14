@@ -533,7 +533,7 @@ async function dms(req, res) {
             id: true,
             name: true,
             username: true,
-             profile: {
+            profile: {
               select: {
                 pfp: true
               }
@@ -568,6 +568,7 @@ async function dms(req, res) {
           id: otherUser.id,
           username: otherUser.username,
           name: otherUser.name,
+          pfp: otherUser.profile.pfp
         });
       }
     });
