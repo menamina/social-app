@@ -69,7 +69,7 @@ function MsgOpened({ id }) {
             })}
           </div>
         )}
-        <SendMsg />
+        <SendMsg to={otherUser} />
       </div>
     </div>
   );
