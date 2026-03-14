@@ -4,6 +4,7 @@ import { useOutletContext } from "react-router-dom";
 function MsgOpened({ id }) {
   const [msgAPIError, setMsgsAPIError] = useState(null);
   const [msgs, setMsgs] = useState(null);
+  const [otherUser, setOtherUser] = useState(null);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -16,6 +17,7 @@ function MsgOpened({ id }) {
 
           const data = await res.json();
           setMsgs(data.one2one);
+          setOtherUser(data.otherUser);
         } catch (error) {
           setMsgsAPIError(error.errorMsg);
         }
@@ -33,7 +35,26 @@ function MsgOpened({ id }) {
     return <div>loading..</div>;
   }
 
-  return <div className="msgOpened div"></div>;
+  return (
+    <div className="msgOpened div">
+      <div>
+        <Link to={`http://localhost:5555/@${otherUser.username}`}>
+          {" "}
+          <img
+            src={`${otherUser.pfp}`}
+            alt={`${otherUser.username} profile pic`}
+          />
+        </Link>
+      </div>
+      {msgs && (
+        <div>
+          {msgs.map((msg) => {
+            <div></div>;
+          })}
+        </div>
+      )}
+    </div>
+  );
 }
 
 export default MsgOpened;

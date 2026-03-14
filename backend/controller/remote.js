@@ -587,32 +587,58 @@ async function one2oneDMS(req, res) {
     const thisUsersID = Number(id);
     const withThisUSER = Number(wUser);
 
-    const queryRes = await prisma.user.findUnique({
+    const queryRes = await prisma.msgs.findMany({
       where: {
-        id: thisUsersID,
+        OR: [
+          { senderID: thisUsersID, receiverID: withThisUSER, deletedBySender: false },
+          { senderID: withThisUSER, receiverID: thisUsersID }
+        ]
       },
-      select: {
-        sentMessages: {
-          where: {
-            receiverID: withThisUSER,
-            deletedBySender: false,
-          },
-          orderBy: {
-            createdAt: "asc"
+      include: {
+        sender: {
+          select: {
+            id: true,
+            name: true,
+            username: true,
+            profile: {
+              select: {
+                pfp: true
+              }
+            }
           }
         },
-        receivedMessages: {
-          where: {
-            senderID: withThisUSER,
-          },
-          orderBy: {
-            createdAt: "asc"
+        receiver: {
+          select: {
+            id: true,
+            name: true,
+            username: true,
+            profile: {
+              select: {
+                pfp: true
+              }
+            }
           }
-        },
+        }
+      },
+      orderBy: {
+        createdAt: "asc"
       }
     });
 
-      return res.status(200).json({ one2one: queryRes });
+    const otherUser = await prisma.profile.findUnique({
+      where: {
+        user: withThisUSER
+      },
+      select: {
+        user: true,
+        pfp: true,
+        name: true,
+        username: true,
+
+      }
+    })
+
+      return res.status(200).json({ one2one: queryRes, otherUser });
 
   } catch (error) {
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
