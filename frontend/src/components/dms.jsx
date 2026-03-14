@@ -5,6 +5,16 @@ import { useNavigate } from "react-router-dom";
 // when adding message from here check blocked
 
 function Dms() {
-  useEffect(() => {}, []);
+  const [getDmError, setGetDmError] = useState(null);
+
+  useEffect(() => {
+    async function getDmList() {
+      try {
+      } catch (error) {
+        setGetDmError(error.errorMsg);
+      }
+    }
+    getDmList();
+  }, []);
 }
 export default Dms;
