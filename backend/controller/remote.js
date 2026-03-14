@@ -597,13 +597,19 @@ async function one2oneDMS(req, res) {
             receiverID: withThisUSER,
             deletedBySender: false,
           },
+          orderBy: {
+            createdAt: "asc"
+          }
         },
         receivedMessages: {
           where: {
             senderID: withThisUSER,
           },
+          orderBy: {
+            createdAt: "asc"
+          }
         },
-      },
+      }
     });
 
       return res.status(200).json({ one2one: queryRes });
