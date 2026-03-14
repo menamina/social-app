@@ -1,9 +1,6 @@
 import { useState, useEffect } from "react";
 import MsgOpened from "./msgOpened";
 
-// add a search for user functionality IN the dms
-// when adding message from here check blocked
-
 function Dms() {
   const [getDmError, setGetDmError] = useState(null);
   const [sideBarDMS, setsideBarDMS] = useState(null);

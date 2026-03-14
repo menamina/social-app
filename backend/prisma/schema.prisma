@@ -95,6 +95,7 @@ model Msgs {
   image String?
   createdAt DateTime @default(now())
   deletedBySender Boolean @default(false)
+  deletedByReceiver Boolean @default(false)
 
   sender    User @relation("SentMessages", fields: [senderID], references: [id])
   receiver  User @relation("ReceivedMessages", fields: [receiverID], references: [id])
