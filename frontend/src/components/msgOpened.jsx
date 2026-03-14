@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
 import SendMsg from "./sendMsg.jsx";
 
-function MsgOpened({ id }) {
+function MsgOpened({ id, blockStatus }) {
   const { user } = useOutletContext();
   const [msgAPIError, setMsgsAPIError] = useState(null);
   const [msgs, setMsgs] = useState(null);

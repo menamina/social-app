@@ -5,15 +5,30 @@ function SendMsg({ otherUser }) {
   const [msg, setMsg] = useState("");
   const [imgs, setImgs] = useState([]);
   const [sendMsgErr, setSendMsgErr] = useState(null);
+  const [sendMsgAPIErr, setSendMsgAPIErr] = useState(null);
 
   async function sendMsg() {
     try {
       const res = await await fetch("http://localhost:5555/send-msg", {
         method: "POST",
         credentials: "include",
+        body: JSON.stringify({
+          sendToID: otherUser.id,
+          msg: msg ? msg : null,
+          files: imgs ? imgs : null,
+        }),
       });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setSendMsgErr(data.errorMsg);
+        setSendMsgAPIErr(null);
+        return;
+      }
     } catch (error) {
-      setSendMsgErr(error.errorMsg);
+      setSendMsgAPIErr(error.errorMsg);
+      setSendMsgErr(null);
     }
   }
 

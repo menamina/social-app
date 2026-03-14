@@ -28,7 +28,7 @@ function Dms() {
     getsideBarDMS();
   }, []);
 
-  function openMsgTrue(id) {
+  function checkBlockStat(id) {
     setOpenMsgWith(id);
     setOpenMsg(true);
   }
@@ -43,7 +43,7 @@ function Dms() {
       <div>
         {sideBarDMS &&
           sideBarDMS.map((obj) => {
-            <div onClick={() => openMsgTrue(obj.id)}>
+            <div onClick={() => checkBlockStat(obj.id)}>
               <div>
                 <img src={`${obj.pfp}`} />
               </div>

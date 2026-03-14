@@ -980,6 +980,10 @@ async function blockThem(req, res) {
   }
 }
 
+async function checkBlockStatus(res, res){
+  
+}
+
 async function getBlockedUsers(req, res) {
   try {
     const id = req.user.id;
