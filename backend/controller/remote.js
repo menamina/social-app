@@ -654,21 +654,6 @@ async function sendMsg(req, res) {
     const sendTo = Number(sendToID);
     const thisUsersID = Number(id);
 
-    const blockExists = await prisma.blocked.findFirst({
-      where: {
-        OR: [
-          { blockerID: thisUsersID, blockedID: sendTo },
-          { blockerID: sendTo, blockedID: thisUsersID },
-        ],
-      },
-    });
-
-    if (blockExists) {
-      return res
-        .status(403)
-        .json({ errorMsg: "Cannot send message to this user" });
-    }
-
     await prisma.msgs.create({
       data: {
         senderID: thisUsersID,
@@ -980,8 +965,33 @@ async function blockThem(req, res) {
   }
 }
 
-async function checkBlockStatus(res, res){
-  
+async function checkBlockStatus(req, res){
+   try {
+    const { otherUserID } = req.body;
+    const { id } = req.user;
+
+    const otherUser = Number(otherUserID);
+    const thisUsersID = Number(id);
+
+    const blockExists = await prisma.blocked.findFirst({
+      where: {
+        OR: [
+          { blockerID: thisUsersID, blockedID: otherUser },
+          { blockerID: otherUser, blockedID: thisUsersID },
+        ],
+      },
+    });
+
+    if (blockExists) {
+      return res
+        .status(200)
+        .json({ isBlocked: true });
+    }
+
+    return res.status(200).json({ isBlocked: false });
+  } catch(error){
+    return res.status(500).json({ errorMsg: "Internal server error :^(" });
+  }
 }
 
 async function getBlockedUsers(req, res) {
@@ -1069,6 +1079,7 @@ module.exports = {
   one2oneDMS,
   sendMsg,
   deleteMsg,
+  checkBlockStatus,
 
   blockThem,
   unblockThem,

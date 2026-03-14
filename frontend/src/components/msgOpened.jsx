@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { useOutletContext } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
 import SendMsg from "./sendMsg.jsx";
 
-function MsgOpened({ id, blockStatus }) {
+function MsgOpened({ id, isBlocked }) {
   const { user } = useOutletContext();
   const [msgAPIError, setMsgsAPIError] = useState(null);
   const [msgs, setMsgs] = useState(null);
@@ -69,7 +69,13 @@ function MsgOpened({ id, blockStatus }) {
             })}
           </div>
         )}
-        <SendMsg to={otherUser} />
+        {isBlocked ? (
+          <div>
+            <p>You cannot send messages to this user.</p>
+          </div>
+        ) : (
+          <SendMsg to={otherUser} />
+        )}
       </div>
     </div>
   );

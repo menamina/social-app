@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import MsgOpened from "./msgOpened";
 
 // add a search for user functionality IN the dms
@@ -10,6 +9,7 @@ function Dms() {
   const [sideBarDMS, setsideBarDMS] = useState(null);
   const [openMsg, setOpenMsg] = useState(false);
   const [openMsgWith, setOpenMsgWith] = useState(null);
+  const [isBlocked, setIsBlocked] = useState(false);
 
   useEffect(() => {
     async function getsideBarDMS() {
@@ -28,9 +28,24 @@ function Dms() {
     getsideBarDMS();
   }, []);
 
-  function checkBlockStat(id) {
-    setOpenMsgWith(id);
-    setOpenMsg(true);
+  async function checkBlockStat(id) {
+    try {
+      const res = await fetch("http://localhost:5555/check-block-status", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ otherUserID: id }),
+      });
+
+      const data = await res.json();
+      setIsBlocked(data.isBlocked);
+      setOpenMsgWith(id);
+      setOpenMsg(true);
+    } catch (error) {
+      setGetDmError(error.errorMsg);
+    }
   }
 
   if (!sideBarDMS) {
@@ -42,8 +57,8 @@ function Dms() {
       {getDmError && <div>{getDmError}</div>}
       <div>
         {sideBarDMS &&
-          sideBarDMS.map((obj) => {
-            <div onClick={() => checkBlockStat(obj.id)}>
+          sideBarDMS.map((obj) => (
+            <div key={obj.id} onClick={() => checkBlockStat(obj.id)}>
               <div>
                 <img src={`${obj.pfp}`} />
               </div>
@@ -51,10 +66,10 @@ function Dms() {
                 <p>{obj.name}</p>
                 <p>{obj.username}</p>
               </div>
-            </div>;
-          })}
+            </div>
+          ))}
       </div>
-      {openMsg && <MsgOpened id={openMsgWith} />}
+      {openMsg && <MsgOpened id={openMsgWith} isBlocked={isBlocked} />}
     </div>
   );
 }
