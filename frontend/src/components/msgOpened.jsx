@@ -35,38 +35,41 @@ function MsgOpened({ id, isBlocked }) {
     return () => clearInterval(interval);
   }, [id]);
 
-  function cancelMsgDelete(){
+  function cancelMsgDelete() {
     setDeleteClicked(false);
     setDeleteThisMsgID(null);
   }
 
-  function deleteMsgID(id){
-    setDeleteClicked(true)
-    setDeleteThisMsgID(id)
+  function deleteMsgID(id) {
+    setDeleteClicked(true);
+    setDeleteThisMsgID(id);
   }
 
   async function deleteMsg() {
     try {
-       const res = await fetch("http://localhost:5555/deleteMsg", {
-          method: "PATCH",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            deleteThisMsgID: deleteThisMsgID
-          })
-        });
+      const res = await fetch("http://localhost:5555/deleteMsg", {
+        method: "PATCH",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          deleteThisMsgID: deleteThisMsgID,
+        }),
+      });
 
-        const data = await res.json();
-        if (!res.ok) {
-          setDeleteMsgErr(data.errorMsg || "Failed to delete message");
-        } else {
-          setDeleteClicked(false);
-          setDeleteThisMsgID(null);
-        }
+      const data = await res.json();
+      if (!res.ok) {
+        setDeleteMsgErr(data.errorMsg);
+      } else {
+        setDeleteClicked(false);
+        setDeleteThisMsgID(null);
+        setDeleteMsgErr(null);
+      }
     } catch (error) {
       setDeleteMsgErr(error.errorMsg);
+      setDeleteClicked(false);
+      setDeleteThisMsgID(null);
     }
   }
 
