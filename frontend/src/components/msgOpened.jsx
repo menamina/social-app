@@ -4,9 +4,12 @@ import SendMsg from "./sendMsg.jsx";
 
 function MsgOpened({ id, isBlocked }) {
   const { user } = useOutletContext();
+
   const [msgAPIError, setMsgsAPIError] = useState(null);
   const [msgs, setMsgs] = useState(null);
   const [otherUser, setOtherUser] = useState(null);
+
+  const [openDeleteMsg, setOpenDeleteMsg] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -55,6 +58,10 @@ function MsgOpened({ id, isBlocked }) {
               const isSent = msg.senderID === user.id;
               return (
                 <div className={isSent ? "msgSent" : "msgReceived"}>
+                  <div className="deleteMsg">
+                    <div onClick={() => setOpenDeleteMsg(true)}>...</div>
+                    {openDeleteMsg && <div>delete for me</div>}
+                  </div>
                   <div>
                     {msg.image && (
                       <div>
