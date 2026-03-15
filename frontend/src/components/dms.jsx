@@ -3,13 +3,15 @@ import MsgOpened from "./msgOpened";
 
 function Dms() {
   const [getDmError, setGetDmError] = useState(null);
-  const [queryErr, setQueryErr] = useState(null)
-  const [noQRes, setNoQRes] = useState(null)
+  const [queryErr, setQueryErr] = useState(null);
+  const [noQRes, setNoQRes] = useState(null);
 
   const [sideBarDMS, setsideBarDMS] = useState(null);
 
   const [query, setQuery] = useState("");
   const [queryResult, setQueryResult] = useState([]);
+  const [msgSearch, setMsgSearch] = useState("");
+  const [msgSeachRes, setMsgSearchRes] = useState([]);
 
   const [openMsg, setOpenMsg] = useState(false);
   const [openMsgWith, setOpenMsgWith] = useState(null);
@@ -26,7 +28,7 @@ function Dms() {
 
         const data = await res.json();
         setsideBarDMS(data.sideBarDMS);
-        setGetDmError(null)
+        setGetDmError(null);
       } catch (error) {
         setGetDmError(error.errorMsg);
       }
@@ -36,32 +38,51 @@ function Dms() {
 
   useEffect(() => {
     const timeout = setTimeout(async () => {
-
       try {
+        const res = await fetch(`http://localhost:5555/dms/searchUser}`, {
+          method: "GET",
+          credentials: "include",
+        });
 
-      const res = await fetch("http://localhost:5555/dms/search", {
-        method: "GET",
-        credentials: "include",
-        body: JSON.stringify({
-          query,
-        }),
-      });
-
-      const data = await res.json();
-      if (!res.ok){
-        setNoQRes(null)
-        setQueryErr(null)
-        return
+        const data = await res.json();
+        if (!res.ok) {
+          setNoQRes("No users found with that name");
+          setQueryErr(null);
+          return;
+        }
+        setQueryResult(data.userSearchRes);
+        return;
+      } catch (error) {
+        setQueryErr(error.errorMsg);
       }
-      setQueryResult(data.userSearchRes)
-      return
-    } catch(error) {
-      setQueryErr(error.errorMsg)
-    }
-
+    }, 300);
 
     return () => clearTimeout(timeout);
   }, [query]);
+
+  useEffect(() => {
+    const timeout = setTimeout(async () => {
+      try {
+        const res = await fetch(`http://localhost:5555/dms/msgSearch}`, {
+          method: "GET",
+          credentials: "include",
+        });
+
+        const data = await res.json();
+        if (!res.ok) {
+          setNoQRes("No users found with that name");
+          setQueryErr(null);
+          return;
+        }
+        setQueryResult(data.userSearchRes);
+        return;
+      } catch (error) {
+        setQueryErr(error.errorMsg);
+      }
+    }, 300);
+
+    return () => clearTimeout(timeout);
+  }, [msgSeachRes]);
 
   async function checkBlockStat(id) {
     try {
@@ -78,8 +99,8 @@ function Dms() {
       setIsBlocked(data.isBlocked);
       setOpenMsgWith(id);
       setOpenMsg(true);
-      setGetDmError(null)
-      return
+      setGetDmError(null);
+      return;
     } catch (error) {
       setGetDmError(error.errorMsg);
     }
@@ -99,7 +120,14 @@ function Dms() {
             <div>new msg</div>
           </div>
           <div>
-            <div><input placeholder="search" aria-label="search in dms" value={msgSearch} onChange={(e) => setMsgSearch(e.target.value)}/></div>
+            <div>
+              <input
+                placeholder="search"
+                aria-label="search in dms"
+                value={msgSearch}
+                onChange={(e) => setMsgSearch(e.target.value)}
+              />
+            </div>
           </div>
         </div>
 
@@ -116,7 +144,7 @@ function Dms() {
                 </div>
               </div>
             ))}
-          </div>
+        </div>
       </div>
       {openMsg && <MsgOpened id={openMsgWith} isBlocked={isBlocked} />}
     </div>

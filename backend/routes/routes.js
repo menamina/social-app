@@ -79,7 +79,8 @@ router.delete("/unfollow:/:thisID", isAuth, remote.unfollowThem);
 
 // dms //
 
-router.get("/dms/search/", isAuth, remote.dmUserSearch);
+router.get("/dms/searchUser/", isAuth, remote.dmUserSearch);
+router.get("/dms/msgSearch/", isAuth, remote.dmMsgSearch);
 router.get("/dms/:wUser", isAuth, remote.one2oneDMS);
 router.post("/check-block-status", isAuth, remote.checkBlockStatus);
 router.post("/send-msg", isAuth, multer.array("files", 4), remote.sendMsg);

@@ -469,6 +469,51 @@ async function search(req, res) {
   }
 }
 
+
+async function dmMsgSearch(req, res) {
+  try {
+    const id = req.user.id;
+    const userID = Number(id);
+
+    const { query } = req.query;
+
+    const userSearchRes = await prisma.user.findMany({
+      where: {
+        id: userID
+      },
+      include: {
+        sentMessages: {
+          where: {
+            message: {
+              in: query
+            }
+          }
+        },
+        receivedMessages: {
+          where: {
+            message: {
+              in: query
+            }
+          }
+        },
+        
+      }
+    })
+
+    const dmsWithUserSearch = await prisma.messages.findMany({
+      where: {
+        OR: [{senderID: userID}, {rceiverID: userID}]
+      },
+
+      
+    })
+
+    return res.status(200).json({ userSearchRes })
+  } catch (error) {
+    return res.status(500).json({ errorMsg: "Internal server error :^(" });
+  }
+}
+
 async function dmUserSearch(req, res) {
   try {
     const id = req.user.id;
@@ -1095,6 +1140,7 @@ module.exports = {
 
   getPost,
   search,
+  dmMsgSearch,
   dmUserSearch,
   settings,
   updateProfileSettings,
