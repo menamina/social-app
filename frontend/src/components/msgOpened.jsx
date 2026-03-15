@@ -10,6 +10,8 @@ function MsgOpened({ id, isBlocked }) {
   const [otherUser, setOtherUser] = useState(null);
 
   const [openDeleteMsg, setOpenDeleteMsg] = useState(false);
+  const [deleteMsgErr, setDeleteMsgErr] = useState(null);
+  const [deleteClicked, setDeleteClicked] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -31,6 +33,13 @@ function MsgOpened({ id, isBlocked }) {
     }, 2000);
     return () => clearInterval(interval);
   }, [id]);
+
+  async function deleteMsg(msgID) {
+    try {
+    } catch (error) {
+      setDeleteMsgErr(error.errorMsg);
+    }
+  }
 
   if (msgAPIError) {
     return <div>{msgAPIError}</div>;
