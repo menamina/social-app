@@ -69,7 +69,11 @@ function MsgOpened({ id, isBlocked }) {
                 <div className={isSent ? "msgSent" : "msgReceived"}>
                   <div className="deleteMsg">
                     <div onClick={() => setOpenDeleteMsg(true)}>...</div>
-                    {openDeleteMsg && <div>delete for me</div>}
+                    {openDeleteMsg && (
+                      <div onClick={() => setDeleteClicked(true)}>
+                        delete for me
+                      </div>
+                    )}
                   </div>
                   <div>
                     {msg.image && (
@@ -85,6 +89,18 @@ function MsgOpened({ id, isBlocked }) {
             })}
           </div>
         )}
+
+        {deleteClicked && (
+          <div>
+            <div>Delete message</div>
+            <div>Are you sure you want to delete this message?</div>
+            <div>
+              <div>delete for me</div>
+              <div>cancel</div>
+            </div>
+          </div>
+        )}
+
         {isBlocked ? (
           <div>
             <p>You cannot send messages to this user.</p>
