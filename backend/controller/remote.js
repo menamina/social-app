@@ -469,6 +469,37 @@ async function search(req, res) {
   }
 }
 
+async function dmUserSearch(req, res) {
+  try {
+        const id = req.user.id;
+    const userID = Number(id);
+    const { query } = req.query;
+
+    const userSearchRes = await prisma.user.findMany({
+      where: {
+        username: {
+          in: query
+        }
+      },
+      select: {
+        id: true,
+        name: true,
+        username: true,
+        profile: {
+          select: {
+            pfp: true
+          }
+        }
+      }
+    })
+
+
+
+  } catch (error) {
+    return res.status(500).json({ errorMsg: "Internal server error :^(" });
+  }
+}
+
 async function settings(req, res) {
   try {
     const id = req.user.id;

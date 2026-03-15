@@ -4,8 +4,12 @@ import MsgOpened from "./msgOpened";
 function Dms() {
   const [getDmError, setGetDmError] = useState(null);
   const [sideBarDMS, setsideBarDMS] = useState(null);
+
+  const [query, setQuery] = useState([]);
+
   const [openMsg, setOpenMsg] = useState(false);
   const [openMsgWith, setOpenMsgWith] = useState(null);
+
   const [isBlocked, setIsBlocked] = useState(false);
 
   useEffect(() => {
@@ -24,6 +28,21 @@ function Dms() {
     }
     getsideBarDMS();
   }, []);
+
+  useEffect(() => {
+    const timeout = setTimeout(async () => {
+      const res = await fetch("http://localhost:5555/dms/search", {
+        method: "GET",
+        credentials: "include",
+        body: JSON.stringify({
+          query,
+        }),
+      });
+
+      const data = await res.json();
+    });
+    return () => clearTimeout(timeout);
+  });
 
   async function checkBlockStat(id) {
     try {
