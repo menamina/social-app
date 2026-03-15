@@ -471,8 +471,9 @@ async function search(req, res) {
 
 async function dmUserSearch(req, res) {
   try {
-        const id = req.user.id;
+    const id = req.user.id;
     const userID = Number(id);
+
     const { query } = req.query;
 
     const userSearchRes = await prisma.user.findMany({
@@ -493,8 +494,21 @@ async function dmUserSearch(req, res) {
       }
     })
 
+    if (!userSearchRes){
+      return res.status(403).json({ message: "There is no user with that name"})
+    }
 
+    const isThereABlock = prisma.blocked.findMany({
+      where:{
+        OR: [{blockerID: userID, blockedID: userSearchRes.id}, {blockerID: userSearchRes.id, blockedID: userID }]
+      }
+    })
 
+    if (isThereABlock){
+      return res.status(403).json({ message: "You cannot message this user"})
+    }
+
+     return res.status(200).json({ success: true })
   } catch (error) {
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
   }
