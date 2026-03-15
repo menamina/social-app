@@ -54,9 +54,13 @@ function Dms() {
           return;
         }
         setQueryResult(data.userSearchRes);
+        setNoQRes(null);
+        setQueryErr(null);
         return;
       } catch (error) {
         setQueryErr(error.errorMsg);
+        setNoQRes(null);
+        setQueryResult(null);
       }
     }, 300);
 
@@ -119,6 +123,11 @@ function Dms() {
     }
   }
 
+  function clearSearchUserModal() {
+    setSearchUserToMessage(false);
+    setQueryResult(null);
+  }
+
   if (!sideBarDMS) {
     return <div>loading..</div>;
   }
@@ -179,13 +188,32 @@ function Dms() {
       {openMsg && <MsgOpened id={openMsgWith} isBlocked={isBlocked} />}
 
       {searchUserToMessage ? (
-        <div>
+        <div className="searchUserToDmModal">
           <div>
-            <div>New message</div>
-            <div>X</div>
+            <div>
+              <div>New message</div>
+              <div onClick={clearSearchUserModal}>X</div>
+            </div>
+            <div>
+              <input
+                placeholder="search username"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+              />
+            </div>
           </div>
-          <div></div>
-          <div></div>
+          <div>
+            {queryErr && <div>{queryErr}</div>}
+            {noQRes && <div>{noQRes}</div>}
+             {queryResult && 
+(
+             {queryErr.map((result) => {
+
+             })}
+            )
+             
+             }
+          </div>
         </div>
       ) : null}
     </div>
