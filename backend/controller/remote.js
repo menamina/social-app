@@ -498,17 +498,7 @@ async function dmUserSearch(req, res) {
       return res.status(403).json({ message: "There is no user with that name"})
     }
 
-    const isThereABlock = prisma.blocked.findMany({
-      where:{
-        OR: [{blockerID: userID, blockedID: userSearchRes.id}, {blockerID: userSearchRes.id, blockedID: userID }]
-      }
-    })
-
-    if (isThereABlock){
-      return res.status(403).json({ message: "You cannot message this user"})
-    }
-
-     return res.status(200).json({ success: true })
+    return res.status(200).json({ userSearchRes })
   } catch (error) {
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
   }
@@ -1105,6 +1095,7 @@ module.exports = {
 
   getPost,
   search,
+  dmUserSearch,
   settings,
   updateProfileSettings,
 

@@ -3,9 +3,13 @@ import MsgOpened from "./msgOpened";
 
 function Dms() {
   const [getDmError, setGetDmError] = useState(null);
+  const [queryErr, setQueryErr] = useState(null)
+  const [noQRes, setNoQRes] = useState(null)
+
   const [sideBarDMS, setsideBarDMS] = useState(null);
 
-  const [query, setQuery] = useState([]);
+  const [query, setQuery] = useState("");
+  const [queryResult, setQueryResult] = useState([]);
 
   const [openMsg, setOpenMsg] = useState(false);
   const [openMsgWith, setOpenMsgWith] = useState(null);
@@ -22,6 +26,7 @@ function Dms() {
 
         const data = await res.json();
         setsideBarDMS(data.sideBarDMS);
+        setGetDmError(null)
       } catch (error) {
         setGetDmError(error.errorMsg);
       }
@@ -31,6 +36,9 @@ function Dms() {
 
   useEffect(() => {
     const timeout = setTimeout(async () => {
+
+      try {
+
       const res = await fetch("http://localhost:5555/dms/search", {
         method: "GET",
         credentials: "include",
@@ -40,9 +48,20 @@ function Dms() {
       });
 
       const data = await res.json();
-    });
+      if (!res.ok){
+        setNoQRes(null)
+        setQueryErr(null)
+        return
+      }
+      setQueryResult(data.userSearchRes)
+      return
+    } catch(error) {
+      setQueryErr(error.errorMsg)
+    }
+
+
     return () => clearTimeout(timeout);
-  });
+  }, [query]);
 
   async function checkBlockStat(id) {
     try {
@@ -59,6 +78,8 @@ function Dms() {
       setIsBlocked(data.isBlocked);
       setOpenMsgWith(id);
       setOpenMsg(true);
+      setGetDmError(null)
+      return
     } catch (error) {
       setGetDmError(error.errorMsg);
     }
@@ -72,18 +93,30 @@ function Dms() {
     <div className="dms div">
       {getDmError && <div>{getDmError}</div>}
       <div>
-        {sideBarDMS &&
-          sideBarDMS.map((obj) => (
-            <div key={obj.id} onClick={() => checkBlockStat(obj.id)}>
-              <div>
-                <img src={`${obj.pfp}`} />
+        <div>
+          <div>
+            <div>Chat</div>
+            <div>new msg</div>
+          </div>
+          <div>
+            <div><input placeholder="search" aria-label="search in dms" value={msgSearch} onChange={(e) => setMsgSearch(e.target.value)}/></div>
+          </div>
+        </div>
+
+        <div className="renderedChatsOnSide">
+          {sideBarDMS &&
+            sideBarDMS.map((obj) => (
+              <div key={obj.id} onClick={() => checkBlockStat(obj.id)}>
+                <div>
+                  <img src={`${obj.pfp}`} />
+                </div>
+                <div>
+                  <p>{obj.name}</p>
+                  <p>{obj.username}</p>
+                </div>
               </div>
-              <div>
-                <p>{obj.name}</p>
-                <p>{obj.username}</p>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
       </div>
       {openMsg && <MsgOpened id={openMsgWith} isBlocked={isBlocked} />}
     </div>
