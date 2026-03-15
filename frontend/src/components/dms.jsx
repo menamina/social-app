@@ -116,6 +116,7 @@ function Dms() {
       setIsBlocked(data.isBlocked);
       setOpenMsgWith(id);
       setOpenMsg(true);
+      setSearchUserToMessage(false);
       setGetDmError(null);
       return;
     } catch (error) {
@@ -205,14 +206,17 @@ function Dms() {
           <div>
             {queryErr && <div>{queryErr}</div>}
             {noQRes && <div>{noQRes}</div>}
-             {queryResult && 
-(
-             {queryErr.map((result) => {
-
-             })}
-            )
-             
-             }
+            {queryResult && queryResult.map((result) => (
+              <div key={result.id} onClick={() => checkBlockStat(result.id)}>
+                <div>
+                  <img src={`${result.pfp}`} />
+                </div>
+                <div>
+                  <p>{result.name}</p>
+                  <p>{result.username}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       ) : null}
