@@ -806,23 +806,45 @@ async function deleteMsg(req, res) {
     const thisUsersID = Number(id);
     const deleteThisMsg = Number(deleteThisMsgID);
 
-    await prisma.user.update({
+    const isMsgOtherUsers = await prisma.msgs.findUnique({
       where: {
-        id: thisUsersID,
+        id: deleteThisMsg,
+      },
+      select: {
+        senderID: true,
+        receiverID: true,
+      }
+    });
+
+    const isMsgOtherUsersBool = isMsgOtherUsers.senderID === thisUsersID ? false : true
+
+    if (!isMsgOtherUsersBool){
+      await prisma.msgs.update({
+        where: {
+          AND: [
+            {id: deleteThisMsg},
+            {sender: thisUsersID}
+          ]
+        },
+        data: {
+          deletedBySender: true
+        }
+      })
+      return
+    }
+
+    await prisma.msgs.update({
+      where: {
+        AND: [
+          {id: deleteThisMsg},
+          {receiver: thisUsersID}
+        ]
       },
       data: {
-        sentMessages: {
-          update: {
-            where: {
-              id: deleteThisMsg,
-            },
-            data: {
-              deletedBySender: true,
-            },
-          },
-        },
-      },
-    });
+        deletedByReceiver: true
+      }
+    })
+
 
     return res.status(200).json({ success: true });
   } catch (error) {
