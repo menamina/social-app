@@ -10,6 +10,8 @@ function Dms() {
 
   const [query, setQuery] = useState("");
   const [queryResult, setQueryResult] = useState([]);
+
+  const [msgSearchOpen, setMsgSearchOpen] = useState(false)
   const [msgSearch, setMsgSearch] = useState("");
   const [msgSeachRes, setMsgSearchRes] = useState([]);
 
@@ -62,11 +64,15 @@ function Dms() {
 
   useEffect(() => {
     const timeout = setTimeout(async () => {
+      setMsgSearchOpen(true)
       try {
-        const res = await fetch(`http://localhost:5555/dms/msgSearch}`, {
-          method: "GET",
-          credentials: "include",
-        });
+        const res = await fetch(
+          `http://localhost:5555/dms/msgSearch}/${msgSearch}`,
+          {
+            method: "GET",
+            credentials: "include",
+          },
+        );
 
         const data = await res.json();
         if (!res.ok) {
@@ -74,15 +80,16 @@ function Dms() {
           setQueryErr(null);
           return;
         }
-        setQueryResult(data.userSearchRes);
+        setMsgSearchRes(data.userSearchRes);
         return;
       } catch (error) {
         setQueryErr(error.errorMsg);
+        setMsgSearchRes(null);
       }
     }, 300);
 
     return () => clearTimeout(timeout);
-  }, [msgSeachRes]);
+  }, [msgSearch]);
 
   async function checkBlockStat(id) {
     try {
@@ -112,7 +119,6 @@ function Dms() {
 
   return (
     <div className="dms div">
-      {getDmError && <div>{getDmError}</div>}
       <div>
         <div>
           <div>
@@ -132,7 +138,23 @@ function Dms() {
         </div>
 
         <div className="renderedChatsOnSide">
-          {sideBarDMS &&
+          {getDmError && <div>{getDmError}</div>}
+
+          {msgSearchOpen ? (
+            <div>
+              {msgSeachRes && msgSeachRes.map((obj) => (
+                <div key={obj.id} onClick={() => checkBlockStat(obj.id)}>
+                  <div>
+                    <img src={`${obj.pfp}`} />
+                  </div>
+                  <div>
+                    <p>{obj.name}</p>
+                    <p>{obj.username}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
             sideBarDMS.map((obj) => (
               <div key={obj.id} onClick={() => checkBlockStat(obj.id)}>
                 <div>
@@ -143,7 +165,8 @@ function Dms() {
                   <p>{obj.username}</p>
                 </div>
               </div>
-            ))}
+            ))
+          )}
         </div>
       </div>
       {openMsg && <MsgOpened id={openMsgWith} isBlocked={isBlocked} />}
