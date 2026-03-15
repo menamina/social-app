@@ -12,7 +12,7 @@ function MsgOpened({ id, isBlocked }) {
   const [openDeleteMsg, setOpenDeleteMsg] = useState(false);
   const [deleteMsgErr, setDeleteMsgErr] = useState(null);
   const [deleteClicked, setDeleteClicked] = useState(false);
-  const [deleteThisMsgID, setDeleteThisMsgID] = useState(null)
+  const [deleteThisMsgID, setDeleteThisMsgID] = useState(null);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -36,8 +36,8 @@ function MsgOpened({ id, isBlocked }) {
   }, [id]);
 
   function cancelMsgDelete(){
-    setDeleteClicked(false),
-    setDeleteThisMsgID(null)
+    setDeleteClicked(false);
+    setDeleteThisMsgID(null);
   }
 
   function deleteMsgID(id){
@@ -47,7 +47,24 @@ function MsgOpened({ id, isBlocked }) {
 
   async function deleteMsg() {
     try {
-      const 
+       const res = await fetch("http://localhost:5555/deleteMsg", {
+          method: "PATCH",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            deleteThisMsgID: deleteThisMsgID
+          })
+        });
+
+        const data = await res.json();
+        if (!res.ok) {
+          setDeleteMsgErr(data.errorMsg || "Failed to delete message");
+        } else {
+          setDeleteClicked(false);
+          setDeleteThisMsgID(null);
+        }
     } catch (error) {
       setDeleteMsgErr(error.errorMsg);
     }
