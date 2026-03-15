@@ -12,6 +12,7 @@ function MsgOpened({ id, isBlocked }) {
   const [openDeleteMsg, setOpenDeleteMsg] = useState(false);
   const [deleteMsgErr, setDeleteMsgErr] = useState(null);
   const [deleteClicked, setDeleteClicked] = useState(false);
+  const [deleteThisMsgID, setDeleteThisMsgID] = useState(null)
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -34,8 +35,19 @@ function MsgOpened({ id, isBlocked }) {
     return () => clearInterval(interval);
   }, [id]);
 
-  async function deleteMsg(msgID) {
+  function cancelMsgDelete(){
+    setDeleteClicked(false),
+    setDeleteThisMsgID(null)
+  }
+
+  function deleteMsgID(id){
+    setDeleteClicked(true)
+    setDeleteThisMsgID(id)
+  }
+
+  async function deleteMsg() {
     try {
+      const 
     } catch (error) {
       setDeleteMsgErr(error.errorMsg);
     }
@@ -70,7 +82,7 @@ function MsgOpened({ id, isBlocked }) {
                   <div className="deleteMsg">
                     <div onClick={() => setOpenDeleteMsg(true)}>...</div>
                     {openDeleteMsg && (
-                      <div onClick={() => setDeleteClicked(true)}>
+                      <div onClick={() => deleteMsgID(msg.id)}>
                         delete for me
                       </div>
                     )}
@@ -95,8 +107,8 @@ function MsgOpened({ id, isBlocked }) {
             <div>Delete message</div>
             <div>Are you sure you want to delete this message?</div>
             <div>
-              <div>delete for me</div>
-              <div>cancel</div>
+              <div onClick={deleteMsg}>delete for me</div>
+              <div onClick={cancelMsgDelete}>cancel</div>
             </div>
           </div>
         )}
