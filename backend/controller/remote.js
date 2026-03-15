@@ -474,41 +474,93 @@ async function dmMsgSearch(req, res) {
   try {
     const id = req.user.id;
     const userID = Number(id);
-
     const { query } = req.query;
-
-    const userSearchRes = await prisma.user.findMany({
+  
+    const results = await prisma.msgs.findMany({
       where: {
-        id: userID
+        AND: [
+          {
+            OR: [
+              { senderID: userID },
+              { receiverID: userID }
+            ]
+          },
+          {
+            OR: [
+              { message: { contains: query, mode: 'insensitive' } },
+              {
+                sender: {
+                  username: { contains: query, mode: 'insensitive' },
+                  NOT: { id: userID }
+                }
+              },
+              {
+                receiver: {
+                  username: { contains: query, mode: 'insensitive' },
+                  NOT: { id: userID }
+                }
+              }
+            ]
+          }
+        ]
       },
       include: {
-        sentMessages: {
-          where: {
-            message: {
-              in: query
+        sender: {
+          select: {
+            id: true,
+            name: true,
+            username: true,
+            profile: {
+              select: {
+                pfp: true
+              }
             }
           }
         },
-        receivedMessages: {
-          where: {
-            message: {
-              in: query
+        receiver: {
+          select: {
+            id: true,
+            name: true,
+            username: true,
+            profile: {
+              select: {
+                pfp: true
+              }
             }
           }
-        },
-        
-      }
-    })
-
-    const dmsWithUserSearch = await prisma.messages.findMany({
-      where: {
-        OR: [{senderID: userID}, {rceiverID: userID}]
+        }
       },
+      orderBy: {
+        createdAt: 'desc'
+      }
+    });
 
-      
-    })
+    if (results.length === 0) {
+      return res.status(404).json({ errorMsg: "No results found" });
+    }
 
-    return res.status(200).json({ userSearchRes })
+    const seenUserIDs = new Set();
+    const messages = [];
+    const users = [];
+
+    results.forEach(r => {
+      const otherUser = r.senderID === userID ? r.receiver : r.sender;
+
+      if (!seenUserIDs.has(otherUser.id)) {
+        seenUserIDs.add(otherUser.id);
+        users.push({
+          id: otherUser.id,
+          name: otherUser.name,
+          username: otherUser.username,
+          pfp: otherUser.profile.pfp
+        });
+      }
+
+      messages.push(r);
+    });
+
+    return res.status(200).json({ messages, users });
+
   } catch (error) {
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
   }
@@ -516,9 +568,6 @@ async function dmMsgSearch(req, res) {
 
 async function dmUserSearch(req, res) {
   try {
-    const id = req.user.id;
-    const userID = Number(id);
-
     const { query } = req.query;
 
     const userSearchRes = await prisma.user.findMany({
