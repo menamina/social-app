@@ -41,8 +41,15 @@ function Dms() {
 
   useEffect(() => {
     const timeout = setTimeout(async () => {
+      if (!query) {
+        setQueryResult([]);
+        setNoQRes(null);
+        setQueryErr(null);
+        return;
+      }
+
       try {
-        const res = await fetch(`http://localhost:5555/dms/searchUser}`, {
+        const res = await fetch(`http://localhost:5555/dms/searchUser/${query}`, {
           method: "GET",
           credentials: "include",
         });
@@ -77,7 +84,7 @@ function Dms() {
       setMsgSearchOpen(true);
       try {
         const res = await fetch(
-          `http://localhost:5555/dms/msgSearch}/${msgSearch}`,
+          `http://localhost:5555/dms/msgSearch/${msgSearch}`,
           {
             method: "GET",
             credentials: "include",
