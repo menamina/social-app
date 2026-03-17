@@ -720,7 +720,7 @@ async function one2oneDMS(req, res) {
       where: {
         OR: [
           { senderID: thisUsersID, receiverID: withThisUSER, deletedBySender: false },
-          { senderID: withThisUSER, receiverID: thisUsersID }
+          { senderID: withThisUSER, receiverID: thisUsersID, deletedByReceiver: false }
         ]
       },
       include: {
@@ -823,21 +823,21 @@ async function deleteMsg(req, res) {
         where: {
           AND: [
             {id: deleteThisMsg},
-            {sender: thisUsersID}
+            {senderID: thisUsersID}
           ]
         },
         data: {
           deletedBySender: true
         }
       })
-      return
+      return res.status(200).json({ success: true });
     }
 
     await prisma.msgs.update({
       where: {
         AND: [
           {id: deleteThisMsg},
-          {receiver: thisUsersID}
+          {receiverID: thisUsersID}
         ]
       },
       data: {
