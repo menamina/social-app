@@ -13,6 +13,7 @@ function MsgOpened({ id, isBlocked }) {
   const [deleteMsgErr, setDeleteMsgErr] = useState(null);
   const [deleteClicked, setDeleteClicked] = useState(false);
   const [deleteThisMsgID, setDeleteThisMsgID] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -105,7 +106,7 @@ function MsgOpened({ id, isBlocked }) {
                   className={isSent ? "msgSent" : "msgReceived"}
                 >
                   <div className="deleteMsg">
-                    <div onClick={() => setOpenDeleteMsgID(msg.id)}>...</div>
+                    <div onClick={() => setOpenDeleteMsgID(openDeleteMsgID === msg.id ? null : msg.id)}>...</div>
                     {openDeleteMsgID === msg.id && (
                       <div onClick={() => deleteMsgID(msg.id)}>
                         delete for me
