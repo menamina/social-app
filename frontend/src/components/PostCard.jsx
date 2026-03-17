@@ -7,6 +7,13 @@ function PostCard({ post, onClick }) {
   const username = post.postedBy?.username || post.username;
   const pfp = post.postedBy?.profile?.pfp || post.pfp;
 
+  const [likeBoolean, setLikeBoolean] = useState(false);
+  const [repostBoolean, setRepostBoolean] = useState(false);
+
+  async function toggleLike() {}
+
+  async function toggleRepost() {}
+
   return (
     <div>
       <div>
