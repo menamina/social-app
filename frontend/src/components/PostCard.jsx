@@ -10,9 +10,38 @@ function PostCard({ post, onClick }) {
   const [likeBoolean, setLikeBoolean] = useState(false);
   const [repostBoolean, setRepostBoolean] = useState(false);
 
-  async function toggleLike() {}
+  const [likeError, setLikeError] = useState(null);
+  const [likeAPIError, setLikeAPIError] = useState(null);
 
-  async function toggleRepost() {}
+  const [repostError, setRepostError] = useState(null);
+  const [repostAPIError, setRepostAPIError] = useState(null);
+
+  async function toggleLike() {
+    setLikeBoolean((prev) => !prev);
+    try {
+      const res = await fetch("http://localhost:5555/like", {
+        method: "POST",
+        credentials: "include",
+        header: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          likeBool: likeBoolean,
+        }),
+      });
+
+      if (!res.ok) {
+        setLikeError("Cannot like post - post may have been deleted");
+        return;
+      }
+    } catch (error) {
+      setLikeAPIError(error.errorMsg);
+      setLikeError(null);
+    }
+  }
+
+  async function toggleRepost() {
+    try {
+    } catch (error) {}
+  }
 
   return (
     <div>

@@ -989,6 +989,16 @@ async function like(req, res) {
     const uID = req.user.id;
     const userID = Number(uID);
 
+    const isThereAPost = await prisma.posts.findUnique({
+      where: {
+        id: postID
+      }
+    })
+
+    if (!isThereAPost){
+      return res.status(403).json({ success: false });
+    }
+
     await prisma.likes.create({
       data: {
         postID: postID,
@@ -1007,6 +1017,16 @@ async function removeLike(req, res) {
     const postID = Number(post);
     const uID = req.user.id;
     const userID = Number(uID);
+
+    const isThereAPost = await prisma.posts.findUnique({
+      where: {
+        id: postID
+      }
+    })
+
+    if (!isThereAPost){
+      return res.status(403).json({ success: false });
+    }
 
     await prisma.likes.delete({
       where: {
