@@ -821,10 +821,8 @@ async function deleteMsg(req, res) {
     if (!isMsgOtherUsersBool){
       await prisma.msgs.update({
         where: {
-          AND: [
-            {id: deleteThisMsg},
-            {senderID: thisUsersID}
-          ]
+          id: deleteThisMsg,
+          senderID: thisUsersID
         },
         data: {
           deletedBySender: true
@@ -835,10 +833,8 @@ async function deleteMsg(req, res) {
 
     await prisma.msgs.update({
       where: {
-        AND: [
-          {id: deleteThisMsg},
-          {receiverID: thisUsersID}
-        ]
+        id: deleteThisMsg,
+        receiverID: thisUsersID
       },
       data: {
         deletedByReceiver: true
