@@ -30,8 +30,13 @@ function PostCard({ post, onClick }) {
 
       if (!res.ok) {
         setLikeError("Cannot like post - post may have been deleted");
+        setLikeAPIError(null);
         return;
       }
+
+      setLikeError(null);
+      setLikeAPIError(null);
+      return;
     } catch (error) {
       setLikeAPIError(error.errorMsg);
       setLikeError(null);
@@ -40,7 +45,28 @@ function PostCard({ post, onClick }) {
 
   async function toggleRepost() {
     try {
-    } catch (error) {}
+      const res = await fetch("http://localhost:5555/like", {
+        method: "POST",
+        credentials: "include",
+        header: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          likeBool: likeBoolean,
+        }),
+      });
+
+      if (!res.ok) {
+        setRepostError("Cannot like post - post may have been deleted");
+        setRepostError(null);
+        return;
+      }
+
+      setRepostError(null);
+      setRepostAPIError(null);
+      return;
+    } catch (error) {
+      setRepostAPIError(error.errorMsg);
+      setRepostError(null);
+    }
   }
 
   return (
@@ -75,6 +101,7 @@ function PostCard({ post, onClick }) {
             <div className="likes">
               <div>
                 <img onClick={toggleLike} />
+                {/* if clicked heart turns red if not heart white */}
               </div>
               <div>{post.likes?.length || 0}</div>
             </div>
@@ -89,6 +116,7 @@ function PostCard({ post, onClick }) {
             <div className="reposts">
               <div>
                 <img onClick={toggleRepost} />
+                {/* if reposted reposted is dark black // inverted */}
               </div>
               <div>{post.reposts?.length || 0}</div>
             </div>
