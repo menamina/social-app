@@ -9,7 +9,7 @@ function MsgOpened({ id, isBlocked }) {
   const [msgs, setMsgs] = useState(null);
   const [otherUser, setOtherUser] = useState(null);
 
-  const [openDeleteMsg, setOpenDeleteMsg] = useState(false);
+  const [openDeleteMsgID, setOpenDeleteMsgID] = useState(null);
   const [deleteMsgErr, setDeleteMsgErr] = useState(null);
   const [deleteClicked, setDeleteClicked] = useState(false);
   const [deleteThisMsgID, setDeleteThisMsgID] = useState(null);
@@ -38,11 +38,13 @@ function MsgOpened({ id, isBlocked }) {
   function cancelMsgDelete() {
     setDeleteClicked(false);
     setDeleteThisMsgID(null);
+    setOpenDeleteMsgID(null);
   }
 
   function deleteMsgID(id) {
     setDeleteClicked(true);
     setDeleteThisMsgID(id);
+    setOpenDeleteMsgID(null);
   }
 
   async function deleteMsg() {
@@ -98,10 +100,10 @@ function MsgOpened({ id, isBlocked }) {
             {msgs.map((msg) => {
               const isSent = msg.senderID === user.id;
               return (
-                <div className={isSent ? "msgSent" : "msgReceived"}>
+                <div key={msg.id} className={isSent ? "msgSent" : "msgReceived"}>
                   <div className="deleteMsg">
-                    <div onClick={() => setOpenDeleteMsg(true)}>...</div>
-                    {openDeleteMsg && (
+                    <div onClick={() => setOpenDeleteMsgID(msg.id)}>...</div>
+                    {openDeleteMsgID === msg.id && (
                       <div onClick={() => deleteMsgID(msg.id)}>
                         delete for me
                       </div>
@@ -119,6 +121,12 @@ function MsgOpened({ id, isBlocked }) {
                 </div>
               );
             })}
+          </div>
+        )}
+
+        {deleteMsgErr && (
+          <div className="error">
+            {deleteMsgErr}
           </div>
         )}
 
