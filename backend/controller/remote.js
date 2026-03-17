@@ -276,21 +276,21 @@ async function viewProfile(req, res) {
             likes: true,
             comments: true,
             reposts: {
-                  incude: {
-                    user: {
+              incude: {
+                user: {
+                  select: {
+                    id: true,
+                    name: true,
+                    username: true,
+                    profile: {
                       select: {
-                        id: true,
-                        name: true,
-                        username: true,
-                        profile: {
-                          select: {
-                            pfp: true
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
+                        pfp: true,
+                      },
+                    },
+                  },
+                },
+              },
+            },
           },
           orderBy: {
             createdAt: "desc",
@@ -323,13 +323,13 @@ async function viewProfile(req, res) {
                         username: true,
                         profile: {
                           select: {
-                            pfp: true
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
+                            pfp: true,
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
               },
             },
           },
@@ -464,8 +464,8 @@ async function search(req, res) {
     const userSearchRes = await prisma.user.findMany({
       where: {
         username: {
-          in: query
-        }
+          in: query,
+        },
       },
       select: {
         id: true,
@@ -473,65 +473,60 @@ async function search(req, res) {
         username: true,
         profile: {
           select: {
-            pfp: true
-          }
-        }
-      }
-    })
+            pfp: true,
+          },
+        },
+      },
+    });
 
     const postSearchRes = await prisma.posts.findMany({
       where: {
         msg: {
-          in: query
-        }
-      }
-    })
+          in: query,
+        },
+      },
+    });
 
-    if (!userSearchRes && !postSearchRes){
+    if (!userSearchRes && !postSearchRes) {
       return res.status(404).json({ errorMsg: "no search results found" });
     }
-    
-    return res.status(200).json({ userSearchRes, postSearchRes });
 
+    return res.status(200).json({ userSearchRes, postSearchRes });
   } catch (error) {
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
   }
 }
-
 
 async function dmMsgSearch(req, res) {
   try {
     const id = req.user.id;
     const userID = Number(id);
     const { query } = req.query;
-  
+
     const results = await prisma.msgs.findMany({
       where: {
         AND: [
           {
-            OR: [
-              { senderID: userID },
-              { receiverID: userID }
-            ]
+            OR: [{ senderID: userID }, { receiverID: userID }],
           },
           {
             OR: [
-              { message: { contains: query, mode: 'insensitive' } },
+              { message: { contains: query, mode: "insensitive" } },
               {
                 sender: {
-                  username: { contains: query, mode: 'insensitive' },
-                  NOT: { id: userID }
-                }
+                  username: { contains: query, mode: "insensitive" },
+                  NOT: { id: userID },
+                },
               },
               {
                 receiver: {
-                  username: { contains: query, mode: 'insensitive' },
-                  NOT: { id: userID }
-                }
-              }
-            ]
-          }
-        ]
+                  username: { contains: query, mode: "insensitive" },
+                  NOT: { id: userID },
+                },
+              },
+            ],
+          },
+        ],
       },
       include: {
         sender: {
@@ -541,10 +536,10 @@ async function dmMsgSearch(req, res) {
             username: true,
             profile: {
               select: {
-                pfp: true
-              }
-            }
-          }
+                pfp: true,
+              },
+            },
+          },
         },
         receiver: {
           select: {
@@ -553,15 +548,15 @@ async function dmMsgSearch(req, res) {
             username: true,
             profile: {
               select: {
-                pfp: true
-              }
-            }
-          }
-        }
+                pfp: true,
+              },
+            },
+          },
+        },
       },
       orderBy: {
-        createdAt: 'desc'
-      }
+        createdAt: "desc",
+      },
     });
 
     if (results.length === 0) {
@@ -572,7 +567,7 @@ async function dmMsgSearch(req, res) {
     const messages = [];
     const users = [];
 
-    results.forEach(r => {
+    results.forEach((r) => {
       const otherUser = r.senderID === userID ? r.receiver : r.sender;
 
       if (!seenUserIDs.has(otherUser.id)) {
@@ -581,7 +576,7 @@ async function dmMsgSearch(req, res) {
           id: otherUser.id,
           name: otherUser.name,
           username: otherUser.username,
-          pfp: otherUser.profile.pfp
+          pfp: otherUser.profile.pfp,
         });
       }
 
@@ -589,7 +584,6 @@ async function dmMsgSearch(req, res) {
     });
 
     return res.status(200).json({ messages, users });
-
   } catch (error) {
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
   }
@@ -602,8 +596,8 @@ async function dmUserSearch(req, res) {
     const userSearchRes = await prisma.user.findMany({
       where: {
         username: {
-          in: query
-        }
+          in: query,
+        },
       },
       select: {
         id: true,
@@ -611,17 +605,19 @@ async function dmUserSearch(req, res) {
         username: true,
         profile: {
           select: {
-            pfp: true
-          }
-        }
-      }
-    })
+            pfp: true,
+          },
+        },
+      },
+    });
 
-    if (!userSearchRes){
-      return res.status(403).json({ message: "There is no user with that name"})
+    if (!userSearchRes) {
+      return res
+        .status(403)
+        .json({ message: "There is no user with that name" });
     }
 
-    return res.status(200).json({ userSearchRes })
+    return res.status(200).json({ userSearchRes });
   } catch (error) {
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
   }
@@ -693,9 +689,9 @@ async function dms(req, res) {
             username: true,
             profile: {
               select: {
-                pfp: true
-              }
-            }
+                pfp: true,
+              },
+            },
           },
         },
         receiver: {
@@ -705,9 +701,9 @@ async function dms(req, res) {
             username: true,
             profile: {
               select: {
-                pfp: true
-              }
-            }
+                pfp: true,
+              },
+            },
           },
         },
       },
@@ -726,7 +722,7 @@ async function dms(req, res) {
           id: otherUser.id,
           username: otherUser.username,
           name: otherUser.name,
-          pfp: otherUser.profile.pfp
+          pfp: otherUser.profile.pfp,
         });
       }
     });
@@ -748,9 +744,17 @@ async function one2oneDMS(req, res) {
     const queryRes = await prisma.msgs.findMany({
       where: {
         OR: [
-          { senderID: thisUsersID, receiverID: withThisUSER, deletedBySender: false },
-          { senderID: withThisUSER, receiverID: thisUsersID, deletedByReceiver: false }
-        ]
+          {
+            senderID: thisUsersID,
+            receiverID: withThisUSER,
+            deletedBySender: false,
+          },
+          {
+            senderID: withThisUSER,
+            receiverID: thisUsersID,
+            deletedByReceiver: false,
+          },
+        ],
       },
       include: {
         sender: {
@@ -760,10 +764,10 @@ async function one2oneDMS(req, res) {
             username: true,
             profile: {
               select: {
-                pfp: true
-              }
-            }
-          }
+                pfp: true,
+              },
+            },
+          },
         },
         receiver: {
           select: {
@@ -772,32 +776,30 @@ async function one2oneDMS(req, res) {
             username: true,
             profile: {
               select: {
-                pfp: true
-              }
-            }
-          }
-        }
+                pfp: true,
+              },
+            },
+          },
+        },
       },
       orderBy: {
-        createdAt: "asc"
-      }
+        createdAt: "asc",
+      },
     });
 
     const otherUser = await prisma.profile.findUnique({
       where: {
-        user: withThisUSER
+        user: withThisUSER,
       },
       select: {
         user: true,
         pfp: true,
         name: true,
         username: true,
+      },
+    });
 
-      }
-    })
-
-      return res.status(200).json({ one2one: queryRes, otherUser });
-
+    return res.status(200).json({ one2one: queryRes, otherUser });
   } catch (error) {
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
   }
@@ -842,31 +844,31 @@ async function deleteMsg(req, res) {
       select: {
         senderID: true,
         receiverID: true,
-      }
+      },
     });
 
     const isCurrentUserSender = isMsgOtherUsers.senderID === thisUsersID;
 
-    if (isCurrentUserSender){
+    if (isCurrentUserSender) {
       await prisma.msgs.update({
         where: {
           id: deleteThisMsg,
-          senderID: thisUsersID
+          senderID: thisUsersID,
         },
         data: {
-          deletedBySender: true
-        }
-      })
+          deletedBySender: true,
+        },
+      });
     } else {
       await prisma.msgs.update({
         where: {
           id: deleteThisMsg,
-          receiverID: thisUsersID
+          receiverID: thisUsersID,
         },
         data: {
-          deletedByReceiver: true
-        }
-      })
+          deletedByReceiver: true,
+        },
+      });
     }
 
     return res.status(200).json({ success: true });
@@ -940,40 +942,38 @@ async function deletePost(req, res) {
 
 async function repost(req, res) {
   try {
-    const { idtorep } = req.body;
+    const { postId } = req.body;
     const uID = req.user.id;
 
     const userID = Number(uID);
-    const repostID = Number(idtorep);
+    const postID = Number(postId);
 
-    await prisma.reposts.create({
-      data: {
-        postID: repostID,
-        repostedBy: userID,
-      },
-    });
-
-    return res.status(200).json({ success: true });
-  } catch (error) {
-  } catch (error) {
-    return res.status(500).json({ errorMsg: "Internal server error :^(" });
-  }
-}
-
-async function removeRepost(req, res) {
-  try {
-     const { idtorep } = req.body;
-    const uID = req.user.id;
-
-    const userID = Number(uID);
-    const repostID = Number(idtorep);
-
-    await prisma.reposts.delete({
+    const existingRepost = await prisma.reposts.findUnique({
       where: {
-        postID: repostID,
-        repostedBy: userID,
+        postID_repostedBy: {
+          postID: postID,
+          repostedBy: userID,
+        },
       },
     });
+
+    if (existingRepost) {
+      await prisma.reposts.delete({
+        where: {
+          postID_repostedBy: {
+            postID: postID,
+            repostedBy: userID,
+          },
+        },
+      });
+    } else {
+      await prisma.reposts.create({
+        data: {
+          postID: postID,
+          repostedBy: userID,
+        },
+      });
+    }
 
     return res.status(200).json({ success: true });
   } catch (error) {
@@ -983,59 +983,44 @@ async function removeRepost(req, res) {
 
 async function like(req, res) {
   try {
-    const post = req.body.postID;
+    const post = req.body.postId;
     const uID = req.user.id;
-
-    const {likeBool} = req.body
 
     const userID = Number(uID);
     const postID = Number(post);
 
     const isThereAPost = await prisma.posts.findUnique({
       where: {
-        id: postID
-      }
-    })
-
-    if (!isThereAPost){
-      return res.status(403).json({ success: false });
-    }
-
-    await prisma.likes.create({
-      data: {
-        postID: postID,
-        idOfLiker: userID,
+        id: postID,
       },
     });
-    return res.status(200).json({ success: true });
-  } catch (error) {
-    return res.status(500).json({ errorMsg: "Internal server error :^(" });
-  }
-}
 
-async function removeLike(req, res) {
-  try {
-    const post = req.body.postID;
-    const postID = Number(post);
-    const uID = req.user.id;
-    const userID = Number(uID);
-
-    const isThereAPost = await prisma.posts.findUnique({
-      where: {
-        id: postID
-      }
-    })
-
-    if (!isThereAPost){
+    if (!isThereAPost) {
       return res.status(403).json({ success: false });
     }
 
-    await prisma.likes.delete({
+    const existingLike = await prisma.likes.findFirst({
       where: {
         postID: postID,
         idOfLiker: userID,
       },
     });
+
+    if (existingLike) {
+      await prisma.likes.delete({
+        where: {
+          id: existingLike.id,
+        },
+      });
+    } else {
+      await prisma.likes.create({
+        data: {
+          postID: postID,
+          idOfLiker: userID,
+        },
+      });
+    }
+
     return res.status(200).json({ success: true });
   } catch (error) {
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
@@ -1162,8 +1147,8 @@ async function blockThem(req, res) {
   }
 }
 
-async function checkBlockStatus(req, res){
-   try {
+async function checkBlockStatus(req, res) {
+  try {
     const { otherUserID } = req.body;
     const { id } = req.user;
 
@@ -1180,13 +1165,11 @@ async function checkBlockStatus(req, res){
     });
 
     if (blockExists) {
-      return res
-        .status(200)
-        .json({ isBlocked: true });
+      return res.status(200).json({ isBlocked: true });
     }
 
     return res.status(200).json({ isBlocked: false });
-  } catch(error){
+  } catch (error) {
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
   }
 }
@@ -1266,9 +1249,7 @@ module.exports = {
   unfollowThem,
 
   like,
-  removeLike,
   repost,
-  removeRepost,
   comment,
   deleteComment,
   post,

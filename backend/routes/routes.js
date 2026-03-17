@@ -63,10 +63,8 @@ router.post("/post", isAuth, multer.array("files", 4), remote.post);
 router.delete("/deletePost", isAuth, remote.deletePost);
 
 router.post("/repost", isAuth, remote.repost);
-router.delete("/removeRepost", isAuth, remote.removeRepost);
 
 router.post("/like", isAuth, remote.like);
-router.delete("/removeLike", isAuth, remote.removeLike);
 
 // comments //
 router.post("/comment", isAuth, remote.comment);

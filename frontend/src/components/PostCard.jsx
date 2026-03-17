@@ -14,21 +14,18 @@ function PostCard({ post, onClick }) {
   const [repostAPIError, setRepostAPIError] = useState(null);
 
   async function toggleLike() {
-    const likeBoolean = post.reposts?.some(
-      (repost) => repost.idOfReposter === user?.id,
-    );
     try {
       const res = await fetch("http://localhost:5555/like", {
         method: "POST",
         credentials: "include",
-        header: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          likeBool: likeBoolean === true ? false : true,
+          postId: post.id,
         }),
       });
 
       if (!res.ok) {
-        setLikeError("Cannot like/unline post - post may have been deleted");
+        setLikeError("Cannot like/unlike post - post may have been deleted");
         setLikeAPIError(null);
         return;
       }
@@ -43,18 +40,13 @@ function PostCard({ post, onClick }) {
   }
 
   async function toggleRepost() {
-    const repostBoolean = post.reposts?.some(
-      (repost) => repost.idOfReposter === user?.id,
-    );
-
     try {
       const res = await fetch("http://localhost:5555/repost", {
         method: "POST",
         credentials: "include",
-        header: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          idtorep: post.id,
-          repostBool: repostBoolean === true ? false : true,
+          postId: post.id,
         }),
       });
 
@@ -133,7 +125,7 @@ function PostCard({ post, onClick }) {
                   onClick={toggleRepost}
                   className={
                     post.reposts?.some(
-                      (repost) => repost.idOfReposter === user?.id,
+                      (repost) => repost.repostedBy === user?.id,
                     )
                       ? "userRepostedThisPost"
                       : "repost"
