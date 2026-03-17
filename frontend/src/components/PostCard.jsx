@@ -4,7 +4,7 @@ import { useState } from "react";
 
 function PostCard({ post, onClick }) {
   const { setShowPostComments } = useOutletContext();
-  const [activeSection, setActiveSection] = useState(null);
+  const [showLikes, setShowLikes] = useState(false);
   const username = post.postedBy?.username || post.username;
   const pfp = post.postedBy?.profile?.pfp || post.pfp;
 
@@ -41,7 +41,7 @@ function PostCard({ post, onClick }) {
               className="likes"
               onClick={(e) => {
                 e.stopPropagation();
-                setActiveSection(activeSection === "likes" ? null : "likes");
+                setShowLikes(!showLikes);
               }}
             >
               <div>
@@ -50,15 +50,7 @@ function PostCard({ post, onClick }) {
               <div>{post.likes?.length || 0}</div>
             </div>
 
-            <div
-              className="comments"
-              onClick={(e) => {
-                e.stopPropagation();
-                setActiveSection(
-                  activeSection === "comments" ? null : "comments",
-                );
-              }}
-            >
+            <div className="comments">
               <div>
                 <img />
               </div>
@@ -82,31 +74,33 @@ function PostCard({ post, onClick }) {
         </div>
       </div>
 
-      {activeSection === 'comments' && post.comments && post.comments.length > 0 && (
-        <div className="commentsSection">
-          {post.comments.map((comment) => (
-            <div key={comment.id} className="comment">
-              <div className="commentUser">
-                <Link to={`/@${comment.user?.username}`}>
-                  <img
-                    src={`http://localhost:5555/pfpIMG/${comment.user?.profile?.pfp}`}
-                    alt={comment.user?.username}
-                  />
-                </Link>
-                <div>
-                  <div className="commentUsername">
-                    {comment.user?.username}
+      {activeSection === "comments" &&
+        post.comments &&
+        post.comments.length > 0 && (
+          <div className="commentsSection">
+            {post.comments.map((comment) => (
+              <div key={comment.id} className="comment">
+                <div className="commentUser">
+                  <Link to={`/@${comment.user?.username}`}>
+                    <img
+                      src={`http://localhost:5555/pfpIMG/${comment.user?.profile?.pfp}`}
+                      alt={comment.user?.username}
+                    />
+                  </Link>
+                  <div>
+                    <div className="commentUsername">
+                      {comment.user?.username}
+                    </div>
+                    <div className="commentTime">{comment.createdAt}</div>
                   </div>
-                  <div className="commentTime">{comment.createdAt}</div>
                 </div>
+                <div className="commentText">{comment.comment}</div>
               </div>
-              <div className="commentText">{comment.comment}</div>
-            </div>
-          ))}
-        </div>
-      )}
+            ))}
+          </div>
+        )}
 
-      {activeSection === 'likes' && post.likes && post.likes.length > 0 && (
+      {activeSection === "likes" && post.likes && post.likes.length > 0 && (
         <div className="likesSection">
           {post.likes.map((like) => (
             <div key={like.id} className="like">
