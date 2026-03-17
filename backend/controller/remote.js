@@ -816,9 +816,9 @@ async function deleteMsg(req, res) {
       }
     });
 
-    const isMsgOtherUsersBool = isMsgOtherUsers.senderID === thisUsersID ? false : true
+    const isCurrentUserSender = isMsgOtherUsers.senderID === thisUsersID;
 
-    if (!isMsgOtherUsersBool){
+    if (isCurrentUserSender){
       await prisma.msgs.update({
         where: {
           id: deleteThisMsg,
@@ -828,19 +828,17 @@ async function deleteMsg(req, res) {
           deletedBySender: true
         }
       })
-      return res.status(200).json({ success: true });
+    } else {
+      await prisma.msgs.update({
+        where: {
+          id: deleteThisMsg,
+          receiverID: thisUsersID
+        },
+        data: {
+          deletedByReceiver: true
+        }
+      })
     }
-
-    await prisma.msgs.update({
-      where: {
-        id: deleteThisMsg,
-        receiverID: thisUsersID
-      },
-      data: {
-        deletedByReceiver: true
-      }
-    })
-
 
     return res.status(200).json({ success: true });
   } catch (error) {

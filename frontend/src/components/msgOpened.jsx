@@ -49,6 +49,7 @@ function MsgOpened({ id, isBlocked }) {
   }
 
   async function deleteMsg() {
+    setIsDeleting(true);
     try {
       const res = await fetch("http://localhost:5555/deleteMsg", {
         method: "PATCH",
@@ -70,9 +71,11 @@ function MsgOpened({ id, isBlocked }) {
         setDeleteMsgErr(null);
       }
     } catch (error) {
-      setDeleteMsgErr(error.errorMsg);
+      setDeleteMsgErr(error.errorMsg || "Failed to delete message");
       setDeleteClicked(false);
       setDeleteThisMsgID(null);
+    } finally {
+      setIsDeleting(false);
     }
   }
 
@@ -106,7 +109,15 @@ function MsgOpened({ id, isBlocked }) {
                   className={isSent ? "msgSent" : "msgReceived"}
                 >
                   <div className="deleteMsg">
-                    <div onClick={() => setOpenDeleteMsgID(openDeleteMsgID === msg.id ? null : msg.id)}>...</div>
+                    <div
+                      onClick={() =>
+                        setOpenDeleteMsgID(
+                          openDeleteMsgID === msg.id ? null : msg.id,
+                        )
+                      }
+                    >
+                      ...
+                    </div>
                     {openDeleteMsgID === msg.id && (
                       <div onClick={() => deleteMsgID(msg.id)}>
                         delete for me
@@ -117,7 +128,11 @@ function MsgOpened({ id, isBlocked }) {
                     {msg.images && msg.images.length > 0 && (
                       <div>
                         {msg.images.map((image, index) => (
-                          <img key={index} src={`http://localhost:5555/img/${image}`} alt={`message attachment ${index + 1}`} />
+                          <img
+                            key={index}
+                            src={`http://localhost:5555/img/${image}`}
+                            alt={`message attachment ${index + 1}`}
+                          />
                         ))}
                       </div>
                     )}
@@ -133,14 +148,27 @@ function MsgOpened({ id, isBlocked }) {
         {deleteMsgErr && <div className="error">{deleteMsgErr}</div>}
 
         {deleteClicked && (
-          <div>
-            <div>Delete message</div>
-            <div>Are you sure you want to delete this message?</div>
-            <div>
-              <div onClick={deleteMsg}>delete for me</div>
-              <div onClick={cancelMsgDelete}>cancel</div>
+          <>
+            <div className="modal-backdrop" onClick={cancelMsgDelete}></div>
+            <div className="modal-content">
+              <div>Delete message</div>
+              <div>Are you sure you want to delete this message?</div>
+              <div>
+                <div
+                  onClick={isDeleting ? null : deleteMsg}
+                  className={isDeleting ? "disabled" : ""}
+                >
+                  {isDeleting ? "Deleting..." : "delete for me"}
+                </div>
+                <div
+                  onClick={isDeleting ? null : cancelMsgDelete}
+                  className={isDeleting ? "disabled" : ""}
+                >
+                  cancel
+                </div>
+              </div>
             </div>
-          </div>
+          </>
         )}
 
         {isBlocked ? (
