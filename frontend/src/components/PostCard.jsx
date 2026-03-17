@@ -3,12 +3,9 @@ import { useOutletContext } from "react-router-dom";
 import { useState } from "react";
 
 function PostCard({ post, onClick }) {
-  const { showPostComments, setShowPostComments } = useOutletContext();
+  const { user, showPostComments, setShowPostComments } = useOutletContext();
   const username = post.postedBy?.username || post.username;
   const pfp = post.postedBy?.profile?.pfp || post.pfp;
-
-  const [likeBoolean, setLikeBoolean] = useState(false);
-  const [repostBoolean, setRepostBoolean] = useState(false);
 
   const [likeError, setLikeError] = useState(null);
   const [likeAPIError, setLikeAPIError] = useState(null);
@@ -17,19 +14,21 @@ function PostCard({ post, onClick }) {
   const [repostAPIError, setRepostAPIError] = useState(null);
 
   async function toggleLike() {
-    setLikeBoolean((prev) => !prev);
+    const likeBoolean = post.reposts?.some(
+      (repost) => repost.idOfReposter === user?.id,
+    );
     try {
       const res = await fetch("http://localhost:5555/like", {
         method: "POST",
         credentials: "include",
         header: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          likeBool: likeBoolean,
+          likeBool: likeBoolean === true ? false : true,
         }),
       });
 
       if (!res.ok) {
-        setLikeError("Cannot like post - post may have been deleted");
+        setLikeError("Cannot like/unline post - post may have been deleted");
         setLikeAPIError(null);
         return;
       }
@@ -44,19 +43,26 @@ function PostCard({ post, onClick }) {
   }
 
   async function toggleRepost() {
+    const repostBoolean = post.reposts?.some(
+      (repost) => repost.idOfReposter === user?.id,
+    );
+
     try {
-      const res = await fetch("http://localhost:5555/like", {
+      const res = await fetch("http://localhost:5555/repost", {
         method: "POST",
         credentials: "include",
         header: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          likeBool: likeBoolean,
+          idtorep: post.id,
+          repostBool: repostBoolean === true ? false : true,
         }),
       });
 
       if (!res.ok) {
-        setRepostError("Cannot like post - post may have been deleted");
-        setRepostError(null);
+        setRepostError(
+          "Cannot repost/unrepost post - post may have been deleted",
+        );
+        setRepostAPIError(null);
         return;
       }
 
@@ -83,42 +89,58 @@ function PostCard({ post, onClick }) {
           </Link>
         </div>
         <div>
-          <div className="postInfo">
-            <div>{username}</div>
-            <div>{post.createdAt}</div>
-          </div>
-          <div className="postMsg">
-            <div>{post.msg}</div>
-          </div>
-          <div className="postImg">
-            {post.img ? (
-              <div>
-                <img src={`http://localhost:5555/img/${post.img}`} />
-              </div>
-            ) : null}
+          <div>
+            <div className="postInfo">
+              <div>{username}</div>
+              <div>{post.createdAt}</div>
+            </div>
+            <div className="postImg">
+              {post.img ? (
+                <div>
+                  <img src={`http://localhost:5555/img/${post.img}`} />
+                </div>
+              ) : null}
+            </div>
+            <div className="postMsg">
+              <div>{post.msg}</div>
+            </div>
           </div>
           <div className="postOptions">
             <div className="likes">
               <div>
-                <img onClick={toggleLike} />
-                {/* if clicked heart turns red if not heart white */}
+                <img
+                  onClick={toggleLike}
+                  className={
+                    post.likes?.some((like) => like.idOfLiker === user?.id)
+                      ? "userLikedThisPost"
+                      : "heartTolike"
+                  }
+                />
               </div>
-              <div>{post.likes?.length || 0}</div>
+              <div>{post.likes?.length || ""}</div>
             </div>
 
             <div className="comments">
               <div>
                 <img />
               </div>
-              <div>{post.comments?.length || 0}</div>
+              <div>{post.comments?.length || ""}</div>
             </div>
 
             <div className="reposts">
               <div>
-                <img onClick={toggleRepost} />
-                {/* if reposted reposted is dark black // inverted */}
+                <img
+                  onClick={toggleRepost}
+                  className={
+                    post.reposts?.some(
+                      (repost) => repost.idOfReposter === user?.id,
+                    )
+                      ? "userRepostedThisPost"
+                      : "repost"
+                  }
+                />
               </div>
-              <div>{post.reposts?.length || 0}</div>
+              <div>{post.reposts?.length || ""}</div>
             </div>
 
             <div className="share">

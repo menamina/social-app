@@ -405,7 +405,6 @@ async function getPost(req, res) {
   try {
     const { postId } = req.params;
     const id = req.user.id;
-    const userID = Number(id);
     const postID = Number(postId);
 
     const post = await prisma.posts.findUnique({
@@ -985,9 +984,12 @@ async function removeRepost(req, res) {
 async function like(req, res) {
   try {
     const post = req.body.postID;
-    const postID = Number(post);
     const uID = req.user.id;
+
+    const {likeBool} = req.body
+
     const userID = Number(uID);
+    const postID = Number(post);
 
     const isThereAPost = await prisma.posts.findUnique({
       where: {
