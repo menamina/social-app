@@ -37,20 +37,28 @@ function PostCard({ post, onClick }) {
             ) : null}
           </div>
           <div className="postOptions">
-            <div className="likes" onClick={(e) => {
-              e.stopPropagation();
-              setActiveSection(activeSection === 'likes' ? null : 'likes');
-            }}>
+            <div
+              className="likes"
+              onClick={(e) => {
+                e.stopPropagation();
+                setActiveSection(activeSection === "likes" ? null : "likes");
+              }}
+            >
               <div>
                 <img />
               </div>
               <div>{post.likes?.length || 0}</div>
             </div>
 
-            <div className="comments" onClick={(e) => {
-              e.stopPropagation();
-              setActiveSection(activeSection === 'comments' ? null : 'comments');
-            }}>
+            <div
+              className="comments"
+              onClick={(e) => {
+                e.stopPropagation();
+                setActiveSection(
+                  activeSection === "comments" ? null : "comments",
+                );
+              }}
+            >
               <div>
                 <img />
               </div>
