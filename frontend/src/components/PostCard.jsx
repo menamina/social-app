@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
 import { useOutletContext } from "react-router-dom";
+import { useState } from "react";
 
 function PostCard({ post, onClick }) {
-  const { showPostComments, setShowPostComments } = useOutletContext();
+  const { setShowPostComments } = useOutletContext();
+  const [activeSection, setActiveSection] = useState(null);
   const username = post.postedBy?.username || post.username;
   const pfp = post.postedBy?.profile?.pfp || post.pfp;
 
@@ -35,14 +37,20 @@ function PostCard({ post, onClick }) {
             ) : null}
           </div>
           <div className="postOptions">
-            <div className="likes">
+            <div className="likes" onClick={(e) => {
+              e.stopPropagation();
+              setActiveSection(activeSection === 'likes' ? null : 'likes');
+            }}>
               <div>
                 <img />
               </div>
               <div>{post.likes?.length || 0}</div>
             </div>
 
-            <div className="comments">
+            <div className="comments" onClick={(e) => {
+              e.stopPropagation();
+              setActiveSection(activeSection === 'comments' ? null : 'comments');
+            }}>
               <div>
                 <img />
               </div>
@@ -66,7 +74,7 @@ function PostCard({ post, onClick }) {
         </div>
       </div>
 
-      {showPostComments && post.comments && post.comments.length > 0 && (
+      {activeSection === 'comments' && post.comments && post.comments.length > 0 && (
         <div className="commentsSection">
           {post.comments.map((comment) => (
             <div key={comment.id} className="comment">
@@ -85,6 +93,22 @@ function PostCard({ post, onClick }) {
                 </div>
               </div>
               <div className="commentText">{comment.comment}</div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {activeSection === 'likes' && post.likes && post.likes.length > 0 && (
+        <div className="likesSection">
+          {post.likes.map((like) => (
+            <div key={like.id} className="like">
+              <Link to={`/@${like.user?.username}`}>
+                <img
+                  src={`http://localhost:5555/pfpIMG/${like.user?.profile?.pfp}`}
+                  alt={like.user?.username}
+                />
+              </Link>
+              <div className="likeUsername">{like.user?.username}</div>
             </div>
           ))}
         </div>
