@@ -3,8 +3,7 @@ import { useOutletContext } from "react-router-dom";
 import { useState } from "react";
 
 function PostCard({ post, onClick }) {
-  const { setShowPostComments } = useOutletContext();
-  const [showLikes, setShowLikes] = useState(false);
+  const { showPostComments, setShowPostComments } = useOutletContext();
   const username = post.postedBy?.username || post.username;
   const pfp = post.postedBy?.profile?.pfp || post.pfp;
 
@@ -37,15 +36,9 @@ function PostCard({ post, onClick }) {
             ) : null}
           </div>
           <div className="postOptions">
-            <div
-              className="likes"
-              onClick={(e) => {
-                e.stopPropagation();
-                setShowLikes(!showLikes);
-              }}
-            >
+            <div className="likes">
               <div>
-                <img />
+                <img onClick={toggleLike} />
               </div>
               <div>{post.likes?.length || 0}</div>
             </div>
@@ -59,7 +52,7 @@ function PostCard({ post, onClick }) {
 
             <div className="reposts">
               <div>
-                <img />
+                <img onClick={toggleRepost} />
               </div>
               <div>{post.reposts?.length || 0}</div>
             </div>
@@ -74,43 +67,25 @@ function PostCard({ post, onClick }) {
         </div>
       </div>
 
-      {activeSection === "comments" &&
-        post.comments &&
-        post.comments.length > 0 && (
-          <div className="commentsSection">
-            {post.comments.map((comment) => (
-              <div key={comment.id} className="comment">
-                <div className="commentUser">
-                  <Link to={`/@${comment.user?.username}`}>
-                    <img
-                      src={`http://localhost:5555/pfpIMG/${comment.user?.profile?.pfp}`}
-                      alt={comment.user?.username}
-                    />
-                  </Link>
-                  <div>
-                    <div className="commentUsername">
-                      {comment.user?.username}
-                    </div>
-                    <div className="commentTime">{comment.createdAt}</div>
+      {showPostComments && post.comments && post.comments.length > 0 && (
+        <div className="commentsSection">
+          {post.comments.map((comment) => (
+            <div key={comment.id} className="comment">
+              <div className="commentUser">
+                <Link to={`/@${comment.user?.username}`}>
+                  <img
+                    src={`http://localhost:5555/pfpIMG/${comment.user?.profile?.pfp}`}
+                    alt={comment.user?.username}
+                  />
+                </Link>
+                <div>
+                  <div className="commentUsername">
+                    {comment.user?.username}
                   </div>
+                  <div className="commentTime">{comment.createdAt}</div>
                 </div>
-                <div className="commentText">{comment.comment}</div>
               </div>
-            ))}
-          </div>
-        )}
-
-      {activeSection === "likes" && post.likes && post.likes.length > 0 && (
-        <div className="likesSection">
-          {post.likes.map((like) => (
-            <div key={like.id} className="like">
-              <Link to={`/@${like.user?.username}`}>
-                <img
-                  src={`http://localhost:5555/pfpIMG/${like.user?.profile?.pfp}`}
-                  alt={like.user?.username}
-                />
-              </Link>
-              <div className="likeUsername">{like.user?.username}</div>
+              <div className="commentText">{comment.comment}</div>
             </div>
           ))}
         </div>
