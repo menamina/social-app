@@ -48,6 +48,7 @@ model Posts {
   createdAt DateTime @default(now())
   likes Likes[]
   comments Comments[]
+  reposts Reposts[]
 
   postedBy User @relation(fields: [madeBy], references: [id])
 

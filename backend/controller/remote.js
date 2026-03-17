@@ -275,7 +275,22 @@ async function viewProfile(req, res) {
             },
             likes: true,
             comments: true,
-            reposts: true,
+            reposts: {
+                  incude: {
+                    user: {
+                      select: {
+                        id: true,
+                        name: true,
+                        username: true,
+                        profile: {
+                          select: {
+                            pfp: true
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
           },
           orderBy: {
             createdAt: "desc",
@@ -299,7 +314,22 @@ async function viewProfile(req, res) {
                 },
                 likes: true,
                 comments: true,
-                reposts: true,
+                reposts: {
+                  incude: {
+                    user: {
+                      select: {
+                        id: true,
+                        name: true,
+                        username: true,
+                        profile: {
+                          select: {
+                            pfp: true
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
               },
             },
           },
