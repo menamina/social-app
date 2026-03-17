@@ -31,7 +31,7 @@ function MsgOpened({ id, isBlocked }) {
         }
       }
       get1to1Msgs();
-    }, 2000);
+    }, 20000);
     return () => clearInterval(interval);
   }, [id]);
 
@@ -100,7 +100,10 @@ function MsgOpened({ id, isBlocked }) {
             {msgs.map((msg) => {
               const isSent = msg.senderID === user.id;
               return (
-                <div key={msg.id} className={isSent ? "msgSent" : "msgReceived"}>
+                <div
+                  key={msg.id}
+                  className={isSent ? "msgSent" : "msgReceived"}
+                >
                   <div className="deleteMsg">
                     <div onClick={() => setOpenDeleteMsgID(msg.id)}>...</div>
                     {openDeleteMsgID === msg.id && (
@@ -110,9 +113,11 @@ function MsgOpened({ id, isBlocked }) {
                     )}
                   </div>
                   <div>
-                    {msg.image && (
+                    {msg.images && msg.images.length > 0 && (
                       <div>
-                        <img src={`http://localhost:5555/img/${msg.image}`} />
+                        {msg.images.map((image, index) => (
+                          <img key={index} src={`http://localhost:5555/img/${image}`} alt={`message attachment ${index + 1}`} />
+                        ))}
                       </div>
                     )}
                     {msg.message && <div>{msg.message}</div>}
@@ -124,11 +129,7 @@ function MsgOpened({ id, isBlocked }) {
           </div>
         )}
 
-        {deleteMsgErr && (
-          <div className="error">
-            {deleteMsgErr}
-          </div>
-        )}
+        {deleteMsgErr && <div className="error">{deleteMsgErr}</div>}
 
         {deleteClicked && (
           <div>
