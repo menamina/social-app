@@ -3,29 +3,47 @@ import { Link, useOutletContext } from "react-router-dom";
 
 function MakeAPost() {
   const { user, userProfile } = useOutletContext();
+  const [selectedFiles, setSelectedFiles] = useState([]);
+
+  async function post() {}
+
   return (
     <div className="makeAPost div">
-      <div>
-        <button>cancel</button>
-        <div>new post</div>
-        <img src="" alt="" />
-      </div>
-      <div>
+      <form onSubmit={postIt}>
         <div>
-          <img src={`http://localhost:/imgs/${userProfile?.pfp}`} />
+          <button>cancel</button>
+          <div>new post</div>
+          <div>
+            <img
+              alt="Upload imgs"
+              onClick={(e) => e.target.nextSibling.click()}
+            />
+            <input
+              type="file"
+              multiple
+              accept="image/*"
+              hidden
+              onChange={(e) => setSelectedFiles(Array.from(e.target.files))}
+            />
+          </div>
         </div>
-        <div>@{user?.username}</div>
         <div>
-          <input
-            placeholder="What's new?"
-            value={msgToPost}
-            onChange={(e) => setMsgToPost(e.target.value)}
-          ></input>
+          <div>
+            <img src={`http://localhost:/imgs/${userProfile?.pfp}`} />
+          </div>
+          <div>@{user?.username}</div>
+          <div>
+            <input
+              placeholder="What's new?"
+              value={msgToPost}
+              onChange={(e) => setMsgToPost(e.target.value)}
+            ></input>
+          </div>
         </div>
-      </div>
-      <div>
-        <button>post</button>
-      </div>
+        <div>
+          <button>post</button>
+        </div>
+      </form>
     </div>
   );
 }
