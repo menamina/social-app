@@ -17,6 +17,26 @@ function PostCard({ post, onClick }) {
   const [repostError, setRepostError] = useState(null);
   const [repostAPIError, setRepostAPIError] = useState(null);
 
+  const [dotsClicked, setDotsClicked] = useState(false);
+  const [preDeleteModalClicked, setPreDeleteModalClicked] = useState(false);
+  const [deleteError, setDeleteError] = useState(null);
+
+  function openSettings(e) {
+    e.stopPropagation();
+    setDotsClicked(!dotsClicked);
+  }
+
+  function preDeleteModal(e) {
+    e.stopPropagation();
+    setPreDeleteModalClicked(true);
+  }
+
+  function cancelDelete(e) {
+    e.stopPropagation();
+    setPreDeleteModalClicked(false);
+    setDotsClicked(false);
+  }
+
   async function toggleLike() {
     try {
       const res = await fetch("http://localhost:5555/like", {
@@ -71,6 +91,30 @@ function PostCard({ post, onClick }) {
     }
   }
 
+  async function sendDelete(e) {
+    e.stopPropagation();
+    try {
+      const res = await fetch("http://localhost:5555/deletePost", {
+        method: "DELETE",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          postId: post.id,
+        }),
+      });
+
+      if (!res.ok) {
+        setDeleteError("Cannot delete post - an error occurred");
+        return;
+      }
+
+      setDeleteError(null);
+      window.location.reload();
+    } catch (error) {
+      setDeleteError("Error encountered while trying to delete post");
+    }
+  }
+
   return (
     <div className="postCardDiv">
       {showPostComments && (
@@ -107,8 +151,8 @@ function PostCard({ post, onClick }) {
                         and from search results.{" "}
                       </div>
                       <div>
-                        <div>delete</div>
-                        <div>cancel</div>
+                        <div onClick={sendDelete}>delete</div>
+                        <div onClick={cancelDelete}>cancel</div>
                       </div>
                     </div>
                   )}
