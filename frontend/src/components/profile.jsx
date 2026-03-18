@@ -63,9 +63,7 @@ function Profile() {
       }
     }
 
-    if (username) {
-      fetchProfileData();
-    }
+    fetchProfileData();
   }, [username]);
 
   if (loading) {
@@ -97,11 +95,26 @@ function Profile() {
         <div>
           <div>
             <div>
-              <div>{profileData.name}</div>
-              <div>{profileData.username}</div>
               <div>
-                <div>{profileData.followers.length}</div>
-                <div>{profileData.following.length}</div>
+                <div>
+                  <div>{profileData.name}</div>
+                  <div>{profileData.username}</div>
+                </div>
+                <div>
+                  <div onClick={() => setDotsClicked(!prev)}>...</div>
+                  {dotsClicked && (
+                    <div onClick={() => setBlockButtonClicked(true)}>block</div>
+                  )}
+                  {blockButtonClicked && <div></div>}
+                  {}
+                  {!isOwnProfile && (
+                    <div onClick={updateFollowStatus}>{followStatus}</div>
+                  )}
+                </div>
+              </div>
+              <div>
+                <div>{profileData.followers.length} followers</div>
+                <div>{profileData.following.length} folowing</div>
               </div>
             </div>
             <div>
