@@ -4,8 +4,12 @@ import { useState } from "react";
 
 function PostCard({ post, onClick }) {
   const { user, showPostComments, setShowPostComments } = useOutletContext();
+
+  const name = post.postedBy?.name || post.name;
   const username = post.postedBy?.username || post.username;
   const pfp = post.postedBy?.profile?.pfp || post.pfp;
+
+  const postByLoggedInUser = post.postedBy?.id === user?.id ? true : false;
 
   const [likeError, setLikeError] = useState(null);
   const [likeAPIError, setLikeAPIError] = useState(null);
@@ -68,12 +72,14 @@ function PostCard({ post, onClick }) {
   }
 
   return (
-    <div>
-      <div>
-        <Link to="/" onClick={() => setShowPostComments(false)}>
-          go back
-        </Link>
-      </div>
+    <div className="postCardDiv">
+      {showPostComments && (
+        <div>
+          <Link to="/" onClick={() => setShowPostComments(false)}>
+            go back
+          </Link>
+        </div>
+      )}
       <div className="postContainer" onClick={onClick}>
         <div className="postersPFP">
           <Link to={`http://localhost:5555/@${username}`}>
@@ -82,19 +88,26 @@ function PostCard({ post, onClick }) {
         </div>
         <div>
           <div>
-            <div className="postInfo">
-              <div>{username}</div>
+            <div className="postUserInfo">
+              <div>
+                {name} {username}
+              </div>
+              <div>.</div>
               <div>{post.createdAt}</div>
-            </div>
-            <div className="postImg">
-              {post.img ? (
+              {postByLoggedInUser && (
                 <div>
+                  <div onClick="openSettings">...</div>
+                </div>
+              )}
+            </div>
+            <div className="postContent">
+              {post.img && (
+                <div className="postImg">
                   <img src={`http://localhost:5555/img/${post.img}`} />
                 </div>
-              ) : null}
-            </div>
-            <div className="postMsg">
-              <div>{post.msg}</div>
+              )}
+
+              {post.msg && <div className="postMsg">{post.msg}</div>}
             </div>
           </div>
           <div className="postOptions">
