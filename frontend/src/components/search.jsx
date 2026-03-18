@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext, Link } from "react-router-dom";
 import PostCard from "./PostCard";
 
 function Search() {
@@ -56,6 +56,10 @@ function Search() {
     return () => clearTimeout(timeout);
   }, [query]);
 
+  function handleDeletePost(postId) {
+    setQueryResultsPosts((prev) => prev.filter((post) => post.id !== postId));
+  }
+
   return (
     <div className="searchDiv">
       <div>Search</div>
@@ -102,6 +106,7 @@ function Search() {
                   id={post.id}
                   post={post}
                   onClick={() => setShowPostComments(true)}
+                  onDelete={handleDeletePost}
                 />
               ))}
             </div>

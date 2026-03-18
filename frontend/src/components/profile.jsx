@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useOutletContext } from "react-router-dom";
 import PostCard from "./PostCard";
 
 function Profile() {
   const { username } = useParams();
+  const { setShowPostComments } = useOutletContext();
   const [profileViewOption, setProfileViewOption] = useState("posts");
   const [profileData, setProfileData] = useState(null);
   const [allPosts, setAllPosts] = useState([]);
@@ -79,6 +80,16 @@ function Profile() {
     return <div>Profile not found</div>;
   }
 
+  function handleDeletePost(postId) {
+    setAllPosts((prev) => prev.filter((post) => post.id !== postId));
+    setProfileData((prev) => ({
+      ...prev,
+      posts: prev.posts.filter((post) => post.id !== postId),
+      comments: prev.comments.filter((comment) => comment.post.id !== postId),
+      likes: prev.likes.filter((like) => like.post.id !== postId),
+    }));
+  }
+
   return (
     <div>
       <div>Profile</div>
@@ -113,18 +124,35 @@ function Profile() {
           </div>
           <div>
             {profileViewOption === "posts"
-              ? allPosts.map((post) => <PostCard key={post.id} post={post} />)
+              ? allPosts.map((post) => (
+                  <PostCard
+                    key={post.id}
+                    post={post}
+                    onClick={() => setShowPostComments(true)}
+                    onDelete={handleDeletePost}
+                  />
+                ))
               : null}
 
             {profileViewOption === "comments"
               ? profileData.comments.map((comment) => (
-                  <PostCard key={comment.id} post={comment.post} />
+                  <PostCard
+                    key={comment.id}
+                    post={comment.post}
+                    onClick={() => setShowPostComments(true)}
+                    onDelete={handleDeletePost}
+                  />
                 ))
               : null}
 
             {profileViewOption === "likes"
               ? profileData.likes.map((like) => (
-                  <PostCard key={like.id} post={like.post} />
+                  <PostCard
+                    key={like.id}
+                    post={like.post}
+                    onClick={() => setShowPostComments(true)}
+                    onDelete={handleDeletePost}
+                  />
                 ))
               : null}
           </div>

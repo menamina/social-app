@@ -56,6 +56,11 @@ function Feed() {
     setWannaMakeAPost(true);
   }
 
+  function handleDeletePost(postId) {
+    setForYouFeed((prev) => prev.filter((post) => post.id !== postId));
+    setFollowingFeed((prev) => prev.filter((post) => post.id !== postId));
+  }
+
   return (
     <div className="feed">
       <div className="feedOpts">
@@ -90,6 +95,7 @@ function Feed() {
                     key={post.id}
                     post={post}
                     onClick={() => setShowPostComments(true)}
+                    onDelete={handleDeletePost}
                   />
                 ))}
               </div>
@@ -106,6 +112,7 @@ function Feed() {
                     key={post.id}
                     post={post}
                     onClick={() => setShowPostComments(true)}
+                    onDelete={handleDeletePost}
                   />
                 ))}
               </div>

@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useOutletContext } from "react-router-dom";
 import { useState } from "react";
 
-function PostCard({ post, onClick }) {
+function PostCard({ post, onDelete }) {
   const { user, showPostComments, setShowPostComments } = useOutletContext();
 
   const name = post.postedBy?.name || post.name;
@@ -86,8 +86,16 @@ function PostCard({ post, onClick }) {
 
       if (!res.ok) {
         alert("Error deleting post");
-
         return;
+      }
+
+      // Close modals
+      setPreDeleteModalClicked(false);
+      setDotsClicked(false);
+
+      // Remove post from UI
+      if (onDelete) {
+        onDelete(post.id);
       }
     } catch (error) {
       console.log(error);
@@ -104,7 +112,7 @@ function PostCard({ post, onClick }) {
           </Link>
         </div>
       )}
-      <div className="postContainer" onClick={onClick}>
+      <div className="postContainer">
         <div className="postersPFP">
           <Link to={`http://localhost:5555/@${username}`}>
             <img src={`http://localhost:5555/pfpIMG/${pfp}`} />
