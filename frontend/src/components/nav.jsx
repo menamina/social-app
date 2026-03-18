@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { Link, useNavigate, useOutletContext } from "react-router-dom";
+import MakeAPost from "./makePost";
 
 function Nav({ navUserData, setNavUserData }) {
   const { setForYouFeed, setUserProfile } = useOutletContext();
   const [utilsToggle, setUtilsToggle] = useState(false);
+  const [wannaMakeAPost, setWannaMakeAPost] = useState(false);
   const nav = useNavigate();
 
   function utilToggle() {
@@ -27,6 +29,10 @@ function Nav({ navUserData, setNavUserData }) {
     }
   }
 
+  function openMakeAPostModal() {
+    setWannaMakeAPost(true);
+  }
+
   return (
     <div>
       <div className="logoIMG"></div>
@@ -48,11 +54,15 @@ function Nav({ navUserData, setNavUserData }) {
           </Link>
         </div>
         <div>
-          // new post pop up ... make component and render here(?)
-          {/* <Link to="/new-post">
+          <img src="" alt="search" onClick={openMakeAPostModal} />
+          {wannaMakeAPost && <MakeAPost />}
+          {/* going to pop up as modal overlay */}
+        </div>
+        <div>
+          <Link to="/dms">
             {" "}
-            <img src="" alt="new post" />
-          </Link> */}
+            <img src="" alt="dms" />
+          </Link>
         </div>
         <div>
           <Link to={`/@${navUserData.username}`}>

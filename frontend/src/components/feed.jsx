@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useOutletContext } from "react-router-dom";
+import MakeAPost from "./makePost";
 import PostCard from "./PostCard";
 
 function Feed() {
@@ -17,6 +18,7 @@ function Feed() {
   } = useOutletContext();
 
   const [feedView, setFeedView] = useState("for you");
+  const [wannaMakeAPost, setWannaMakeAPost] = useState(false);
 
   async function forYouRefresh() {
     setFeedView("for you");
@@ -50,6 +52,10 @@ function Feed() {
     }
   }
 
+  function openMakeAPostModal() {
+    setWannaMakeAPost(true);
+  }
+
   return (
     <div className="feed">
       <div className="feedOpts">
@@ -66,7 +72,10 @@ function Feed() {
             />
           </div>
           <div>
-            <input placeholder="Wanna say something?" />
+            <input
+              placeholder="Wanna say something?"
+              onClick={openMakeAPostModal}
+            />
           </div>
         </div>
         {feedView === "for you" ? (
