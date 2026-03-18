@@ -6,8 +6,10 @@ function MakeAPost() {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [msgToPost, setMsgToPost] = useState("");
   const [postAPIErr, setPostAPIErr] = useState(null);
+  const [showPostAPIErr, setShowPostAPIErr] = useState(false);
+  const [cancelPost, setCancelPost] = useState(false);
 
-  async function post() {
+  async function postIt() {
     if (!msgToPost && !selectedFiles) {
       return;
     }
@@ -17,26 +19,53 @@ function MakeAPost() {
       form.append("imgs", selectedFiles);
     }
 
-    if (msg) {
+    if (msgToPost) {
+      form.append("msg", msgToPost);
     }
 
     try {
       const res = await fetch("http://localhost:5555/post", {
         method: "POST",
         credentials: "include",
+        body: form,
       });
 
-      const data = await res.json();
+      if (res.ok) {
+        setShowPostAPIErr(true);
+        setPostAPIErr(null);
+        return;
+      }
     } catch (error) {
       setPostAPIErr("Error encountered while trying to post");
     }
   }
 
+  function cancel() {
+    setCancelPost(true);
+    setMsgToPost("");
+    setSelectedFiles(null);
+  }
+
+  function removeAPIErr() {
+    setShowPostAPIErr(false);
+  }
+
+  if (cancelPost === true) {
+    return;
+  }
+
   return (
     <div className="makeAPost div">
+      {postAPIErr && showPostAPIErr ? (
+        <div>
+          {postAPIErr}
+          <button onClick={removeAPIErr}>retry</button>
+        </div>
+      ) : null}
+
       <form onSubmit={postIt}>
         <div>
-          <button>cancel</button>
+          <button onClick={cancel}>cancel</button>
           <div>new post</div>
           <div>
             <img
