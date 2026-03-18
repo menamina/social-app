@@ -101,6 +101,18 @@ function Profile() {
                   <div>{profileData.username}</div>
                 </div>
                 <div>
+
+                  {!isOwnProfile && 
+                  <div>
+                    {accountBlocked && <div>Unblock</div>}
+                  </div>
+                    }
+
+
+
+
+
+                  {accountBlocked && }
                   <div onClick={() => setDotsClicked(!prev)}>...</div>
                   {dotsClicked && (
                     <div onClick={() => setBlockButtonClicked(true)}>block</div>
@@ -130,45 +142,50 @@ function Profile() {
               )}
             </div>
           </div>
-          <div>
-            <div onClick={() => profileViewOpt("posts")}>Posts</div>
-            <div onClick={() => profileViewOpt("comments")}>Comments</div>
-            <div onClick={() => profileViewOpt("likes")}>Likes</div>
-          </div>
-          <div>
-            {profileViewOption === "posts"
-              ? allPosts.map((post) => (
-                  <PostCard
-                    key={post.id}
-                    post={post}
-                    onClick={() => setShowPostComments(true)}
-                    onDelete={handleDeletePost}
-                  />
-                ))
-              : null}
 
-            {profileViewOption === "comments"
-              ? profileData.comments.map((comment) => (
-                  <PostCard
-                    key={comment.id}
-                    post={comment.post}
-                    onClick={() => setShowPostComments(true)}
-                    onDelete={handleDeletePost}
-                  />
-                ))
-              : null}
+          {!accountBlocked && (
+            <div>
+              <div>
+                <div onClick={() => profileViewOpt("posts")}>Posts</div>
+                <div onClick={() => profileViewOpt("comments")}>Comments</div>
+                <div onClick={() => profileViewOpt("likes")}>Likes</div>
+              </div>
+              <div>
+                {profileViewOption === "posts"
+                  ? allPosts.map((post) => (
+                      <PostCard
+                        key={post.id}
+                        post={post}
+                        onClick={() => setShowPostComments(true)}
+                        onDelete={handleDeletePost}
+                      />
+                    ))
+                  : null}
 
-            {profileViewOption === "likes"
-              ? profileData.likes.map((like) => (
-                  <PostCard
-                    key={like.id}
-                    post={like.post}
-                    onClick={() => setShowPostComments(true)}
-                    onDelete={handleDeletePost}
-                  />
-                ))
-              : null}
-          </div>
+                {profileViewOption === "comments"
+                  ? profileData.comments.map((comment) => (
+                      <PostCard
+                        key={comment.id}
+                        post={comment.post}
+                        onClick={() => setShowPostComments(true)}
+                        onDelete={handleDeletePost}
+                      />
+                    ))
+                  : null}
+
+                {profileViewOption === "likes"
+                  ? profileData.likes.map((like) => (
+                      <PostCard
+                        key={like.id}
+                        post={like.post}
+                        onClick={() => setShowPostComments(true)}
+                        onDelete={handleDeletePost}
+                      />
+                    ))
+                  : null}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
