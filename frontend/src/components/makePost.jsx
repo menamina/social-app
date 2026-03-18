@@ -4,8 +4,33 @@ import { Link, useOutletContext } from "react-router-dom";
 function MakeAPost() {
   const { user, userProfile } = useOutletContext();
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const [msgToPost, setMsgToPost] = useState("");
+  const [postAPIErr, setPostAPIErr] = useState(null);
 
-  async function post() {}
+  async function post() {
+    if (!msgToPost && !selectedFiles) {
+      return;
+    }
+
+    const form = new FormData();
+    if (selectedFiles) {
+      form.append("imgs", selectedFiles);
+    }
+
+    if (msg) {
+    }
+
+    try {
+      const res = await fetch("http://localhost:5555/post", {
+        method: "POST",
+        credentials: "include",
+      });
+
+      const data = await res.json();
+    } catch (error) {
+      setPostAPIErr("Error encountered while trying to post");
+    }
+  }
 
   return (
     <div className="makeAPost div">
@@ -41,7 +66,11 @@ function MakeAPost() {
           </div>
         </div>
         <div>
-          <button>post</button>
+          {msgToPost || selectedFiles ? (
+            <button className="can-post-btn">post</button>
+          ) : (
+            <div className="cannot-post-btn">post</div>
+          )}
         </div>
       </form>
     </div>
