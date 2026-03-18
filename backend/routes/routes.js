@@ -62,9 +62,8 @@ router.get("/dms/:wUser", isAuth, remote.dms);
 router.post("/post", isAuth, multer.array("files", 4), remote.post);
 router.delete("/deletePost", isAuth, remote.deletePost);
 
-router.post("/repost", isAuth, remote.repost);
-
 router.post("/like", isAuth, remote.like);
+router.post("/repost", isAuth, remote.repost);
 
 // comments //
 router.post("/comment", isAuth, remote.comment);
