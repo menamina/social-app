@@ -96,7 +96,22 @@ function PostCard({ post, onClick }) {
               <div>{post.createdAt}</div>
               {postByLoggedInUser && (
                 <div>
-                  <div onClick="openSettings">...</div>
+                  <div onClick={openSettings}>...</div>
+                  {dotsClicked && <div onClick={preDeleteModal}>delete</div>}
+                  {preDeleteModalClicked && (
+                    <div>
+                      <div>Delete post?</div>
+                      <div>
+                        This can’t be undone and it will be removed from your
+                        profile, the timeline of any accounts that follow you,
+                        and from search results.{" "}
+                      </div>
+                      <div>
+                        <div>delete</div>
+                        <div>cancel</div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
