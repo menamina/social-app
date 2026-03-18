@@ -11,15 +11,8 @@ function PostCard({ post, onClick }) {
 
   const postByLoggedInUser = post.postedBy?.id === user?.id ? true : false;
 
-  const [likeError, setLikeError] = useState(null);
-  const [likeAPIError, setLikeAPIError] = useState(null);
-
-  const [repostError, setRepostError] = useState(null);
-  const [repostAPIError, setRepostAPIError] = useState(null);
-
   const [dotsClicked, setDotsClicked] = useState(false);
   const [preDeleteModalClicked, setPreDeleteModalClicked] = useState(false);
-  const [deleteError, setDeleteError] = useState(null);
 
   function openSettings(e) {
     e.stopPropagation();
@@ -49,17 +42,12 @@ function PostCard({ post, onClick }) {
       });
 
       if (!res.ok) {
-        setLikeError("Cannot like/unlike post - post may have been deleted");
-        setLikeAPIError(null);
+        alert("Error liking/unliking post - post may have been deleted");
         return;
       }
-
-      setLikeError(null);
-      setLikeAPIError(null);
       return;
     } catch (error) {
-      setLikeAPIError(error.errorMsg);
-      setLikeError(null);
+      alert("Server error while trying to like/unlike post");
     }
   }
 
@@ -75,19 +63,12 @@ function PostCard({ post, onClick }) {
       });
 
       if (!res.ok) {
-        setRepostError(
-          "Cannot repost/unrepost post - post may have been deleted",
-        );
-        setRepostAPIError(null);
+        alert("Cannot repost/unrepost post - post may have been deleted");
         return;
       }
-
-      setRepostError(null);
-      setRepostAPIError(null);
       return;
     } catch (error) {
-      setRepostAPIError(error.errorMsg);
-      setRepostError(null);
+      alert("Server error, cannot like/unlike post");
     }
   }
 
@@ -104,14 +85,13 @@ function PostCard({ post, onClick }) {
       });
 
       if (!res.ok) {
-        setDeleteError("Cannot delete post - an error occurred");
+        alert("Error deleting post");
+
         return;
       }
-
-      setDeleteError(null);
-      window.location.reload();
     } catch (error) {
-      setDeleteError("Error encountered while trying to delete post");
+      console.log(error);
+      alert("Server error deleting post");
     }
   }
 
