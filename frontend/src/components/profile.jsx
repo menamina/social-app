@@ -5,10 +5,19 @@ import PostCard from "./PostCard";
 function Profile() {
   const { username } = useParams();
   const { setShowPostComments } = useOutletContext();
+
   const [profileViewOption, setProfileViewOption] = useState("posts");
+
   const [profileData, setProfileData] = useState(null);
   const [allPosts, setAllPosts] = useState([]);
+
+   const [youAreBlocked, setYouAreBlockedStatus] = useState(false)
+   const [youBlocked, setYouBlockedStatus] = useState(false)
+
+
   const [isOwnProfile, setIsOwnProfile] = useState(false);
+
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -31,11 +40,21 @@ function Profile() {
 
         const data = await res.json();
 
-        if (res.status === 403 || res.status === 404) {
-          setError(data.errorMsg || "Profile not found");
+        if (data.youAreBlocked ) {
+          setYouAreBlockedStatus(true)
+          setYouBlockedStatus(false)
           setLoading(false);
           return;
         }
+
+        if(data.youBlocked){
+          setYouAreBlockedStatus(false)
+          setYouBlockedStatus(true)
+          setLoading(false);
+          return;
+        }
+
+
         if (data.viewThisUserProfile) {
           setProfileData(data.viewThisUserProfile);
           setAllPosts(
@@ -45,6 +64,8 @@ function Profile() {
             ].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)),
           );
           setIsOwnProfile(true);
+          setYouAreBlockedStatus(true)
+          setYouBlockedStatus(false)
         } else if (data.userProfile) {
           setProfileData(data.userProfile);
           setAllPosts(
@@ -64,7 +85,7 @@ function Profile() {
     }
 
     fetchProfileData();
-  }, [username]);
+  }, []);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -104,16 +125,10 @@ function Profile() {
 
                   {!isOwnProfile && 
                   <div>
-                    {accountBlocked && <div>Unblock</div>}
-                  </div>
-                    }
-
-
-
-
-
-                  {accountBlocked && }
-                  <div onClick={() => setDotsClicked(!prev)}>...</div>
+                    {youAreBlocked && <div>This user blocked you</div>}
+                    {youBlocked && <div>Unblock</div>}
+                    {!youAreBlocked && !youBlocked ? (
+                       <div onClick={() => setDotsClicked(!prev)}>...</div>
                   {dotsClicked && (
                     <div onClick={() => setBlockButtonClicked(true)}>block</div>
                   )}
@@ -121,7 +136,11 @@ function Profile() {
                   {}
                   {!isOwnProfile && (
                     <div onClick={updateFollowStatus}>{followStatus}</div>
-                  )}
+                  ) : null}
+                    )}
+                                       
+                  </div>
+                
                 </div>
               </div>
               <div>
@@ -142,6 +161,12 @@ function Profile() {
               )}
             </div>
           </div>
+
+          {accountBlocked && 
+          <div>
+            <h2>@{profileData.username} is blocked</h2>
+            <div>unblock them to view their posts</div>
+            </div>}
 
           {!accountBlocked && (
             <div>

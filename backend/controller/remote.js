@@ -237,11 +237,13 @@ async function viewProfile(req, res) {
     );
 
     if (theyBlockedYou) {
-      return res.status(403).json({ errorMsg: "This user has blocked you" });
+      return res
+        .status(403)
+        .json({ youAreBlocked: "This user has blocked you" });
     }
 
     if (youBlockedThem) {
-      return res.status(403).json({ errorMsg: "You have blocked this user" });
+      return res.status(403).json({ youBlocked: "You have blocked this user" });
     }
 
     const userProfile = await prisma.user.findUnique({
