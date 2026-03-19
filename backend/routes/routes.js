@@ -69,10 +69,10 @@ router.post("/repost", isAuth, remote.repost);
 router.post("/comment", isAuth, remote.comment);
 router.post("/deleteComment", isAuth, remote.deleteComment);
 
-// following + followers //
+// following + followers + blocking//
 
-router.post("/follow:/:thisID", isAuth, remote.followThem);
-router.delete("/unfollow:/:thisID", isAuth, remote.unfollowThem);
+router.post("/follow:/:thisID", isAuth, remote.followHandler);
+router.post("/block:/:thisID", isAuth, remote.blockHandler);
 
 // dms //
 

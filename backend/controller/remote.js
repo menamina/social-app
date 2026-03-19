@@ -1074,76 +1074,87 @@ async function deleteComment(req, res) {
   }
 }
 
-async function followThem(req, res) {
+async function followHandler(req, res) {
   try {
     const id = req.user.id;
-    const { followThemID } = req.body;
+    const { thisID } = req.params;
 
     const userID = Number(id);
-    const followThem = Number(followThemID);
+    const otherUserID = Number(thisID);
 
-    await prisma.follow.create({
-      data: {
-        followerID: userID,
-        followingID: followThemID,
+    const isUserFollowingOtherUser = await prisma.follow.findUnique({
+      where: {
+        followerID_followingID: {
+          followerID: userID,
+          followingID: otherUserID,
+        },
       },
     });
-    return res.status(200).json({ success: true });
+
+    if (isUserFollowingOtherUser) {
+      await prisma.follow.delete({
+        where: {
+          followerID_followingID: {
+            followerID: userID,
+            followingID: otherUserID,
+          },
+        },
+      });
+      return res.status(200).json({ userUnfollowed: true });
+    }
+
+    if (!isUserFollowingOtherUser) {
+      await prisma.follow.create({
+        data: {
+          followerID: userID,
+          followingID: otherUserID,
+        },
+      });
+      return res.status(200).json({ userFollowed: true });
+    }
   } catch (error) {
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
   }
 }
 
-async function unfollowThem(req, res) {
+async function blockHandler(req, res) {
   try {
     const id = req.user.id;
-    const { unfollowThemID } = req.body;
+    const { thisID } = req.params;
 
     const userID = Number(id);
-    const unfollowThem = Number(unfollowThemID);
+    const otherUserID = Number(otherUserID);
 
-    await prisma.follow.delete({
+    const isUserBlockingOtherUser = await prisma.blocked.findUnique({
       where: {
-        followerID: userID,
-        followingID: unfollowThem,
-      },
-    });
-    return res.status(200).json({ success: true });
-  } catch (error) {
-    return res.status(500).json({ errorMsg: "Internal server error :^(" });
-  }
-}
-
-async function blockThem(req, res) {
-  try {
-    const id = req.user.id;
-    const { blockThemID } = req.body;
-
-    const userID = Number(id);
-    const blockThem = Number(blockThemID);
-
-    await prisma.blocked.create({
-      data: {
-        blockerID: userID,
-        blockedID: blockThem,
+        blockerID_blockedID: {
+          blockerID: userID,
+          followingID: otherUserID,
+        },
       },
     });
 
-    await prisma.follow.delete({
-      where: {
-        followerID: userID,
-        followingID: blockThem,
-      },
-    });
+    if (isUserBlockingOtherUser) {
+      await prisma.blocked.delete({
+        where: {
+          blockerID_blockedID: {
+            blockerID: userID,
+            blockedID: otherUserID,
+          },
+        },
+      });
+      return res.status(200).json({ userUnblocked: true });
+    }
 
-    await prisma.follow.delete({
-      where: {
-        followerID: blockThem,
-        followingID: userID,
-      },
-    });
-
-    return res.status(200).json({ success: true });
+    if (!isUserBlockingOtherUser) {
+      await prisma.blocked.create({
+        data: {
+          blockerID: userID,
+          blockedID: otherUserID,
+        },
+      });
+      return res.status(200).json({ userBlocked: true });
+    }
   } catch (error) {
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
   }
@@ -1210,26 +1221,6 @@ async function getBlockedUsers(req, res) {
   }
 }
 
-async function unblockThem(req, res) {
-  try {
-    const id = req.user.id;
-    const { unblockThemID } = req.body;
-
-    const userID = Number(id);
-    const unblockThem = Number(unblockThemID);
-
-    await prisma.blocked.delete({
-      where: {
-        blockerID: userID,
-        blockedID: unblockThem,
-      },
-    });
-    return res.status(200).json({ success: true });
-  } catch (error) {
-    return res.status(500).json({ errorMsg: "Internal server error :^(" });
-  }
-}
-
 module.exports = {
   signup,
 
@@ -1247,8 +1238,8 @@ module.exports = {
   settings,
   updateProfileSettings,
 
-  followThem,
-  unfollowThem,
+  followHandler,
+  blockHandler,
 
   like,
   repost,
@@ -1263,7 +1254,5 @@ module.exports = {
   deleteMsg,
   checkBlockStatus,
 
-  blockThem,
-  unblockThem,
   getBlockedUsers,
 };

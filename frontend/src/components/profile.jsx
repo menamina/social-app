@@ -31,10 +31,6 @@ function Profile() {
     if (option === "likes") setProfileViewOption("likes");
   }
 
-  function updateFollowStatus() {
-    setFollowStatus(followStatus === "Follow" ? "Unfollow" : "Follow");
-  }
-
   useEffect(() => {
     async function fetchProfileData() {
       setLoading(true);
@@ -61,6 +57,7 @@ function Profile() {
           setYouAreBlockedStatus(false);
           setYouBlockedStatus(true);
           setNoBlockRelation(false);
+          setFollowStatus(null);
           setLoading(false);
           return;
         }
@@ -99,7 +96,7 @@ function Profile() {
           );
           areTheyFollowingMe
             ? setFollowerStatus("Follows you")
-            : setFollowStatus(false);
+            : setFollowerStatus("");
         }
 
         setLoading(false);
@@ -126,6 +123,22 @@ function Profile() {
 
   async function updateFollowStatus() {
     try {
+      const res = await fetch(
+        `http://localhost:5555/follow:/${profileData.id}`,
+        {
+          method: "GET",
+          credentials: "include",
+        },
+      );
+
+      const data = await res.json();
+
+      if (data.userFollowed) {
+        setFollowStatus("Following");
+      } else if (data.userUnfollowed) {
+        setFollowStatus("Follow");
+      }
+      return;
     } catch (error) {
       console.log(error);
       alert("Sever error while trying to update follow");
@@ -204,7 +217,11 @@ function Profile() {
                               </div>
                             </div>
                           )}
-                          <div onClick={updateFollowStatus}>{followStatus}</div>
+                          <div onClick={updateFollowStatus}>
+                            {followStatus === "Following"
+                              ? "Following"
+                              : "Follow"}
+                          </div>
                         </>
                       )}
                     </div>
