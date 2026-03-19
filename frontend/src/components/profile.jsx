@@ -15,13 +15,13 @@ function Profile() {
 
   const [youAreBlocked, setYouAreBlockedStatus] = useState(false);
   const [youBlocked, setYouBlockedStatus] = useState(false);
-  const [noBlockRelation, setNoBlockRelation] = useState(true)
+  const [noBlockRelation, setNoBlockRelation] = useState(true);
 
   const [dotsClicked, setDotsClicked] = useState(false);
   const [blockButtonClicked, setBlockButtonClicked] = useState(false);
 
   const [followStatus, setFollowStatus] = useState(null);
-  const [followerStatus, setFollowerStatus] = useState(null)
+  const [followerStatus, setFollowerStatus] = useState(null);
 
   const [error, setError] = useState(null);
 
@@ -53,14 +53,14 @@ function Profile() {
           setYouBlockedStatus(false);
           setLoading(false);
           setFollowStatus(null);
-          setNoBlockRelation(false)
+          setNoBlockRelation(false);
           return;
         }
 
         if (data.youBlocked) {
           setYouAreBlockedStatus(false);
           setYouBlockedStatus(true);
-          setNoBlockRelation(false)
+          setNoBlockRelation(false);
           setLoading(false);
           return;
         }
@@ -87,11 +87,19 @@ function Profile() {
           setIsOwnProfile(false);
           setYouAreBlockedStatus(false);
           setYouBlockedStatus(false);
-          setNoBlockRelation(true)
-          const amIFollowing = data.userProfile.followers.find((followers) => followers.id === user.id )
-          amIFollowing ? setFollowStatus("Following") : setFollowStatus("Follow")
-          const areTheyFollowingMe = data.userProfile.following.find((followers) => followers.id === user.id)
-          areTheyFollowingMe ? setFollowerStatus("Follows you") : setFollowStatus(false)
+          setNoBlockRelation(true);
+          const amIFollowing = data.userProfile.followers.find(
+            (followers) => followers.id === user.id,
+          );
+          amIFollowing
+            ? setFollowStatus("Following")
+            : setFollowStatus("Follow");
+          const areTheyFollowingMe = data.userProfile.following.find(
+            (followers) => followers.id === user.id,
+          );
+          areTheyFollowingMe
+            ? setFollowerStatus("Follows you")
+            : setFollowStatus(false);
         }
 
         setLoading(false);
@@ -116,20 +124,25 @@ function Profile() {
     return <div>Profile not found</div>;
   }
 
-  async function updateFollowStatus(){
+  async function updateFollowStatus() {
     try {
-
+    } catch (error) {
+      console.log(error);
+      alert("Sever error while trying to update follow");
     }
   }
 
-  async function handleBlockStatus(){
+  async function handleBlockStatus() {
     try {
-
+    } catch (error) {
+      console.log(error);
+      alert("Sever error while trying to update block status");
     }
   }
 
-  function cancelBlock(){
-
+  function cancelBlock() {
+    setDotsClicked(false);
+    setBlockButtonClicked(false);
   }
 
   function handleDeletePost(postId) {
@@ -160,7 +173,7 @@ function Profile() {
                   </div>
                   <div>{profileData.name}</div>
                   <div>
-                    <div>{profileData.username}</div>
+                    <div>@{profileData.username}</div>
                     {followerStatus && <div>FOLLOWS YOU</div>}
                   </div>
                 </div>
@@ -168,7 +181,9 @@ function Profile() {
                   {!isOwnProfile && (
                     <div>
                       {youAreBlocked && <div>This user blocked you</div>}
-                      {youBlocked && <div onClick={handleBlockStatus}>Unblock</div>}
+                      {youBlocked && (
+                        <div onClick={handleBlockStatus}>Unblock</div>
+                      )}
                       {noBlockRelation && (
                         <>
                           <div onClick={() => setDotsClicked((prev) => !prev)}>
@@ -179,16 +194,16 @@ function Profile() {
                               block
                             </div>
                           )}
-                          {blockButtonClicked && <div>
-
-                            <div></div>
-                            <div></div>
+                          {blockButtonClicked && (
                             <div>
-                              <div onClick={handleBlockStatus}></div>
-                              <div onClick={cancelBlock}></div>
+                              <div></div>
+                              <div></div>
+                              <div>
+                                <div onClick={handleBlockStatus}></div>
+                                <div onClick={cancelBlock}></div>
+                              </div>
                             </div>
-                            
-                            </div>}
+                          )}
                           <div onClick={updateFollowStatus}>{followStatus}</div>
                         </>
                       )}
