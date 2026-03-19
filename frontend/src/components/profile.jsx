@@ -307,7 +307,9 @@ function Profile() {
                       <PostCard
                         key={comment.id}
                         post={comment.post}
-                        onClick={navigate(`/@${post.username}/post/${post.id}`)}
+                        onClick={navigate(
+                          `/@${comment.username}/post/${comment.id}`,
+                        )}
                         onDelete={handleDeletePost}
                       />
                     ))
@@ -318,7 +320,7 @@ function Profile() {
                       <PostCard
                         key={like.id}
                         post={like.post}
-                        onClick={navigate(`/@${post.username}/post/${post.id}`)}
+                        onClick={navigate(`/@${like.username}/post/${kuje.id}`)}
                         onDelete={handleDeletePost}
                       />
                     ))

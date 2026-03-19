@@ -9,7 +9,7 @@ import Search from "./components/search.jsx";
 import Profile from "./components/profile.jsx";
 import Settings from "./components/settings.jsx";
 import Dms from "./components/dms.jsx";
-
+import ExpandedPost from "./components/expandedPost.jsx";
 const routes = createBrowserRouter([
   {
     path: "/login",
@@ -26,6 +26,7 @@ const routes = createBrowserRouter([
           { index: true, element: <Feed /> },
           { path: "search", element: <Search /> },
           { path: "@:username", element: <Profile /> },
+          { path: "@:username/post/:id", element: <ExpandedPost /> },
           { path: "settings", element: <Settings /> },
           { path: "dms", element: <Dms /> },
         ],
