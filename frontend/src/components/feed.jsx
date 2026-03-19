@@ -14,7 +14,6 @@ function Feed() {
     setFollowingFeed,
     followingFeedErr,
     setFollowingFeedErr,
-    setShowPostComments,
   } = useOutletContext();
 
   const navigate = useNavigate();

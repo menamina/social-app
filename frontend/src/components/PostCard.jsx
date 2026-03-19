@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useOutletContext } from "react-router-dom";
 import { useState } from "react";
+import MakeAComment from "./makeAComment";
 
 function PostCard({ post, onClick, onDelete, showPostComments = false }) {
   const { user } = useOutletContext();
