@@ -1123,14 +1123,23 @@ async function blockHandler(req, res) {
     const { thisID } = req.params;
 
     const userID = Number(id);
-    const otherUserID = Number(otherUserID);
+    const otherUserID = Number(thisID);
 
     const isUserBlockingOtherUser = await prisma.blocked.findUnique({
       where: {
         blockerID_blockedID: {
           blockerID: userID,
-          followingID: otherUserID,
+          blockedID: otherUserID,
         },
+      },
+    });
+
+    const isThereAFollowRelation = await prisma.follow.findMany({
+      where: {
+        OR: [
+          { folllowerID: userID, followingID: otherUserID },
+          { folllowerID: otherUserID, followingID: userID },
+        ],
       },
     });
 
@@ -1153,6 +1162,16 @@ async function blockHandler(req, res) {
           blockedID: otherUserID,
         },
       });
+
+      await prisma.follow.deleteMany({
+        where: {
+          OR: [
+            { followerID: userID, followingID: otherUserID },
+            { followerID: otherUserID, followingID: userID },
+          ],
+        },
+      });
+
       return res.status(200).json({ userBlocked: true });
     }
   } catch (error) {

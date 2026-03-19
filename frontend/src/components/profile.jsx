@@ -147,6 +147,24 @@ function Profile() {
 
   async function handleBlockStatus() {
     try {
+      const res = await fetch(
+        `http://localhost:5555/block:/${profileData.id}`,
+        {
+          method: "GET",
+          credentials: "include",
+        },
+      );
+
+      const data = await res.json();
+
+      if (data.userBlocked) {
+        setYouBlockedStatus(true);
+        setNoBlockRelation(false);
+      } else if (data.userUnblocked) {
+        setYouBlockedStatus(false);
+        setNoBlockRelation(true);
+      }
+      return;
     } catch (error) {
       console.log(error);
       alert("Sever error while trying to update block status");
