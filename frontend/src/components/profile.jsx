@@ -1,10 +1,18 @@
 import { useState, useEffect } from "react";
-import { Link, useParams, useOutletContext } from "react-router-dom";
+import {
+  Link,
+  useParams,
+  useOutletContext,
+  useNavigate,
+} from "react-router-dom";
 import PostCard from "./PostCard";
 
 function Profile() {
   const { username } = useParams();
   const { setShowPostComments, user } = useOutletContext();
+
+  const navigate = useNavigate();
+
   const [loading, setLoading] = useState(true);
   const [isOwnProfile, setIsOwnProfile] = useState(false);
 
@@ -105,7 +113,7 @@ function Profile() {
 
   useEffect(() => {
     fetchProfileData();
-  }, []);
+  }, [username]);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -288,7 +296,7 @@ function Profile() {
                       <PostCard
                         key={post.id}
                         post={post}
-                        onClick={() => setShowPostComments(true)}
+                        onClick={navigate(`/@${post.username}/post/${post.id}`)}
                         onDelete={handleDeletePost}
                       />
                     ))
@@ -299,7 +307,7 @@ function Profile() {
                       <PostCard
                         key={comment.id}
                         post={comment.post}
-                        onClick={() => setShowPostComments(true)}
+                        onClick={navigate(`/@${post.username}/post/${post.id}`)}
                         onDelete={handleDeletePost}
                       />
                     ))
@@ -310,7 +318,7 @@ function Profile() {
                       <PostCard
                         key={like.id}
                         post={like.post}
-                        onClick={() => setShowPostComments(true)}
+                        onClick={navigate(`/@${post.username}/post/${post.id}`)}
                         onDelete={handleDeletePost}
                       />
                     ))

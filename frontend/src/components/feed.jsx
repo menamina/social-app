@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext, useNavigate } from "react-router-dom";
 import MakeAPost from "./makePost";
 import PostCard from "./PostCard";
 
@@ -16,6 +16,8 @@ function Feed() {
     setFollowingFeedErr,
     setShowPostComments,
   } = useOutletContext();
+
+  const navigate = useNavigate();
 
   const [feedView, setFeedView] = useState("for you");
   const [wannaMakeAPost, setWannaMakeAPost] = useState(false);
@@ -94,7 +96,7 @@ function Feed() {
                   <PostCard
                     key={post.id}
                     post={post}
-                    onClick={() => setShowPostComments(true)}
+                    onClick={navigate(`/@${post.username}/post/${post.id}`)}
                     onDelete={handleDeletePost}
                   />
                 ))}
@@ -111,7 +113,7 @@ function Feed() {
                   <PostCard
                     key={post.id}
                     post={post}
-                    onClick={() => setShowPostComments(true)}
+                    onClick={navigate(`/@${post.username}/post/${post.id}`)}
                     onDelete={handleDeletePost}
                   />
                 ))}
