@@ -9,7 +9,7 @@ import PostCard from "./PostCard";
 
 function Profile() {
   const { username } = useParams();
-  const { setShowPostComments, user } = useOutletContext();
+  const { user } = useOutletContext();
 
   const navigate = useNavigate();
 
@@ -38,81 +38,80 @@ function Profile() {
     if (option === "comments") setProfileViewOption("comments");
     if (option === "likes") setProfileViewOption("likes");
   }
-
-  async function fetchProfileData() {
-    setLoading(true);
-    setError(null);
-
-    try {
-      const res = await fetch(`http://localhost:5555/@${username}`, {
-        method: "GET",
-        credentials: "include",
-      });
-
-      const data = await res.json();
-
-      if (data.youAreBlocked) {
-        setYouAreBlockedStatus(true);
-        setYouBlockedStatus(false);
-        setLoading(false);
-        setFollowStatus(null);
-        setNoBlockRelation(false);
-        return;
-      }
-
-      if (data.youBlocked) {
-        setYouAreBlockedStatus(false);
-        setYouBlockedStatus(true);
-        setNoBlockRelation(false);
-        setFollowStatus(null);
-        setLoading(false);
-        return;
-      }
-
-      if (data.viewThisUserProfile) {
-        setProfileData(data.viewThisUserProfile);
-        setAllPosts(
-          [
-            ...data.viewThisUserProfile.posts,
-            ...data.viewThisUserProfile.reposts.map((repost) => repost.post),
-          ].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)),
-        );
-        setIsOwnProfile(true);
-        setYouAreBlockedStatus(false);
-        setYouBlockedStatus(false);
-      } else if (data.userProfile) {
-        setProfileData(data.userProfile);
-        setAllPosts(
-          [
-            ...data.userProfile.posts,
-            ...data.userProfile.reposts.map((repost) => repost.post),
-          ].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)),
-        );
-        setIsOwnProfile(false);
-        setYouAreBlockedStatus(false);
-        setYouBlockedStatus(false);
-        setNoBlockRelation(true);
-        const amIFollowing = data.userProfile.followers.find(
-          (followers) => followers.id === user.id,
-        );
-        amIFollowing ? setFollowStatus("Following") : setFollowStatus("Follow");
-        const areTheyFollowingMe = data.userProfile.following.find(
-          (followers) => followers.id === user.id,
-        );
-        areTheyFollowingMe
-          ? setFollowerStatus("Follows you")
-          : setFollowerStatus("");
-      }
-
-      setLoading(false);
-    } catch (error) {
-      setError("Failed to load profile");
-      setLoading(false);
-    }
-  }
-
   useEffect(() => {
-    fetchProfileData();
+    async function fetchProfileData() {
+      setLoading(true);
+      setError(null);
+
+      try {
+        const res = await fetch(`http://localhost:5555/@${username}`, {
+          method: "GET",
+          credentials: "include",
+        });
+
+        const data = await res.json();
+
+        if (data.youAreBlocked) {
+          setYouAreBlockedStatus(true);
+          setYouBlockedStatus(false);
+          setLoading(false);
+          setFollowStatus(null);
+          setNoBlockRelation(false);
+          return;
+        }
+
+        if (data.youBlocked) {
+          setYouAreBlockedStatus(false);
+          setYouBlockedStatus(true);
+          setNoBlockRelation(false);
+          setFollowStatus(null);
+          setLoading(false);
+          return;
+        }
+
+        if (data.viewThisUserProfile) {
+          setProfileData(data.viewThisUserProfile);
+          setAllPosts(
+            [
+              ...data.viewThisUserProfile.posts,
+              ...data.viewThisUserProfile.reposts.map((repost) => repost.post),
+            ].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)),
+          );
+          setIsOwnProfile(true);
+          setYouAreBlockedStatus(false);
+          setYouBlockedStatus(false);
+        } else if (data.userProfile) {
+          setProfileData(data.userProfile);
+          setAllPosts(
+            [
+              ...data.userProfile.posts,
+              ...data.userProfile.reposts.map((repost) => repost.post),
+            ].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)),
+          );
+          setIsOwnProfile(false);
+          setYouAreBlockedStatus(false);
+          setYouBlockedStatus(false);
+          setNoBlockRelation(true);
+          const amIFollowing = data.userProfile.followers.find(
+            (followers) => followers.id === user.id,
+          );
+          amIFollowing
+            ? setFollowStatus("Following")
+            : setFollowStatus("Follow");
+          const areTheyFollowingMe = data.userProfile.following.find(
+            (followers) => followers.id === user.id,
+          );
+          areTheyFollowingMe
+            ? setFollowerStatus("Follows you")
+            : setFollowerStatus("");
+        }
+
+        setLoading(false);
+      } catch (error) {
+        setError("Failed to load profile");
+        setLoading(false);
+      }
+    }
   }, [username]);
 
   if (loading) {
@@ -298,6 +297,7 @@ function Profile() {
                         post={post}
                         onClick={navigate(`/@${post.username}/post/${post.id}`)}
                         onDelete={handleDeletePost}
+                        showPostComments={true}
                       />
                     ))
                   : null}
@@ -311,6 +311,7 @@ function Profile() {
                           `/@${comment.username}/post/${comment.id}`,
                         )}
                         onDelete={handleDeletePost}
+                        showPostComments={true}
                       />
                     ))
                   : null}
@@ -320,8 +321,9 @@ function Profile() {
                       <PostCard
                         key={like.id}
                         post={like.post}
-                        onClick={navigate(`/@${like.username}/post/${kuje.id}`)}
+                        onClick={navigate(`/@${like.username}/post/${like.id}`)}
                         onDelete={handleDeletePost}
+                        showPostComments={true}
                       />
                     ))
                   : null}

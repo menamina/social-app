@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
-import { useOutletContext, useNavigate } from "react-router-dom";
+import { useOutletContext, useNavigate, useParams } from "react-router-dom";
 import PostCard from "./PostCard";
 
 function ExpandedPost() {
-  const { user } = useOutletContext();
   const { username, postId } = useParams();
 
   const navigate = useNavigate();
@@ -34,7 +33,7 @@ function ExpandedPost() {
 
   function navToFeed(postID) {
     console.log(postID);
-    navigate(`http://localhost:5555/`);
+    navigate("/");
   }
 
   if (loading) return <div>Loading...</div>;
