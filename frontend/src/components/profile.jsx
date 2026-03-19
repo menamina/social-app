@@ -31,83 +31,81 @@ function Profile() {
     if (option === "likes") setProfileViewOption("likes");
   }
 
-  useEffect(() => {
-    async function fetchProfileData() {
-      setLoading(true);
-      setError(null);
+  async function fetchProfileData() {
+    setLoading(true);
+    setError(null);
 
-      try {
-        const res = await fetch(`http://localhost:5555/@${username}`, {
-          method: "GET",
-          credentials: "include",
-        });
+    try {
+      const res = await fetch(`http://localhost:5555/@${username}`, {
+        method: "GET",
+        credentials: "include",
+      });
 
-        const data = await res.json();
+      const data = await res.json();
 
-        if (data.youAreBlocked) {
-          setYouAreBlockedStatus(true);
-          setYouBlockedStatus(false);
-          setLoading(false);
-          setFollowStatus(null);
-          setNoBlockRelation(false);
-          return;
-        }
-
-        if (data.youBlocked) {
-          setYouAreBlockedStatus(false);
-          setYouBlockedStatus(true);
-          setNoBlockRelation(false);
-          setFollowStatus(null);
-          setLoading(false);
-          return;
-        }
-
-        if (data.viewThisUserProfile) {
-          setProfileData(data.viewThisUserProfile);
-          setAllPosts(
-            [
-              ...data.viewThisUserProfile.posts,
-              ...data.viewThisUserProfile.reposts.map((repost) => repost.post),
-            ].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)),
-          );
-          setIsOwnProfile(true);
-          setYouAreBlockedStatus(false);
-          setYouBlockedStatus(false);
-        } else if (data.userProfile) {
-          setProfileData(data.userProfile);
-          setAllPosts(
-            [
-              ...data.userProfile.posts,
-              ...data.userProfile.reposts.map((repost) => repost.post),
-            ].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)),
-          );
-          setIsOwnProfile(false);
-          setYouAreBlockedStatus(false);
-          setYouBlockedStatus(false);
-          setNoBlockRelation(true);
-          const amIFollowing = data.userProfile.followers.find(
-            (followers) => followers.id === user.id,
-          );
-          amIFollowing
-            ? setFollowStatus("Following")
-            : setFollowStatus("Follow");
-          const areTheyFollowingMe = data.userProfile.following.find(
-            (followers) => followers.id === user.id,
-          );
-          areTheyFollowingMe
-            ? setFollowerStatus("Follows you")
-            : setFollowerStatus("");
-        }
-
+      if (data.youAreBlocked) {
+        setYouAreBlockedStatus(true);
+        setYouBlockedStatus(false);
         setLoading(false);
-      } catch (error) {
-        setError("Failed to load profile");
-        setLoading(false);
+        setFollowStatus(null);
+        setNoBlockRelation(false);
+        return;
       }
-    }
 
+      if (data.youBlocked) {
+        setYouAreBlockedStatus(false);
+        setYouBlockedStatus(true);
+        setNoBlockRelation(false);
+        setFollowStatus(null);
+        setLoading(false);
+        return;
+      }
+
+      if (data.viewThisUserProfile) {
+        setProfileData(data.viewThisUserProfile);
+        setAllPosts(
+          [
+            ...data.viewThisUserProfile.posts,
+            ...data.viewThisUserProfile.reposts.map((repost) => repost.post),
+          ].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)),
+        );
+        setIsOwnProfile(true);
+        setYouAreBlockedStatus(false);
+        setYouBlockedStatus(false);
+      } else if (data.userProfile) {
+        setProfileData(data.userProfile);
+        setAllPosts(
+          [
+            ...data.userProfile.posts,
+            ...data.userProfile.reposts.map((repost) => repost.post),
+          ].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)),
+        );
+        setIsOwnProfile(false);
+        setYouAreBlockedStatus(false);
+        setYouBlockedStatus(false);
+        setNoBlockRelation(true);
+        const amIFollowing = data.userProfile.followers.find(
+          (followers) => followers.id === user.id,
+        );
+        amIFollowing ? setFollowStatus("Following") : setFollowStatus("Follow");
+        const areTheyFollowingMe = data.userProfile.following.find(
+          (followers) => followers.id === user.id,
+        );
+        areTheyFollowingMe
+          ? setFollowerStatus("Follows you")
+          : setFollowerStatus("");
+      }
+
+      setLoading(false);
+    } catch (error) {
+      setError("Failed to load profile");
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
     fetchProfileData();
-  }, [username]);
+  }, []);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -135,8 +133,16 @@ function Profile() {
 
       if (data.userFollowed) {
         setFollowStatus("Following");
+        setProfileData((prev) => ({
+          ...prev,
+          followers: [...prev.followers, user],
+        }));
       } else if (data.userUnfollowed) {
         setFollowStatus("Follow");
+        setProfileData((prev) => ({
+          ...prev,
+          followers: prev.followers.filter((f) => f.id !== user.id),
+        }));
       }
       return;
     } catch (error) {
@@ -157,12 +163,8 @@ function Profile() {
 
       const data = await res.json();
 
-      if (data.userBlocked) {
-        setYouBlockedStatus(true);
-        setNoBlockRelation(false);
-      } else if (data.userUnblocked) {
-        setYouBlockedStatus(false);
-        setNoBlockRelation(true);
+      if (data.userBlocked || data.userUnblocked) {
+        await fetchProfileData();
       }
       return;
     } catch (error) {
