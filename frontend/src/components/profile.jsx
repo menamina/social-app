@@ -4,7 +4,7 @@ import PostCard from "./PostCard";
 
 function Profile() {
   const { username } = useParams();
-  const { setShowPostComments } = useOutletContext();
+  const { setShowPostComments, user } = useOutletContext();
   const [loading, setLoading] = useState(true);
   const [isOwnProfile, setIsOwnProfile] = useState(false);
 
@@ -19,7 +19,9 @@ function Profile() {
 
   const [dotsClicked, setDotsClicked] = useState(false);
   const [blockButtonClicked, setBlockButtonClicked] = useState(false);
+
   const [followStatus, setFollowStatus] = useState(null);
+  const [followerStatus, setFollowerStatus] = useState(null)
 
   const [error, setError] = useState(null);
 
@@ -86,7 +88,10 @@ function Profile() {
           setYouAreBlockedStatus(false);
           setYouBlockedStatus(false);
           setNoBlockRelation(true)
-          setFollowStatus()
+          const amIFollowing = data.userProfile.followers.find((followers) => followers.id === user.id )
+          amIFollowing ? setFollowStatus("Following") : setFollowStatus("Follow")
+          const areTheyFollowingMe = data.userProfile.following.find((followers) => followers.id === user.id)
+          areTheyFollowingMe ? setFollowerStatus("Follows you") : setFollowStatus(false)
         }
 
         setLoading(false);
@@ -146,15 +151,25 @@ function Profile() {
             <div>
               <div>
                 <div>
+                  <div>
+                    <div>
+                      <img
+                        src={`http://localhost:5555/pfpIMG/${profileData.profile?.pfp || profileData.pfp}`}
+                      />
+                    </div>
+                  </div>
                   <div>{profileData.name}</div>
-                  <div>{profileData.username}</div>
+                  <div>
+                    <div>{profileData.username}</div>
+                    {followerStatus && <div>FOLLOWS YOU</div>}
+                  </div>
                 </div>
                 <div>
                   {!isOwnProfile && (
                     <div>
                       {youAreBlocked && <div>This user blocked you</div>}
                       {youBlocked && <div onClick={handleBlockStatus}>Unblock</div>}
-                      {!youAreBlocked && !youBlocked && (
+                      {noBlockRelation && (
                         <>
                           <div onClick={() => setDotsClicked((prev) => !prev)}>
                             ...
@@ -179,24 +194,18 @@ function Profile() {
                       )}
                     </div>
                   )}
+
+                  {isOwnProfile && (
+                    <div>
+                      <Link to="/settings">edit</Link>
+                    </div>
+                  )}
                 </div>
               </div>
               <div>
                 <div>{profileData.followers.length} followers</div>
                 <div>{profileData.following.length} folowing</div>
               </div>
-            </div>
-            <div>
-              <div>
-                <img
-                  src={`http://localhost:5555/pfpIMG/${profileData.profile?.pfp || profileData.pfp}`}
-                />
-              </div>
-              {isOwnProfile && (
-                <div>
-                  <Link to="/settings">edit</Link>
-                </div>
-              )}
             </div>
           </div>
 
