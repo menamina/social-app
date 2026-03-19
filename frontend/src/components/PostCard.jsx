@@ -2,8 +2,8 @@ import { Link } from "react-router-dom";
 import { useOutletContext } from "react-router-dom";
 import { useState } from "react";
 
-function PostCard({ post, onClick, onDelete }) {
-  const { user, showPostComments, setShowPostComments } = useOutletContext();
+function PostCard({ post, onClick, onDelete, showPostComments = false }) {
+  const { user } = useOutletContext();
 
   const name = post.postedBy?.name || post.name;
   const username = post.postedBy?.username || post.username;
