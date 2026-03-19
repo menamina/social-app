@@ -15,11 +15,11 @@ function Profile() {
 
   const [youAreBlocked, setYouAreBlockedStatus] = useState(false);
   const [youBlocked, setYouBlockedStatus] = useState(false);
+  const [noBlockRelation, setNoBlockRelation] = useState(true)
 
   const [dotsClicked, setDotsClicked] = useState(false);
   const [blockButtonClicked, setBlockButtonClicked] = useState(false);
   const [followStatus, setFollowStatus] = useState(null);
-  const [accountBlocked, setAccountBlocked] = useState(false);
 
   const [error, setError] = useState(null);
 
@@ -30,7 +30,6 @@ function Profile() {
   }
 
   function updateFollowStatus() {
-    // TODO: Implement follow/unfollow logic
     setFollowStatus(followStatus === "Follow" ? "Unfollow" : "Follow");
   }
 
@@ -50,16 +49,16 @@ function Profile() {
         if (data.youAreBlocked) {
           setYouAreBlockedStatus(true);
           setYouBlockedStatus(false);
-          setAccountBlocked(false);
           setLoading(false);
           setFollowStatus(null);
+          setNoBlockRelation(false)
           return;
         }
 
         if (data.youBlocked) {
           setYouAreBlockedStatus(false);
           setYouBlockedStatus(true);
-          setAccountBlocked(true);
+          setNoBlockRelation(false)
           setLoading(false);
           return;
         }
@@ -75,7 +74,6 @@ function Profile() {
           setIsOwnProfile(true);
           setYouAreBlockedStatus(false);
           setYouBlockedStatus(false);
-          setAccountBlocked(false);
         } else if (data.userProfile) {
           setProfileData(data.userProfile);
           setAllPosts(
@@ -87,7 +85,8 @@ function Profile() {
           setIsOwnProfile(false);
           setYouAreBlockedStatus(false);
           setYouBlockedStatus(false);
-          setAccountBlocked(false);
+          setNoBlockRelation(true)
+          setFollowStatus()
         }
 
         setLoading(false);
@@ -125,7 +124,7 @@ function Profile() {
   }
 
   function cancelBlock(){
-    
+
   }
 
   function handleDeletePost(postId) {
@@ -201,14 +200,21 @@ function Profile() {
             </div>
           </div>
 
-          {accountBlocked && (
+          {youBlocked && (
             <div>
               <h2>@{profileData.username} is blocked</h2>
               <div>unblock them to view their posts</div>
             </div>
           )}
 
-          {!accountBlocked && (
+          {youAreBlocked && (
+            <div>
+              <h2>@{profileData.username} has blocked you</h2>
+              <div>sad face</div>
+            </div>
+          )}
+
+          {noBlockRelation && (
             <div>
               <div>
                 <div onClick={() => profileViewOpt("posts")}>Posts</div>
