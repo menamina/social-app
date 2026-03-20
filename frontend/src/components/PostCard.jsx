@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import { useOutletContext } from "react-router-dom";
-import { useState } from "react";
+import { useOutletContext, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import MakeAComment from "./makeAComment";
 
 function PostCard({ post, onClick, onDelete }) {
@@ -18,6 +18,17 @@ function PostCard({ post, onClick, onDelete }) {
   const [preDeleteModalClicked, setPreDeleteModalClicked] = useState(false);
 
   const [openMakeACommentModal, setOpenCommentModal] = useState(false);
+
+  const [cameFromSearch, setCameFromSearch] = useState(false)
+
+  useEffect(() => {
+    function checkURL(){
+
+
+    },
+    checkURL()
+
+  }, [])
 
   function openSettings(e) {
     e.stopPropagation();
