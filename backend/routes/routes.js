@@ -67,7 +67,6 @@ router.post("/repost", isAuth, remote.repost);
 
 // comments //
 router.post("/comment", isAuth, remote.comment);
-router.post("/deleteComment", isAuth, remote.deleteComment);
 
 // following + followers + blocking//
 

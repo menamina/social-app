@@ -106,23 +106,6 @@ function PostCard({ post, onClick, onDelete }) {
     }
   }
 
-  async function deleteComment(commentID) {
-    try {
-      const res = await fetch("http://localhost:5555/deleteComment", {
-        method: "DELETE",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          postID: post.id,
-          commentnNum: commentID,
-        }),
-      });
-      await res.json();
-    } catch (error) {
-      console.log(error.errorMsg);
-    }
-  }
-
   function closeModal(e) {
     setOpenCommentModal(false);
     e.stopPropagation();
@@ -194,7 +177,7 @@ function PostCard({ post, onClick, onDelete }) {
               <div>
                 <img onClick={() => setOpenCommentModal(true)} />
               </div>
-              <div>{post.commentReplies?.length || ""}</div>
+              <div>{post.comments?.length || ""}</div>
             </div>
 
             <div className="reposts">

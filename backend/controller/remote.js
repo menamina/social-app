@@ -1005,25 +1005,6 @@ async function comment(req, res) {
   }
 }
 
-async function deleteComment(req, res) {
-  try {
-    const { commentNum } = req.body.commentID;
-    const commentID = Number(commentNum);
-    const uID = req.user.id;
-    const userID = Number(uID);
-
-    await prisma.posts.delete({
-      where: {
-        id: commentID,
-        madeBy: userID,
-      },
-    });
-    return res.status(200).json({ success: true });
-  } catch (error) {
-    return res.status(500).json({ errorMsg: "Internal server error :^(" });
-  }
-}
-
 async function followHandler(req, res) {
   try {
     const id = req.user.id;
@@ -1213,7 +1194,6 @@ module.exports = {
   like,
   repost,
   comment,
-  deleteComment,
   post,
   deletePost,
 
