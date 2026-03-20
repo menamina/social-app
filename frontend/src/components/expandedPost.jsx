@@ -41,12 +41,26 @@ function ExpandedPost() {
 
   return (
     <div className="expandedPost">
+      <div>
+        <button onClick={() => navigate("/")}>← go back</button>
+      </div>
+
       <PostCard
-        key={postId}
         post={post}
         onDelete={() => navToFeed(postId)}
-        showPostComments={true}
       />
+
+      {post.comments && post.comments.length > 0 && (
+        <div className="commentsAsPostsSection">
+          {post.comments.map((comment) => (
+            <PostCard
+              key={comment.id}
+              post={comment}
+              onClick={() => navigate(`/@${comment.user?.username}/comment/${comment.id}`)}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

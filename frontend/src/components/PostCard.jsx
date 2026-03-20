@@ -3,7 +3,7 @@ import { useOutletContext } from "react-router-dom";
 import { useState } from "react";
 import MakeAComment from "./makeAComment";
 
-function PostCard({ post, onClick, onDelete, showPostComments = false }) {
+function PostCard({ post, onClick, onDelete }) {
   const { user } = useOutletContext();
 
   const [refreshPost, setRefreshPost] = useState(post);
@@ -16,9 +16,6 @@ function PostCard({ post, onClick, onDelete, showPostComments = false }) {
 
   const [dotsClicked, setDotsClicked] = useState(false);
   const [preDeleteModalClicked, setPreDeleteModalClicked] = useState(false);
-
-  const [commentDotsClicked, setCommentDotsClicked] = useState(false);
-  const [preDeleteCommentModal, setPreDeleteCommentModal] = useState(false);
 
   const [openMakeACommentModal, setOpenCommentModal] = useState(false);
 
@@ -109,20 +106,21 @@ function PostCard({ post, onClick, onDelete, showPostComments = false }) {
     }
   }
 
-  function openCommentSettings(e) {
-    e.stopPropagation();
-    setCommentDotsClicked((prev) => !prev);
-  }
-
-  function preDeleteCommentModalOpen(e) {
-    e.stopPropagation();
-    setPreDeleteCommentModal(true);
-  }
-
-  function cancelDeleteComment(e) {
-    e.stopPropagation();
-    setCommentDotsClicked(false);
-    setPreDeleteCommentModal(false);
+  async function deleteComment(commentID) {
+    try {
+      const res = await fetch("http://localhost:5555/deleteComment", {
+        method: "DELETE",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          postID: post.id,
+          commentnNum: commentID,
+        }),
+      });
+      await res.json();
+    } catch (error) {
+      console.log(error.errorMsg);
+    }
   }
 
   function closeModal(e) {
@@ -132,11 +130,6 @@ function PostCard({ post, onClick, onDelete, showPostComments = false }) {
 
   return (
     <div className="postCardDiv">
-      {showPostComments && (
-        <div>
-          <Link to="/">go back</Link>
-        </div>
-      )}
       <div className="postContainer" onClick={onClick}>
         <div className="postersPFP">
           <Link to={`http://localhost:5555/@${username}`}>
@@ -229,54 +222,6 @@ function PostCard({ post, onClick, onDelete, showPostComments = false }) {
           </div>
         </div>
       </div>
-
-      {showPostComments && post.comments && post.comments.length > 0 && (
-        <div className="commentsSection">
-          {post.comments.map((comment) => (
-            <div key={comment.id} className="comment">
-              <div className="commentUser">
-                <Link to={`/@${comment.user?.username}`}>
-                  <img
-                    src={`http://localhost:5555/pfpIMG/${comment.user?.profile?.pfp}`}
-                    alt={comment.user?.username}
-                  />
-                </Link>
-                <div>
-                  <div>
-                    <div className="commentUsername">
-                      {comment.user?.username}
-                    </div>
-                    <div className="commentTime">{comment.createdAt}</div>
-                  </div>
-                  {comment.user?.id === user.id && (
-                    <div onClick={openCommentSettings}>...</div>
-                  )}
-                  {commentDotsClicked && (
-                    <div onClick={preDeleteCommentModalOpen}>
-                      delete
-                    </div>
-                  )}
-                  {preDeleteCommentModal && (
-                    <div>
-                      <div>Delete comment?</div>
-                      <div>
-                        This can’t be undone and it will be removed from your
-                        profile, the timeline of any accounts that follow you,
-                        and from search results.
-                      </div>
-                      <div>
-                        <div onClick={deleteComment}>delete</div>
-                        <div onClick={cancelDeleteComment}>cancel</div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-              <div className="commentText">{comment.comment}</div>
-            </div>
-          ))}
-        </div>
-      )}
 
       {openMakeACommentModal && (
         <MakeAComment post={post} closeModal={closeModal} />
