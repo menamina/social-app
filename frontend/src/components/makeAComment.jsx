@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useOutletContext } from "react-router-dom";
 
 function MakeAComment({ post, closeModal }) {
   const [comment, setComment] = useState("");
+  const { user } = useOutletContext();
 
   async function makeComment() {
     try {
@@ -24,7 +25,37 @@ function MakeAComment({ post, closeModal }) {
 
   return (
     <div className="modalBackdrop" onClick={closeModal}>
-      <form onSubmit={makeComment}></form>
+      <div>
+        <div>
+          <div>cancel</div>
+          <div>Reply</div>
+        </div>
+
+        <div>
+          <div>
+            <div>
+              <div>
+                <img
+                  src={`http://localhost:5555/img/${post.postedBy.profile.pfp}`}
+                  alt={`${post.username} profile pic`}
+                />
+              </div>
+              <div>
+                <div>
+                  <div>{post.username}</div> <div>{post.createdAt}</div>
+                </div>
+                {post.img && (
+                  <div>
+                    <img src={`http://localhost:5555/img/${post.img}`} />
+                  </div>
+                )}
+                {post.msg && <div>{post.msg}</div>}
+              </div>
+            </div>
+          </div>
+          <div></div>
+        </div>
+      </div>
     </div>
   );
 }

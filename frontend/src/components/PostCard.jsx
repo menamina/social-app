@@ -106,8 +106,9 @@ function PostCard({ post, onClick, onDelete, showPostComments = false }) {
     }
   }
 
-  function closeModal() {
+  function closeModal(e) {
     setOpenCommentModal(false);
+    e.stopPropagation();
   }
 
   return (
