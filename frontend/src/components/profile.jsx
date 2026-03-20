@@ -311,7 +311,6 @@ function Profile() {
                           `/@${comment.username}/post/${comment.id}`,
                         )}
                         onDelete={handleDeletePost}
-                        showPostComments={true}
                       />
                     ))
                   : null}
@@ -323,7 +322,6 @@ function Profile() {
                         post={like.post}
                         onClick={navigate(`/@${like.username}/post/${like.id}`)}
                         onDelete={handleDeletePost}
-                        showPostComments={true}
                       />
                     ))
                   : null}

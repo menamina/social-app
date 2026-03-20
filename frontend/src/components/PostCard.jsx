@@ -16,6 +16,8 @@ function PostCard({ post, onClick, onDelete, showPostComments = false }) {
 
   const [dotsClicked, setDotsClicked] = useState(false);
   const [preDeleteModalClicked, setPreDeleteModalClicked] = useState(false);
+  const [commentDotsClicked, setCommentsDotClicked] = useState(false);
+  const [preDeleteCommentModal, preDeleteCommentModal] = useState(false);
 
   const [openMakeACommentModal, setOpenCommentModal] = useState(false);
 
@@ -223,10 +225,32 @@ function PostCard({ post, onClick, onDelete, showPostComments = false }) {
                   />
                 </Link>
                 <div>
-                  <div className="commentUsername">
-                    {comment.user?.username}
+                  <div>
+                    <div className="commentUsername">
+                      {comment.user?.username}
+                    </div>
+                    <div className="commentTime">{comment.createdAt}</div>
                   </div>
-                  <div className="commentTime">{comment.createdAt}</div>
+                  {comment.user?.id === user.id && (
+                    <div onClick={() => setCommentsDotClicked(!prev)}>...</div>
+                  )}
+                  {commentDotsClicked && (
+                    <div onClick={openDeleteCommentModal}>delete</div>
+                  )}
+                  {openDeleteCommentModal && (
+                    <div>
+                      <div>Delete comment?</div>
+                      <div>
+                        This can’t be undone and it will be removed from your
+                        profile, the timeline of any accounts that follow you,
+                        and from search results.
+                      </div>
+                      <div>
+                        <div onClick={deleteComment}>delete</div>
+                        <div onClick={cancelDeleteComment}>cancel</div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
               <div className="commentText">{comment.comment}</div>
