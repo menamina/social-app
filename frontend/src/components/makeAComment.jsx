@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
-import { useNavigate, useParams, useOutletContext } from "react-router-dom";
+import { useState } from "react";
+import { useOutletContext } from "react-router-dom";
 
 function MakeAComment({ post, closeModal }) {
   const [comment, setComment] = useState("");
-  const { user } = useOutletContext();
+  const { user, userProfile } = useOutletContext();
 
   async function makeComment() {
     try {
@@ -17,7 +17,7 @@ function MakeAComment({ post, closeModal }) {
         }),
       });
 
-      const data = await res.json();
+      await res.json();
     } catch (error) {
       console.log(error.errorMsg);
     }
@@ -25,9 +25,9 @@ function MakeAComment({ post, closeModal }) {
 
   return (
     <div className="modalBackdrop" onClick={closeModal}>
-      <div>
+      <div className="modalContent">
         <div>
-          <div>cancel</div>
+          <div onClick={closeModal}>cancel</div>
           <div>Reply</div>
         </div>
 
@@ -37,7 +37,7 @@ function MakeAComment({ post, closeModal }) {
               <div>
                 <img
                   src={`http://localhost:5555/img/${post.postedBy.profile.pfp}`}
-                  alt={`${post.username} profile pic`}
+                  alt={`${post.postedBy.username} profile pic`}
                 />
               </div>
               <div>
@@ -53,8 +53,22 @@ function MakeAComment({ post, closeModal }) {
               </div>
             </div>
           </div>
-          <div></div>
+          <div>
+            <div>
+                <img
+                  src={`http://localhost:5555/img/${userProfile?.pfp}`}
+                  alt={`${user.name} profile pic`}
+                />
+              </div>
+              <div>
+                <div>
+                  <div>{user.username}</div>
+                </div>
+                <input placeholder={`Reply to ${post.postedBy.username}...`} value={comment} onChange={(e) => setComment(e.target.value)}></input>
+              </div>
+          </div>
         </div>
+        <div onClick={makeComment}>post</div>
       </div>
     </div>
   );
