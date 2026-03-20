@@ -67,28 +67,10 @@ async function forYouFeed(req, res) {
           },
         },
         likes: true,
-        comments: {
-          include: {
-            user: {
-              select: {
-                id: true,
-                username: true,
-                name: true,
-                profile: {
-                  select: {
-                    pfp: true,
-                  },
-                },
-              },
-            },
-          },
-          orderBy: {
-            createdAt: "asc",
-          },
-        },
+        commentReplies: true,
         reposts: true,
       },
-      orderBy: [{ likes: "desc" }, { comments: "desc" }],
+      orderBy: { createdAt: "desc" },
     });
     return res.status(200).json({ allPosts: allPosts });
   } catch (error) {
@@ -133,28 +115,10 @@ async function followingFeed(req, res) {
           },
         },
         likes: true,
-        comments: {
-          include: {
-            user: {
-              select: {
-                id: true,
-                username: true,
-                name: true,
-                profile: {
-                  select: {
-                    pfp: true,
-                  },
-                },
-              },
-            },
-          },
-          orderBy: {
-            createdAt: "asc",
-          },
-        },
+        commentReplies: true,
         reposts: true,
       },
-      orderBy: [{ likes: "desc" }, { comments: "desc" }],
+      orderBy: { createdAt: "desc" },
     });
 
     return res.status(200).json({ followingPosts: followingPosts });
@@ -276,7 +240,7 @@ async function viewProfile(req, res) {
               },
             },
             likes: true,
-            comments: true,
+            commentReplies: true,
             reposts: {
               incude: {
                 user: {
@@ -315,7 +279,7 @@ async function viewProfile(req, res) {
                   },
                 },
                 likes: true,
-                comments: true,
+                commentReplies: true,
                 reposts: {
                   incude: {
                     user: {
@@ -356,39 +320,13 @@ async function viewProfile(req, res) {
                   },
                 },
                 likes: true,
-                comments: true,
+                commentReplies: true,
                 reposts: true,
               },
             },
           },
           orderBy: {
             likedAt: "desc",
-          },
-        },
-        comments: {
-          include: {
-            post: {
-              include: {
-                postedBy: {
-                  select: {
-                    id: true,
-                    username: true,
-                    name: true,
-                    profile: {
-                      select: {
-                        pfp: true,
-                      },
-                    },
-                  },
-                },
-                likes: true,
-                comments: true,
-                reposts: true,
-              },
-            },
-          },
-          orderBy: {
-            createdAt: "desc",
           },
         },
       },
@@ -406,7 +344,6 @@ async function viewProfile(req, res) {
 async function getPost(req, res) {
   try {
     const { postId } = req.params;
-    const id = req.user.id;
     const postID = Number(postId);
 
     const post = await prisma.posts.findUnique({
@@ -427,25 +364,6 @@ async function getPost(req, res) {
           },
         },
         likes: true,
-        comments: {
-          include: {
-            user: {
-              select: {
-                id: true,
-                username: true,
-                name: true,
-                profile: {
-                  select: {
-                    pfp: true,
-                  },
-                },
-              },
-            },
-          },
-          orderBy: {
-            createdAt: "desc",
-          },
-        },
         commentReplies: {
           include: {
             postedBy: {
@@ -1074,11 +992,11 @@ async function comment(req, res) {
 
     const { commentBody } = req.body.comment;
 
-    await prisma.comments.create({
+    await prisma.posts.create({
       data: {
-        postID: postID,
-        commenterID: userID,
-        comment: commentBody,
+        madeBy: userID,
+        msg: commentBody,
+        commentOnPostID: postID,
       },
     });
     return res.status(200).json({ success: true });
@@ -1089,19 +1007,15 @@ async function comment(req, res) {
 
 async function deleteComment(req, res) {
   try {
-    const post = req.body.postID;
-    const postID = Number(post);
+    const { commentNum } = req.body.commentID;
+    const commentID = Number(commentNum);
     const uID = req.user.id;
     const userID = Number(uID);
 
-    const { commentNum } = req.body.commentID;
-    const commentID = Number(commentNum);
-
-    await prisma.comments.delete({
+    await prisma.posts.delete({
       where: {
-        postID: postID,
-        commenterID: userID,
         id: commentID,
+        madeBy: userID,
       },
     });
     return res.status(200).json({ success: true });

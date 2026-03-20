@@ -194,7 +194,7 @@ function PostCard({ post, onClick, onDelete }) {
               <div>
                 <img onClick={() => setOpenCommentModal(true)} />
               </div>
-              <div>{post.comments?.length || ""}</div>
+              <div>{post.commentReplies?.length || ""}</div>
             </div>
 
             <div className="reposts">

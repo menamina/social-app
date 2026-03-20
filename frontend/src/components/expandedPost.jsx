@@ -74,8 +74,11 @@ function ExpandedPost() {
               key={comment.id}
               post={comment}
               onClick={() =>
-                navigate(`/@${comment.postedBy?.username}/comment/${comment.id}`)
+                navigate(
+                  `/@${comment.postedBy?.username}/comment/${comment.id}`,
+                )
               }
+              onDelete={() => navToFeed(postId)}
             />
           ))}
         </div>

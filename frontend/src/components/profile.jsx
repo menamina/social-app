@@ -35,7 +35,6 @@ function Profile() {
 
   function profileViewOpt(option) {
     if (option === "posts") setProfileViewOption("posts");
-    if (option === "comments") setProfileViewOption("comments");
     if (option === "likes") setProfileViewOption("likes");
   }
   useEffect(() => {
@@ -190,7 +189,6 @@ function Profile() {
     setProfileData((prev) => ({
       ...prev,
       posts: prev.posts.filter((post) => post.id !== postId),
-      comments: prev.comments.filter((comment) => comment.post.id !== postId),
       likes: prev.likes.filter((like) => like.post.id !== postId),
     }));
   }
@@ -286,7 +284,6 @@ function Profile() {
             <div>
               <div>
                 <div onClick={() => profileViewOpt("posts")}>Posts</div>
-                <div onClick={() => profileViewOpt("comments")}>Comments</div>
                 <div onClick={() => profileViewOpt("likes")}>Likes</div>
               </div>
               <div>
@@ -298,19 +295,6 @@ function Profile() {
                         onClick={navigate(`/@${post.username}/post/${post.id}`)}
                         onDelete={handleDeletePost}
                         showPostComments={true}
-                      />
-                    ))
-                  : null}
-
-                {profileViewOption === "comments"
-                  ? profileData.comments.map((comment) => (
-                      <PostCard
-                        key={comment.id}
-                        post={comment.post}
-                        onClick={navigate(
-                          `/@${comment.username}/post/${comment.id}`,
-                        )}
-                        onDelete={handleDeletePost}
                       />
                     ))
                   : null}

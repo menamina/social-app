@@ -17,7 +17,6 @@ model User {
   profile Profile?
   posts Posts[]
   likes Likes []
-  comments Comments []
   reposts Reposts[]
   following Follow[] @relation("UserFollowing")
   followers Follow[] @relation("UserFollowers")
@@ -49,7 +48,6 @@ model Posts {
   commentOnPostID Int?
 
   likes Likes[]
-  comments Comments[]
   reposts Reposts[]
   commentReplies Posts[] @relation("PostComments")
 
@@ -69,16 +67,6 @@ model Likes {
 
 }
 
-model Comments {
-    id Int @id @default(autoincrement())
-    postID Int
-    commenterID Int
-    comment String
-    createdAt DateTime @default(now())
-
-    post Posts @relation(fields: [postID], references: [id])
-    user User @relation(fields: [commenterID], references: [id])
-}
 
 model Reposts {
     id Int @id @default(autoincrement())
