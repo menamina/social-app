@@ -16,8 +16,9 @@ function PostCard({ post, onClick, onDelete, showPostComments = false }) {
 
   const [dotsClicked, setDotsClicked] = useState(false);
   const [preDeleteModalClicked, setPreDeleteModalClicked] = useState(false);
-  const [commentDotsClicked, setCommentsDotClicked] = useState(false);
-  const [preDeleteCommentModal, preDeleteCommentModal] = useState(false);
+
+  const [commentDotsClicked, setCommentDotsClicked] = useState(false);
+  const [preDeleteCommentModal, setPreDeleteCommentModal] = useState(false);
 
   const [openMakeACommentModal, setOpenCommentModal] = useState(false);
 
@@ -106,6 +107,22 @@ function PostCard({ post, onClick, onDelete, showPostComments = false }) {
       console.log(error);
       alert("Server error deleting post");
     }
+  }
+
+  function openCommentSettings(e) {
+    e.stopPropagation();
+    setCommentDotsClicked((prev) => !prev);
+  }
+
+  function preDeleteCommentModalOpen(e) {
+    e.stopPropagation();
+    setPreDeleteCommentModal(true);
+  }
+
+  function cancelDeleteComment(e) {
+    e.stopPropagation();
+    setCommentDotsClicked(false);
+    setPreDeleteCommentModal(false);
   }
 
   function closeModal(e) {
@@ -232,12 +249,14 @@ function PostCard({ post, onClick, onDelete, showPostComments = false }) {
                     <div className="commentTime">{comment.createdAt}</div>
                   </div>
                   {comment.user?.id === user.id && (
-                    <div onClick={() => setCommentsDotClicked(!prev)}>...</div>
+                    <div onClick={openCommentSettings}>...</div>
                   )}
                   {commentDotsClicked && (
-                    <div onClick={openDeleteCommentModal}>delete</div>
+                    <div onClick={preDeleteCommentModalOpen}>
+                      delete
+                    </div>
                   )}
-                  {openDeleteCommentModal && (
+                  {preDeleteCommentModal && (
                     <div>
                       <div>Delete comment?</div>
                       <div>

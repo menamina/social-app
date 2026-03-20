@@ -55,20 +55,30 @@ function MakeAComment({ post, closeModal }) {
           </div>
           <div>
             <div>
-                <img
-                  src={`http://localhost:5555/img/${userProfile?.pfp}`}
-                  alt={`${user.name} profile pic`}
-                />
-              </div>
+              <img
+                src={`http://localhost:5555/img/${userProfile?.pfp}`}
+                alt={`${user.name} profile pic`}
+              />
+            </div>
+            <div>
               <div>
-                <div>
-                  <div>{user.username}</div>
-                </div>
-                <input placeholder={`Reply to ${post.postedBy.username}...`} value={comment} onChange={(e) => setComment(e.target.value)}></input>
+                <div>{user.username}</div>
               </div>
+              <input
+                placeholder={`Reply to ${post.postedBy.username}...`}
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+              ></input>
+            </div>
           </div>
         </div>
-        <div onClick={makeComment}>post</div>
+        <div
+          onClick={(e) => {
+            (e.stopPropagation(), makeComment);
+          }}
+        >
+          post
+        </div>
       </div>
     </div>
   );
