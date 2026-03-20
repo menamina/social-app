@@ -8,6 +8,7 @@ function ExpandedPost() {
   const navigate = useNavigate();
 
   const [post, setPost] = useState(null);
+  const [postComments, setPostComments] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const [showOriginalPost, setShowOriginalPost] = useState(null);
@@ -24,6 +25,7 @@ function ExpandedPost() {
         );
         const data = await res.json();
         setPost(data.post);
+        setPostComments(data.post.commentReplies);
 
         if (data.post.commentOnPost) {
           setShowOriginalPost(data.post.commentOnPost);
@@ -43,6 +45,14 @@ function ExpandedPost() {
     navigate("/");
   }
 
+  function updateCommentsUI(postId) {
+    setPostComments((prev) => prev.filter((post) => post.id !== postId));
+  }
+
+  function updateOriginalPostUI() {
+    setShowOriginalPost(null);
+  }
+
   if (loading) return <div>Loading...</div>;
   if (!post) return <div>Post not found</div>;
 
@@ -56,7 +66,7 @@ function ExpandedPost() {
         {showOriginalPost && (
           <PostCard
             post={showOriginalPost}
-            onDelete={() => navToFeed(postId)}
+            onDelete={updateOriginalPostUI}
             onClick={() =>
               navigate(
                 `/@${showOriginalPost.postedBy?.username}/post/${showOriginalPost.id}`,
@@ -69,7 +79,7 @@ function ExpandedPost() {
 
       {post.commentReplies && post.commentReplies.length > 0 && (
         <div className="commentsAsPostsSection">
-          {post.commentReplies.map((comment) => (
+          {postComments.map((comment) => (
             <PostCard
               key={comment.id}
               post={comment}
@@ -78,7 +88,7 @@ function ExpandedPost() {
                   `/@${comment.postedBy?.username}/comment/${comment.id}`,
                 )
               }
-              onDelete={() => navToFeed(postId)}
+              onDelete={updateCommentsUI}
             />
           ))}
         </div>

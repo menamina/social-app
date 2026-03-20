@@ -50,7 +50,6 @@ function PostCard({ post, onClick, onDelete }) {
         alert("Error liking/unliking post - post may have been deleted");
         return;
       }
-      // if the post is unliked filter and update posts
       return;
     } catch (error) {
       alert("Server error while trying to like/unlike post");

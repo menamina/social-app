@@ -294,7 +294,6 @@ function Profile() {
                         post={post}
                         onClick={navigate(`/@${post.username}/post/${post.id}`)}
                         onDelete={handleDeletePost}
-                        showPostComments={true}
                       />
                     ))
                   : null}
