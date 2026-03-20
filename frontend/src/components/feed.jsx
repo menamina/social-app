@@ -83,7 +83,7 @@ function Feed() {
               onClick={openMakeAPostModal}
             />
           </div>
-          {wannaMakeAPost && <MakeAPost />}
+          {wannaMakeAPost && <MakeAPost onClose={() => setWannaMakeAPost(false)} />}
         </div>
         {feedView === "for you" ? (
           <div className="forYouPosts">

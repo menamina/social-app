@@ -6,6 +6,8 @@ import MakeAComment from "./makeAComment";
 function PostCard({ post, onClick, onDelete, showPostComments = false }) {
   const { user } = useOutletContext();
 
+  const [refreshPost, setRefreshPost] = useState(post);
+
   const name = post.postedBy?.name || post.name;
   const username = post.postedBy?.username || post.username;
   const pfp = post.postedBy?.profile?.pfp || post.pfp;
@@ -14,6 +16,8 @@ function PostCard({ post, onClick, onDelete, showPostComments = false }) {
 
   const [dotsClicked, setDotsClicked] = useState(false);
   const [preDeleteModalClicked, setPreDeleteModalClicked] = useState(false);
+
+  const [openMakeACommentModal, setOpenCommentModal] = useState(false);
 
   function openSettings(e) {
     e.stopPropagation();
@@ -46,6 +50,7 @@ function PostCard({ post, onClick, onDelete, showPostComments = false }) {
         alert("Error liking/unliking post - post may have been deleted");
         return;
       }
+      // if the post is unliked filter and update posts
       return;
     } catch (error) {
       alert("Server error while trying to like/unlike post");
@@ -67,6 +72,7 @@ function PostCard({ post, onClick, onDelete, showPostComments = false }) {
         alert("Cannot repost/unrepost post - post may have been deleted");
         return;
       }
+
       return;
     } catch (error) {
       alert("Server error, cannot like/unlike post");
@@ -100,13 +106,15 @@ function PostCard({ post, onClick, onDelete, showPostComments = false }) {
     }
   }
 
+  function closeModal() {
+    setOpenCommentModal(false);
+  }
+
   return (
     <div className="postCardDiv">
       {showPostComments && (
         <div>
-          <Link to="/" onClick={() => setShowPostComments(false)}>
-            go back
-          </Link>
+          <Link to="/">go back</Link>
         </div>
       )}
       <div className="postContainer" onClick={onClick}>
@@ -171,7 +179,7 @@ function PostCard({ post, onClick, onDelete, showPostComments = false }) {
 
             <div className="comments">
               <div>
-                <img />
+                <img onClick={() => setOpenCommentModal(true)} />
               </div>
               <div>{post.comments?.length || ""}</div>
             </div>
@@ -224,6 +232,10 @@ function PostCard({ post, onClick, onDelete, showPostComments = false }) {
             </div>
           ))}
         </div>
+      )}
+
+      {openMakeACommentModal && (
+        <MakeAComment post={post} closeModal={closeModal} />
       )}
     </div>
   );

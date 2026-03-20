@@ -37,6 +37,7 @@ function MakeAPost({ onClose }) {
       if (res.ok) {
         setPostAPIErr(null);
         onClose();
+        // when post is successful pop up over lay to view post
         return;
       }
     } catch (error) {

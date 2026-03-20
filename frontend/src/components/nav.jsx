@@ -55,7 +55,7 @@ function Nav({ navUserData, setNavUserData }) {
         </div>
         <div>
           <img src="" alt="search" onClick={openMakeAPostModal} />
-          {wannaMakeAPost && <MakeAPost />}
+          {wannaMakeAPost && <MakeAPost onClose={() => setWannaMakeAPost(false)} />}
           {/* going to pop up as modal overlay */}
         </div>
         <div>
