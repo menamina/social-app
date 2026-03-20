@@ -25,9 +25,8 @@ function ExpandedPost() {
         const data = await res.json();
         setPost(data.post);
 
-        const isPostACommentOnAnother = data.post.comments.postID;
-        if (isPostACommentOnAnother) {
-          setShowOriginalPost(data.post.comments.post);
+        if (data.post.commentOnPost) {
+          setShowOriginalPost(data.post.commentOnPost);
         }
 
         setLoading(false);
@@ -60,7 +59,7 @@ function ExpandedPost() {
             onDelete={() => navToFeed(postId)}
             onClick={() =>
               navigate(
-                `/@${showOriginalPost.user?.username}/comment/${showOriginalPost.id}`,
+                `/@${showOriginalPost.postedBy?.username}/post/${showOriginalPost.id}`,
               )
             }
           />
@@ -68,14 +67,14 @@ function ExpandedPost() {
         <PostCard post={post} onDelete={() => navToFeed(postId)} />
       </div>
 
-      {post.comments && post.comments.length > 0 && (
+      {post.commentReplies && post.commentReplies.length > 0 && (
         <div className="commentsAsPostsSection">
-          {post.comments.map((comment) => (
+          {post.commentReplies.map((comment) => (
             <PostCard
               key={comment.id}
               post={comment}
               onClick={() =>
-                navigate(`/@${comment.user?.username}/comment/${comment.id}`)
+                navigate(`/@${comment.postedBy?.username}/comment/${comment.id}`)
               }
             />
           ))}

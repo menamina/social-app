@@ -42,15 +42,19 @@ model Profile {
 
 model Posts {
   id Int @id @default(autoincrement())
-  madeBy Int 
+  madeBy Int
   msg String
   img String?
   createdAt DateTime @default(now())
+  commentOnPostID Int?
+
   likes Likes[]
   comments Comments[]
   reposts Reposts[]
+  commentReplies Posts[] @relation("PostComments")
 
   postedBy User @relation(fields: [madeBy], references: [id])
+  commentOnPost Posts? @relation("PostComments", fields: [commentOnPostID], references: [id])
 
 }
 
