@@ -24,6 +24,13 @@ function ExpandedPost() {
           },
         );
         const data = await res.json();
+
+        if (!res.ok) {
+          setPost(null);
+          setLoading(false);
+          return;
+        }
+
         setPost(data.post);
         setPostComments(data.post.commentReplies);
 
@@ -32,6 +39,7 @@ function ExpandedPost() {
         }
 
         setLoading(false);
+        false;
       } catch (error) {
         console.error(error);
         setLoading(false);
@@ -74,7 +82,8 @@ function ExpandedPost() {
             }
           />
         )}
-        <PostCard post={post} onDelete={() => navToFeed(postId)} />
+        {post && <PostCard post={post} onDelete={() => setPost(null)} />}
+        {!post && <div>Post not found</div>}
       </div>
 
       {post.commentReplies && post.commentReplies.length > 0 && (
