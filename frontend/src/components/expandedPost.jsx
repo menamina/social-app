@@ -10,6 +10,8 @@ function ExpandedPost() {
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const [showOriginalPost, setShowOriginalPost] = useState(null);
+
   useEffect(() => {
     async function fetchPost() {
       try {
@@ -22,6 +24,12 @@ function ExpandedPost() {
         );
         const data = await res.json();
         setPost(data.post);
+
+        const isPostACommentOnAnother = data.post.comments.postID;
+        if (isPostACommentOnAnother) {
+          setShowOriginalPost(data.post.comments.post);
+        }
+
         setLoading(false);
       } catch (error) {
         console.error(error);
@@ -45,10 +53,20 @@ function ExpandedPost() {
         <button onClick={() => navigate("/")}>← go back</button>
       </div>
 
-      <PostCard
-        post={post}
-        onDelete={() => navToFeed(postId)}
-      />
+      <div>
+        {showOriginalPost && (
+          <PostCard
+            post={showOriginalPost}
+            onDelete={() => navToFeed(postId)}
+            onClick={() =>
+              navigate(
+                `/@${showOriginalPost.user?.username}/comment/${showOriginalPost.id}`,
+              )
+            }
+          />
+        )}
+        <PostCard post={post} onDelete={() => navToFeed(postId)} />
+      </div>
 
       {post.comments && post.comments.length > 0 && (
         <div className="commentsAsPostsSection">
@@ -56,7 +74,9 @@ function ExpandedPost() {
             <PostCard
               key={comment.id}
               post={comment}
-              onClick={() => navigate(`/@${comment.user?.username}/comment/${comment.id}`)}
+              onClick={() =>
+                navigate(`/@${comment.user?.username}/comment/${comment.id}`)
+              }
             />
           ))}
         </div>

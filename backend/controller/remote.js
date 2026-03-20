@@ -429,6 +429,22 @@ async function getPost(req, res) {
         likes: true,
         comments: {
           include: {
+            post: {
+              include: {
+                postedBy: {
+                  select: {
+                    id: true,
+                    username: true,
+                    name: true,
+                    profile: {
+                      select: {
+                        pfp: true,
+                      },
+                    },
+                  },
+                },
+              },
+            },
             user: {
               select: {
                 id: true,
