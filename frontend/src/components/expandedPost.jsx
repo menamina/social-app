@@ -67,7 +67,7 @@ function ExpandedPost() {
   return (
     <div className="expandedPost">
       <div>
-        <button onClick={() => navigate("/")}>← go back</button>
+        <button onClick={() => navigate(-1)}>← go back</button>
       </div>
 
       <div>

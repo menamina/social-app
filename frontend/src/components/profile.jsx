@@ -4,6 +4,7 @@ import {
   useParams,
   useOutletContext,
   useNavigate,
+  useLocation
 } from "react-router-dom";
 import PostCard from "./PostCard";
 
@@ -12,6 +13,7 @@ function Profile() {
   const { user } = useOutletContext();
 
   const navigate = useNavigate();
+  const location = useLocation()
 
   const [loading, setLoading] = useState(true);
   const [isOwnProfile, setIsOwnProfile] = useState(false);
@@ -33,10 +35,25 @@ function Profile() {
 
   const [error, setError] = useState(null);
 
+
+  const [cameFromSearchURL, setCameFromSearchURL] = useState(false)
+
   function profileViewOpt(option) {
     if (option === "posts") setProfileViewOption("posts");
     if (option === "likes") setProfileViewOption("likes");
   }
+
+  useEffect(() => {
+    function checkURL(){
+      if (location.pathname.includes('/search')){
+       setCameFromSearchURL(true)
+      }
+    }
+    checkURL()
+
+  }, [])
+
+
   useEffect(() => {
     async function fetchProfileData() {
       setLoading(true);
@@ -110,7 +127,8 @@ function Profile() {
         setError("Failed to load profile");
         setLoading(false);
       }
-    }
+    },
+    fetchProfileData()
   }, [username]);
 
   if (loading) {
@@ -198,6 +216,7 @@ function Profile() {
       <div>Profile</div>
       <div>
         <div>
+          {cameFromSearchURL && <div onClick={() => navigate(-1)}>← go back</div>}
           <div>
             <div>
               <div>
