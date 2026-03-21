@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
+import "./css/app.css";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -57,7 +58,7 @@ function App() {
   if (loading) return null;
 
   return (
-    <div>
+    <div className="godParent">
       <Outlet
         context={{
           user,
