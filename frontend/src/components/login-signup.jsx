@@ -1,9 +1,7 @@
 import { useState, useEffect } from "react";
-import { useOutletContext } from "react-dom";
+import { useNavigate } from "react-router-dom";
 
 function LoginSignUp() {
-  const { user, setUser } = useOutletContext();
-
   const [wantToLogin, setWantToLogin] = useState(true);
 
   const [email, setEmail] = useState("");
@@ -15,8 +13,8 @@ function LoginSignUp() {
   const [signUpPassword, setSignUpPassword] = useState("");
   const [signUpConfirmPassword, setSignUpConfirmPassword] = useState("");
 
-  const [usernameTaken];
-  const [emailTaken];
+  const [usernameTaken, setUsernameTaken] = useState(null);
+  const [emailTaken, setEmailTaken] = useState(null);
 
   const [loginErrors, setLoginErrors] = useState(null);
   const [signupErrors, setSignupErrors] = useState(null);
@@ -40,8 +38,6 @@ function LoginSignUp() {
           password,
         }),
       });
-
-      // if res login is successful update useState user in app
     } catch (error) {
       setOtherLoginErrors(error.errMsg);
     }
@@ -61,8 +57,24 @@ function LoginSignUp() {
           confirmPassword: signUpConfirmPassword,
         }),
       });
+
+      const data = await res.json();
+
+      if (data.usernameTaken) {
+        setUsernameTaken(true);
+        return;
+      } else if (data.emailTaken) {
+        setEmailTaken(true);
+        return;
+      } else {
+        setUsernameTaken(false);
+        setEmailTaken(true);
+        setWantToLogin(true);
+      }
     } catch (error) {
       setOtherSignupErrors(error.errMsg);
+      setUsernameTaken(false);
+      setEmailTaken(false);
     }
   }
 
@@ -70,8 +82,6 @@ function LoginSignUp() {
     <div className="login-signupMain">
       {wantToLogin ? (
         <div className="login">
-          {usernameTaken && <div>Email is in use</div>}
-          {emailTaken && <div>Email is in use</div>}
           <form onSubmit={(e) => login(e)}>
             <div>
               <label>Email:</label>
@@ -98,6 +108,8 @@ function LoginSignUp() {
         </div>
       ) : (
         <div className="signup">
+          {usernameTaken && <div>Email is in use</div>}
+          {emailTaken && <div>Email is in use</div>}
           <form onSubmit={(e) => signup(e)}>
             <div>
               <label>Name:</label>
