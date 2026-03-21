@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 function LoginSignUp() {
   const navigate = useNavigate();
+
   const [wantToLogin, setWantToLogin] = useState(true);
 
   const [email, setEmail] = useState("");
@@ -32,6 +33,7 @@ function LoginSignUp() {
       const res = await fetch("http://localhost:5555/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({
           email,
           password,
@@ -78,7 +80,7 @@ function LoginSignUp() {
         return;
       } else {
         setUsernameTaken(false);
-        setEmailTaken(true);
+        setEmailTaken(false);
         setWantToLogin(true);
       }
     } catch (error) {
@@ -121,8 +123,10 @@ function LoginSignUp() {
       ) : (
         <div className="signup">
           {otherSignupErrors && <div>{otherSignupErrors}</div>}
-          {usernameTaken && <div>Email is in use</div>}
-          {emailTaken && <div>Email is in use</div>}
+          {usernameTaken && (
+            <div className="signupTaken">Username is taken</div>
+          )}
+          {emailTaken && <div className="signupTaken">Email is taken</div>}
 
           <form onSubmit={(e) => signup(e)}>
             <div>
