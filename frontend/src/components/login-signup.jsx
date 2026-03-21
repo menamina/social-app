@@ -113,7 +113,7 @@ function LoginSignUp() {
               ></input>
             </div>
             <div className="loginBTN">
-              <button>login</button>
+              <button>LOGIN</button>
             </div>
           </form>
           <div>

@@ -18,11 +18,11 @@
   width: 100%;
   align-items: center;
   font-size: 2rem;
+  gap: 30px;
 }
 
 .login-signup-form {
   flex-direction: column;
-  background-color: pink;
   width: 600px;
   gap: 25px;
 }
@@ -33,6 +33,11 @@
 
 .loginBTN {
   align-self: center;
+}
+
+.loginBTN > button {
+  width: 140px;
+  height: 30px;
 }
 
 input {
