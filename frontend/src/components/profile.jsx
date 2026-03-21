@@ -127,7 +127,7 @@ function Profile() {
         setError("Failed to load profile");
         setLoading(false);
       }
-    },
+    }
     fetchProfileData()
   }, [username]);
 

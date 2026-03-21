@@ -25,7 +25,7 @@ function PostCard({ post, onClick, onDelete }) {
     function checkURL(){
 
 
-    },
+    }
     checkURL()
 
   }, [])
