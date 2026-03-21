@@ -1,11 +1,40 @@
 .login-signupMain {
   display: flex;
   width: 100%;
+  height: 100%;
+  align-items: center;
+}
+
+.login,
+.signup,
+.login-signup-form,
+.login-signup-form > div {
+  display: flex;
 }
 
 .login,
 .signup {
-  display: flex;
   flex-direction: column;
   width: 100%;
+  align-items: center;
+  font-size: 2rem;
+}
+
+.login-signup-form {
+  flex-direction: column;
+  background-color: pink;
+  width: 600px;
+  gap: 25px;
+}
+
+.login-signup-form > div {
+  justify-content: space-between;
+}
+
+.loginBTN {
+  align-self: center;
+}
+
+input {
+  width: 60%;
 }

@@ -97,7 +97,7 @@ function LoginSignUp() {
       {wantToLogin ? (
         <div className="login">
           {loginErrors && <div>{loginErrors}</div>}
-          <form onSubmit={(e) => login(e)}>
+          <form className="login-signup-form" onSubmit={(e) => login(e)}>
             <div>
               <label>Email:</label>
               <input
@@ -112,7 +112,7 @@ function LoginSignUp() {
                 onChange={(e) => setPassword(e.target.value)}
               ></input>
             </div>
-            <div>
+            <div className="loginBTN">
               <button>login</button>
             </div>
           </form>
@@ -129,7 +129,7 @@ function LoginSignUp() {
           )}
           {emailTaken && <div className="signupTaken">Email is taken</div>}
 
-          <form onSubmit={(e) => signup(e)}>
+          <form className="login-signup-form" onSubmit={(e) => signup(e)}>
             <div>
               <label>Name:</label>
               <input
