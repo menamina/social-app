@@ -113,12 +113,14 @@ function LoginSignUp() {
               ></input>
             </div>
             <div className="loginBTN">
-              <button>LOGIN</button>
+              <button className="cursor">LOGIN</button>
             </div>
           </form>
           <div>
             <div>Need an account?</div>
-            <div onClick={toggleOption}>Create new account</div>
+            <div onClick={toggleOption} className="cursor">
+              Create new account
+            </div>
           </div>
         </div>
       ) : (
@@ -170,13 +172,15 @@ function LoginSignUp() {
                 onChange={(e) => setSignUpConfirmPassword(e.target.value)}
               ></input>
             </div>
-            <div>
-              <button>sign up</button>
+            <div className="signupBTN">
+              <button className="cursor">SIGNUP</button>
             </div>
           </form>
           <div>
             <div>Already have an account?</div>
-            <div onClick={toggleOption}>login</div>
+            <div onClick={toggleOption} className="cursor">
+              login
+            </div>
           </div>
         </div>
       )}

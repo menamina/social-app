@@ -31,15 +31,28 @@
   justify-content: space-between;
 }
 
-.loginBTN {
+.loginBTN,
+.signupBTN {
   align-self: center;
 }
 
-.loginBTN > button {
+.loginBTN > button,
+.signupBTN > button {
+  border: none;
+  border-radius: 10%;
   width: 140px;
   height: 30px;
 }
 
 input {
   width: 60%;
+}
+
+.cursor:hover {
+  cursor: pointer;
+}
+
+.login > div,
+.signup > div {
+  text-align: center;
 }
