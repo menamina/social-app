@@ -17,10 +17,8 @@ function LoginSignUp() {
   const [emailTaken, setEmailTaken] = useState(null);
 
   const [loginErrors, setLoginErrors] = useState(null);
-  const [signupErrors, setSignupErrors] = useState(null);
 
   const [otherLoginErrors, setOtherLoginErrors] = useState(null);
-
   const [otherSignupErrors, setOtherSignupErrors] = useState(null);
 
   function toggleOption() {
@@ -30,7 +28,7 @@ function LoginSignUp() {
   async function login(e) {
     e.preventDefault();
     try {
-      const res = await fetch("http://localhost:5555/signup", {
+      const res = await fetch("http://localhost:5555/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -38,6 +36,11 @@ function LoginSignUp() {
           password,
         }),
       });
+
+      if (res.){
+
+      }
+
     } catch (error) {
       setOtherLoginErrors(error.errMsg);
     }
@@ -80,8 +83,10 @@ function LoginSignUp() {
 
   return (
     <div className="login-signupMain">
+      {otherLoginErrors && <div>{otherLoginErrors}</div>}
       {wantToLogin ? (
         <div className="login">
+          {loginErrors && <div>{loginErrors}</div>}
           <form onSubmit={(e) => login(e)}>
             <div>
               <label>Email:</label>
@@ -108,8 +113,10 @@ function LoginSignUp() {
         </div>
       ) : (
         <div className="signup">
+          {otherSignupErrors && <div>{otherSignupErrors}</div>}
           {usernameTaken && <div>Email is in use</div>}
           {emailTaken && <div>Email is in use</div>}
+
           <form onSubmit={(e) => signup(e)}>
             <div>
               <label>Name:</label>
