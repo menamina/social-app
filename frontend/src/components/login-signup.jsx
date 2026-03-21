@@ -15,6 +15,9 @@ function LoginSignUp() {
   const [signUpPassword, setSignUpPassword] = useState("");
   const [signUpConfirmPassword, setSignUpConfirmPassword] = useState("");
 
+  const [usernameTaken];
+  const [emailTaken];
+
   const [loginErrors, setLoginErrors] = useState(null);
   const [signupErrors, setSignupErrors] = useState(null);
 
@@ -67,6 +70,8 @@ function LoginSignUp() {
     <div className="login-signupMain">
       {wantToLogin ? (
         <div className="login">
+          {usernameTaken && <div>Email is in use</div>}
+          {emailTaken && <div>Email is in use</div>}
           <form onSubmit={(e) => login(e)}>
             <div>
               <label>Email:</label>
