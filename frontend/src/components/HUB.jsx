@@ -6,7 +6,6 @@ function Hub() {
   const { user, forYouFeed, setForYouFeed, forYouFeedErr, setForYouFeedErr } =
     useOutletContext();
   const [userProfile, setUserProfile] = useState(null);
-  const [clickedOnPost, setClickedOnPost] = useState(null);
   const [navUserData, setNavUserData] = useState(null);
   const [followingFeed, setFollowingFeed] = useState(null);
   const [followingFeedErr, setFollowingFeedErr] = useState(null);
@@ -53,8 +52,6 @@ function Hub() {
             setFollowingFeed,
             followingFeedErr,
             setFollowingFeedErr,
-            clickedOnPost,
-            setClickedOnPost,
             navUserData,
             setNavUserData,
           }}

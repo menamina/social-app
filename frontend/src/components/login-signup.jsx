@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function LoginSignUp() {
+  const navigate = useNavigate();
   const [wantToLogin, setWantToLogin] = useState(true);
 
   const [email, setEmail] = useState("");
@@ -37,10 +38,16 @@ function LoginSignUp() {
         }),
       });
 
-      if (res.){
+      const data = await res.json();
 
+      if (data.message === "invalid email") {
+        setLoginErrors("No user is accociated with that email");
+      } else if (data.message === "invalid password") {
+        setLoginErrors("Password incorrect");
+      } else {
+        setLoginErrors(null);
+        navigate("/", { replace: true });
       }
-
     } catch (error) {
       setOtherLoginErrors(error.errMsg);
     }
