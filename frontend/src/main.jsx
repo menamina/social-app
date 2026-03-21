@@ -12,13 +12,13 @@ import Dms from "./components/dms.jsx";
 import ExpandedPost from "./components/expandedPost.jsx";
 const routes = createBrowserRouter([
   {
-    path: "/login",
-    element: <LoginSignUp />,
-  },
-  {
     path: "/",
     element: <App />,
     children: [
+      {
+        path: "/login",
+        element: <LoginSignUp />,
+      },
       {
         path: "/",
         element: <Hub />,

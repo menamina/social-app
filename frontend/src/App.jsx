@@ -5,6 +5,7 @@ function App() {
   const [user, setUser] = useState(null);
   const [forYouFeed, setForYouFeed] = useState(null);
   const [forYouFeedErr, setForYouFeedErr] = useState(null);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,16 +19,15 @@ function App() {
         const data = await res.json();
 
         if (res.status === 401) {
+          setLoading(false);
+          navigate("/login", { replace: true });
           return;
         }
         setUser(data.user);
-        const path = window.location.pathname;
-        if (path === "/" || path === "/login" || path === "/signup") {
-          navigate("/");
-        }
+        setLoading(false);
       } catch (error) {
-        return error;
-        //fix later
+        setLoading(false);
+        navigate("/login", { replace: true });
       }
     }
     checkIfUser();
@@ -52,6 +52,8 @@ function App() {
     }
     loadUserContent();
   }, [user]);
+
+  if (loading) return null;
 
   return (
     <div>
