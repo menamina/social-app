@@ -3,6 +3,7 @@ const express = require("express");
 const server = express();
 const port = process.env.PORT || 5555;
 const passport = require("./passport/passport");
+const pool = require("./passport/pool");
 const routes = require("./router/routes");
 const cors = require("cors");
 
