@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { isAuth } = require("../utils/passportAuth");
+const { isAuth } = require("../utils/isAuth");
 const remote = require("../controller/remote");
 const passport = require("../passport/passport");
 const validator = require("../utils/validator");

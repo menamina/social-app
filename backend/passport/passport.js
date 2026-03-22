@@ -1,6 +1,6 @@
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
-const { checkPassword } = require("../middleware/password");
+const { checkPassword } = require("../utils/password");
 const prisma = require("../prisma/client");
 
 const strategy = new LocalStrategy({ usernameField: "email" }, verifyCB);
