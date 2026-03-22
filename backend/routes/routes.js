@@ -70,8 +70,8 @@ router.post("/comment", isAuth, remote.comment);
 
 // following + followers + blocking//
 
-router.post("/follow:/:thisID", isAuth, remote.followHandler);
-router.post("/block:/:thisID", isAuth, remote.blockHandler);
+router.post("/follow/:thisID", isAuth, remote.followHandler);
+router.post("/block/:thisID", isAuth, remote.blockHandler);
 
 // dms //
 
@@ -90,3 +90,5 @@ router.patch(
   remote.updateProfileSettings,
 );
 router.get("/blocked-users", isAuth, remote.getBlockedUsers);
+
+module.exports = router;
