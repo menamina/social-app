@@ -90,5 +90,3 @@ router.patch(
   remote.updateProfileSettings,
 );
 router.get("/blocked-users", isAuth, remote.getBlockedUsers);
-router.post("/block/:thisID", isAuth, remote.blockThem);
-router.delete("/unblock/:thisID", isAuth, remote.unblockThem);
