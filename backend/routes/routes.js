@@ -34,7 +34,7 @@ router.post("/login", (req, res, next) => {
   });
 });
 
-router.post("/sign-up", isAuth, validator, remote.signup);
+router.post("/sign-up", validator, remote.signup);
 
 router.post("/logout", (req, res, next) => {
   req.logout((error) => {

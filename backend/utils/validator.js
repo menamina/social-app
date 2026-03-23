@@ -31,7 +31,7 @@ const validator = [
     if (errors.isEmpty()) {
       return next();
     }
-    return res.status(400).json({ validationErrs: errors.array() });
+    return res.status(400).json({ validationErrors: errors.array() });
   },
 ];
 

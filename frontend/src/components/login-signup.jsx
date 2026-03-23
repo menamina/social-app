@@ -16,6 +16,8 @@ function LoginSignUp() {
   const [signUpPassword, setSignUpPassword] = useState("");
   const [signUpConfirmPassword, setSignUpConfirmPassword] = useState("");
 
+  const [validationErrs, setValidationErrs] = useState(null);
+
   const [usernameTaken, setUsernameTaken] = useState(null);
   const [emailTaken, setEmailTaken] = useState(null);
 
@@ -52,6 +54,7 @@ function LoginSignUp() {
         navigate("/", { replace: true });
       }
     } catch (error) {
+      console.log(error);
       setOtherLoginErrors(error.errMsg);
     }
   }
@@ -59,7 +62,7 @@ function LoginSignUp() {
   async function signup(e) {
     e.preventDefault();
     try {
-      const res = await fetch("http://localhost:5555/signup", {
+      const res = await fetch("http://localhost:5555/sign-up", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -73,6 +76,10 @@ function LoginSignUp() {
 
       const data = await res.json();
 
+      if (res.status === 400) {
+        setValidationErrs(data.validationErrors);
+      }
+
       if (data.usernameTaken) {
         setUsernameTaken(true);
         return;
@@ -85,6 +92,7 @@ function LoginSignUp() {
         setWantToLogin(true);
       }
     } catch (error) {
+      console.log(error);
       setOtherSignupErrors(error.errMsg);
       setUsernameTaken(false);
       setEmailTaken(false);
@@ -125,6 +133,10 @@ function LoginSignUp() {
         </div>
       ) : (
         <div className="signup">
+          {validationErrs &&
+            validationErrs.map((error) => {
+              <div>{error}</div>;
+            })}
           {otherSignupErrors && <div>{otherSignupErrors}</div>}
           {usernameTaken && (
             <div className="signupTaken">Username is taken</div>
@@ -159,6 +171,7 @@ function LoginSignUp() {
             <div>
               <label>Password:</label>
               <input
+                type="password"
                 name="password"
                 value={signUpPassword}
                 onChange={(e) => setSignUpPassword(e.target.value)}
@@ -167,6 +180,7 @@ function LoginSignUp() {
             <div>
               <label>Confirm Password:</label>
               <input
+                type="password"
                 name="confirmpassword"
                 value={signUpConfirmPassword}
                 onChange={(e) => setSignUpConfirmPassword(e.target.value)}
