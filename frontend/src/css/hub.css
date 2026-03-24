@@ -19,7 +19,8 @@
   width: 50%;
   height: 100%;
   border-radius: 20px;
-  border-color: 1px solid gray;
+  border: 1px solid rgb(207, 204, 204);
+  padding: 10px;
 }
 
 .feedOpts {
@@ -30,12 +31,26 @@
 }
 
 .cursor:hover {
-  background-color: gray;
+  background-color: rgb(214, 211, 211);
+}
+
+.cursor {
+  width: 50%;
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+.cursor:first-of-type {
+  border-right: 1px solid rgb(207, 204, 204);
+}
+
+.cursor-reg {
+  cursor: pointer;
 }
 
 .selectedFeedView {
   text-decoration: underline;
-  text-decoration-color: black;
+  text-decoration-color: rgb(37, 7, 88);
   text-underline-offset: 22px;
 }
 
@@ -69,4 +84,6 @@
   border: none;
   height: 75px;
   width: 100%;
+  border: 1px solid rgb(215, 215, 215);
+  padding: 20px;
 }

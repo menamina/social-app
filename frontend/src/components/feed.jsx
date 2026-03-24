@@ -75,7 +75,6 @@ function Feed() {
         >
           For You
         </div>
-        <div>|</div>
         <div
           onClick={followingRefresh}
           className={

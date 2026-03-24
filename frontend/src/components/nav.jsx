@@ -38,32 +38,37 @@ function Nav({ navUserData, setNavUserData }) {
 
       <div className="navOpts">
         <div>
-          <Link to="/">
+          <Link className="cursor-reg" to="/">
             {" "}
             <img src="" alt="home image for main feed" />
           </Link>
         </div>
         <div>
-          <Link to="/search">
+          <Link className="cursor-reg" to="/search">
             {" "}
             <img src="" alt="search" />
           </Link>
         </div>
         <div>
-          <img src="" alt="search" onClick={openMakeAPostModal} />
+          <img
+            className="cursor-reg"
+            src=""
+            alt="makeAPost"
+            onClick={openMakeAPostModal}
+          />
           {wannaMakeAPost && (
             <MakeAPost onClose={() => setWannaMakeAPost(false)} />
           )}
           {/* going to pop up as modal overlay */}
         </div>
         <div>
-          <Link to="/dms">
+          <Link className="cursor-reg" to="/dms">
             {" "}
             <img src="" alt="dms" />
           </Link>
         </div>
         <div>
-          <Link to={`/@${navUserData?.username}`}>
+          <Link className="cursor-reg" to={`/@${navUserData?.username}`}>
             {" "}
             <img src="" alt="click to go to your profile" />
           </Link>
@@ -72,7 +77,7 @@ function Nav({ navUserData, setNavUserData }) {
 
       <div className="openSettings">
         <div onClick={utilToggle}>
-          <div>settings</div>
+          <div className="cursor-reg">settings</div>
           <img src="" alt="" />
         </div>
 
