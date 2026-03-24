@@ -224,7 +224,7 @@ function Profile() {
                   <div>
                     <div>
                       <img
-                        src={`http://localhost:5555/pfpIMG/${profileData.profile?.pfp || profileData.pfp}`}
+                        src={`http://localhost:5555/pfpIMG/${profileData?.profile?.pfp || profileData?.pfp || "default-png.jpg"}`}
                       />
                     </div>
                   </div>

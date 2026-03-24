@@ -126,7 +126,7 @@ function PostCard({ post, onClick, onDelete }) {
       <div className="postContainer" onClick={onClick}>
         <div className="postersPFP">
           <Link to={`http://localhost:5555/@${username}`}>
-            <img src={`http://localhost:5555/pfpIMG/${pfp}`} />
+            <img src={`http://localhost:5555/pfpIMG/${pfp || "default-png.jpg"}`} />
           </Link>
         </div>
         <div>

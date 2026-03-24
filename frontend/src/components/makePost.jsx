@@ -86,7 +86,7 @@ function MakeAPost({ onClose }) {
             </div>
             <div>
               <div>
-                <img src={`http://localhost:5555/pfpIMG/${userProfile?.pfp}`} />
+                <img src={`http://localhost:5555/pfpIMG/${userProfile?.pfp || "default-png.jpg"}`} />
               </div>
               <div>@{user?.username}</div>
               <div>

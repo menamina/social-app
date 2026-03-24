@@ -19,10 +19,10 @@ function Nav({ navUserData, setNavUserData }) {
         credentials: "include",
       });
       if (res.status === 200) {
+        nav("/login", { replace: true });
         setNavUserData(null);
         setForYouFeed(null);
         setUserProfile(null);
-        nav("/login", { replace: true });
       }
     } catch (error) {
       console.log(error);
@@ -41,10 +41,7 @@ function Nav({ navUserData, setNavUserData }) {
         <div>
           <Link to="/">
             {" "}
-            <img
-              src={`http://localhost:5555/pfpIMG/${navUserData.profile?.pfp || navUserData.pfp}`}
-              alt="home image for main feed"
-            />
+            <img src="" alt="home image for main feed" />
           </Link>
         </div>
         <div>
@@ -67,7 +64,7 @@ function Nav({ navUserData, setNavUserData }) {
           </Link>
         </div>
         <div>
-          <Link to={`/@${navUserData.username}`}>
+          <Link to={`/@${navUserData?.username}`}>
             {" "}
             <img src="" alt="your profile" />
           </Link>

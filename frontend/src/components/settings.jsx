@@ -166,7 +166,7 @@ function Settings() {
                         {blockedUsers.map((blockedUser) => (
                           <div key={blockedUser.id} className="blockedUserItem">
                             <img
-                              src={`http://localhost:5555/pfpIMG/${blockedUser.pfp}`}
+                              src={`http://localhost:5555/pfpIMG/${blockedUser?.pfp || "default-png.jpg"}`}
                               alt={blockedUser.username}
                               className="blockedUserPfp"
                             />
