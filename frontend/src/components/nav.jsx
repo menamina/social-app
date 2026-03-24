@@ -69,7 +69,7 @@ function Nav({ navUserData, setNavUserData }) {
         </div>
         <div>
           <img
-            className="cursor-reg navIMG navIMG-post"
+            className="cursor-reg navIMG"
             src={newpost}
             alt="makeAPost"
             onClick={openMakeAPostModal}
@@ -81,7 +81,7 @@ function Nav({ navUserData, setNavUserData }) {
         </div>
         <div>
           <Link className="cursor-reg" to="/dms">
-            <img className="navIMG" src={dms} alt="dms" />
+            <img className="navIMG navIMG-dms" src={dms} alt="dms" />
           </Link>
         </div>
         <div>
