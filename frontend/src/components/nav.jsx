@@ -1,7 +1,14 @@
 import { useState } from "react";
 import { Link, useNavigate, useOutletContext } from "react-router-dom";
 import MakeAPost from "./makePost";
+
 import koifish from "../../imgs/koi.png";
+// import home from "../../imgs/";
+import search from "../../imgs/search.svg";
+import newpost from "../../imgs/post.png";
+import dms from "../../imgs/letter.png";
+import profile from "../../imgs/profile.svg";
+import settings from "../../imgs/settings.png";
 
 function Nav({ navUserData, setNavUserData }) {
   const { setForYouFeed } = useOutletContext();
@@ -44,20 +51,18 @@ function Nav({ navUserData, setNavUserData }) {
       <div className="navOpts">
         <div>
           <Link className="cursor-reg" to="/">
-            {" "}
             <img src="" alt="home img to go to home feed" />
           </Link>
         </div>
         <div>
           <Link className="cursor-reg" to="/search">
-            {" "}
-            <img src="" alt="search" />
+            <img src={search} alt="search" />
           </Link>
         </div>
         <div>
           <img
             className="cursor-reg"
-            src=""
+            src={newpost}
             alt="makeAPost"
             onClick={openMakeAPostModal}
           />
@@ -68,14 +73,12 @@ function Nav({ navUserData, setNavUserData }) {
         </div>
         <div>
           <Link className="cursor-reg" to="/dms">
-            {" "}
-            <img src="" alt="dms" />
+            <img src={dms} alt="dms" />
           </Link>
         </div>
         <div>
           <Link className="cursor-reg" to={`/@${navUserData?.username}`}>
-            {" "}
-            <img src="" alt="click to go to your profile" />
+            <img src={profile} alt="click to go to your profile" />
           </Link>
         </div>
       </div>
@@ -83,7 +86,7 @@ function Nav({ navUserData, setNavUserData }) {
       <div className="openSettings">
         <div onClick={utilToggle}>
           <div className="cursor-reg">settings</div>
-          <img src="" alt="" />
+          <img src={settings} alt="open settings" />
         </div>
 
         {utilsToggle ? (
