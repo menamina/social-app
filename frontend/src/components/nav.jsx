@@ -3,7 +3,7 @@ import { Link, useNavigate, useOutletContext } from "react-router-dom";
 import MakeAPost from "./makePost";
 
 import koifish from "../../imgs/koi.png";
-// import home from "../../imgs/";
+import home from "../../imgs/home.svg";
 import search from "../../imgs/search.svg";
 import newpost from "../../imgs/post.png";
 import dms from "../../imgs/letter.png";
@@ -41,27 +41,35 @@ function Nav({ navUserData, setNavUserData }) {
   }
 
   return (
-    <div>
+    <div className="navie">
       <div className="logoIMG">
         <Link className="cursor-reg" to="/">
-          <img src={koifish} alt="social media brand logo to go to home feed" />
+          <img
+            className="brandLOGO"
+            src={koifish}
+            alt="social media brand logo to go to home feed"
+          />
         </Link>
       </div>
 
       <div className="navOpts">
         <div>
           <Link className="cursor-reg" to="/">
-            <img src="" alt="home img to go to home feed" />
+            <img
+              className="navIMG"
+              src={home}
+              alt="home img to go to home feed"
+            />
           </Link>
         </div>
         <div>
           <Link className="cursor-reg" to="/search">
-            <img src={search} alt="search" />
+            <img className="navIMG" src={search} alt="search" />
           </Link>
         </div>
         <div>
           <img
-            className="cursor-reg"
+            className="cursor-reg navIMG navIMG-post"
             src={newpost}
             alt="makeAPost"
             onClick={openMakeAPostModal}
@@ -73,20 +81,23 @@ function Nav({ navUserData, setNavUserData }) {
         </div>
         <div>
           <Link className="cursor-reg" to="/dms">
-            <img src={dms} alt="dms" />
+            <img className="navIMG" src={dms} alt="dms" />
           </Link>
         </div>
         <div>
           <Link className="cursor-reg" to={`/@${navUserData?.username}`}>
-            <img src={profile} alt="click to go to your profile" />
+            <img
+              className="navIMG"
+              src={profile}
+              alt="click to go to your profile"
+            />
           </Link>
         </div>
       </div>
 
       <div className="openSettings">
-        <div onClick={utilToggle}>
-          <div className="cursor-reg">settings</div>
-          <img src={settings} alt="open settings" />
+        <div onClick={utilToggle} className="cursor-reg">
+          <img className="navIMG" src={settings} alt="open settings" />
         </div>
 
         {utilsToggle ? (

@@ -10,6 +10,7 @@
   justify-content: center;
   width: 95%;
   height: 100%;
+  background-color: pink;
 }
 
 .outletHolderDiv {
@@ -21,6 +22,7 @@
   border-radius: 20px;
   border: 1px solid rgb(207, 204, 204);
   padding: 10px;
+  background-color: peru;
 }
 
 .feedOpts {
@@ -52,6 +54,32 @@
   text-decoration: underline;
   text-decoration-color: rgb(37, 7, 88);
   text-underline-offset: 22px;
+}
+
+/* nav */
+
+.navie {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.navOpts {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.brandLOGO {
+  width: 100px;
+}
+
+.navIMG {
+  width: 35px;
+}
+
+.navIMG-post {
+  width: 50px;
 }
 
 /* rendering posts */
