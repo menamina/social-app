@@ -74,7 +74,7 @@ function Feed() {
         <div>
           <div>
             <img
-              src={`http://localhost:5555/pfpIMG/${user.profile?.pfp || user.pfp}`}
+              src={`http://localhost:5555/pfpIMG/${user?.profile?.pfp || user?.pfp || "default-png.jpg"}`}
             />
           </div>
           <div>
@@ -83,7 +83,9 @@ function Feed() {
               onClick={openMakeAPostModal}
             />
           </div>
-          {wannaMakeAPost && <MakeAPost onClose={() => setWannaMakeAPost(false)} />}
+          {wannaMakeAPost && (
+            <MakeAPost onClose={() => setWannaMakeAPost(false)} />
+          )}
         </div>
         {feedView === "for you" ? (
           <div className="forYouPosts">

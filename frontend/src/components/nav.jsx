@@ -22,10 +22,10 @@ function Nav({ navUserData, setNavUserData }) {
         setNavUserData(null);
         setForYouFeed(null);
         setUserProfile(null);
-        nav("/");
+        nav("/login", { replace: true });
       }
     } catch (error) {
-      alert("Error logging out:", error);
+      console.log(error);
     }
   }
 
