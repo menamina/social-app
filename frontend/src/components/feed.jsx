@@ -89,15 +89,16 @@ function Feed() {
       </div>
 
       <div className="feedPosts">
-        <div className="feedOpts">
+        <div className="beforeRenderingPosts">
           <div>
             <img
               className="feedPFP"
               src={`http://localhost:5555/pfpIMG/${user?.profile?.pfp || user?.pfp || "default-png.jpg"}`}
             />
           </div>
-          <div>
+          <div className="inputWrapper">
             <input
+              className="wannaSaySomething"
               placeholder="Wanna say something?"
               onClick={openMakeAPostModal}
             />

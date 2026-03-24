@@ -19,6 +19,7 @@
   width: 50%;
   height: 100%;
   border-radius: 20px;
+  border-color: 1px solid gray;
 }
 
 .feedOpts {
@@ -45,9 +46,27 @@
   flex-direction: column;
   width: 100%;
   flex-grow: 1;
-  background-color: red;
+}
+
+.beforeRenderingPosts {
+  display: flex;
+  align-items: center;
+  height: 200px;
+  gap: 5px;
 }
 
 .feedPFP {
-  width: 75px;
+  width: 90px;
+  height: 75px;
+  flex-shrink: 0;
+}
+
+.inputWrapper {
+  flex-grow: 1;
+}
+
+.wannaSaySomething {
+  border: none;
+  height: 75px;
+  width: 100%;
 }
