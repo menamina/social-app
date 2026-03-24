@@ -63,17 +63,36 @@ function Feed() {
   }
 
   return (
-    <div className="feed">
+    <div className="outletHolderDiv">
       <div className="feedOpts">
-        <div onClick={forYouRefresh}>For You</div>
+        <div
+          onClick={forYouRefresh}
+          className={
+            forYouFeed === "for you"
+              ? "selectedFeedView cursor"
+              : "cursor feedView"
+          }
+        >
+          For You
+        </div>
         <div>|</div>
-        <div onClick={followingRefresh}>Following</div>
+        <div
+          onClick={followingRefresh}
+          className={
+            forYouFeed === "following"
+              ? "selectedFeedView cursor"
+              : "cursor feedView"
+          }
+        >
+          Following
+        </div>
       </div>
 
       <div className="feedPosts">
-        <div>
+        <div className="feedOpts">
           <div>
             <img
+              className="feedPFP"
               src={`http://localhost:5555/pfpIMG/${user?.profile?.pfp || user?.pfp || "default-png.jpg"}`}
             />
           </div>

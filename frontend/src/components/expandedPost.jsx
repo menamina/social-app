@@ -65,7 +65,7 @@ function ExpandedPost() {
   if (!post) return <div>Post not found</div>;
 
   return (
-    <div className="expandedPost">
+    <div className="outletHolderDiv">
       <div>
         <button onClick={() => navigate(-1)}>← go back</button>
       </div>

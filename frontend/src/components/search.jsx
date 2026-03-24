@@ -61,7 +61,7 @@ function Search() {
   }
 
   return (
-    <div className="searchDiv">
+    <div className="outletHolderDiv">
       <div>Search</div>
       <div>
         <div>

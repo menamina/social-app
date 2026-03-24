@@ -4,7 +4,7 @@ import {
   useParams,
   useOutletContext,
   useNavigate,
-  useLocation
+  useLocation,
 } from "react-router-dom";
 import PostCard from "./PostCard";
 
@@ -13,7 +13,7 @@ function Profile() {
   const { user } = useOutletContext();
 
   const navigate = useNavigate();
-  const location = useLocation()
+  const location = useLocation();
 
   const [loading, setLoading] = useState(true);
   const [isOwnProfile, setIsOwnProfile] = useState(false);
@@ -35,8 +35,7 @@ function Profile() {
 
   const [error, setError] = useState(null);
 
-
-  const [cameFromSearchURL, setCameFromSearchURL] = useState(false)
+  const [cameFromSearchURL, setCameFromSearchURL] = useState(false);
 
   function profileViewOpt(option) {
     if (option === "posts") setProfileViewOption("posts");
@@ -44,15 +43,13 @@ function Profile() {
   }
 
   useEffect(() => {
-    function checkURL(){
-      if (location.pathname.includes('/search')){
-       setCameFromSearchURL(true)
+    function checkURL() {
+      if (location.pathname.includes("/search")) {
+        setCameFromSearchURL(true);
       }
     }
-    checkURL()
-
-  }, [])
-
+    checkURL();
+  }, []);
 
   useEffect(() => {
     async function fetchProfileData() {
@@ -128,7 +125,7 @@ function Profile() {
         setLoading(false);
       }
     }
-    fetchProfileData()
+    fetchProfileData();
   }, [username]);
 
   if (loading) {
@@ -212,11 +209,13 @@ function Profile() {
   }
 
   return (
-    <div>
+    <div className="outletHolderDiv">
       <div>Profile</div>
       <div>
         <div>
-          {cameFromSearchURL && <div onClick={() => navigate(-1)}>← go back</div>}
+          {cameFromSearchURL && (
+            <div onClick={() => navigate(-1)}>← go back</div>
+          )}
           <div>
             <div>
               <div>

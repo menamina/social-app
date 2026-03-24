@@ -49,10 +49,13 @@ function Dms() {
       }
 
       try {
-        const res = await fetch(`http://localhost:5555/dms/searchUser/${query}`, {
-          method: "GET",
-          credentials: "include",
-        });
+        const res = await fetch(
+          `http://localhost:5555/dms/searchUser/${query}`,
+          {
+            method: "GET",
+            credentials: "include",
+          },
+        );
 
         const data = await res.json();
         if (!res.ok) {
@@ -141,7 +144,7 @@ function Dms() {
   }
 
   return (
-    <div className="dms div">
+    <div className="outletHolderDiv">
       <div>
         <div>
           <div>
@@ -213,17 +216,18 @@ function Dms() {
           <div>
             {queryErr && <div>{queryErr}</div>}
             {noQRes && <div>{noQRes}</div>}
-            {queryResult && queryResult.map((result) => (
-              <div key={result.id} onClick={() => checkBlockStat(result.id)}>
-                <div>
-                  <img src={`${result.pfp}`} />
+            {queryResult &&
+              queryResult.map((result) => (
+                <div key={result.id} onClick={() => checkBlockStat(result.id)}>
+                  <div>
+                    <img src={`${result.pfp}`} />
+                  </div>
+                  <div>
+                    <p>{result.name}</p>
+                    <p>{result.username}</p>
+                  </div>
                 </div>
-                <div>
-                  <p>{result.name}</p>
-                  <p>{result.username}</p>
-                </div>
-              </div>
-            ))}
+              ))}
           </div>
         </div>
       ) : null}

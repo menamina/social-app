@@ -38,7 +38,11 @@ function Hub() {
 
   return (
     <div className="hubDiv">
-      <Nav navUserData={navUserData} setNavUserData={setNavUserData} />
+      <Nav
+        className="nav"
+        navUserData={navUserData}
+        setNavUserData={setNavUserData}
+      />
       <div className="outletDiv">
         <Outlet
           context={{
