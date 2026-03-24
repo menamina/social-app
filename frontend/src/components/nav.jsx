@@ -3,7 +3,7 @@ import { Link, useNavigate, useOutletContext } from "react-router-dom";
 import MakeAPost from "./makePost";
 
 function Nav({ navUserData, setNavUserData }) {
-  const { setForYouFeed, setUserProfile } = useOutletContext();
+  const { setForYouFeed } = useOutletContext();
   const [utilsToggle, setUtilsToggle] = useState(false);
   const [wannaMakeAPost, setWannaMakeAPost] = useState(false);
   const nav = useNavigate();
@@ -19,10 +19,9 @@ function Nav({ navUserData, setNavUserData }) {
         credentials: "include",
       });
       if (res.status === 200) {
-        nav("/login", { replace: true });
         setNavUserData(null);
         setForYouFeed(null);
-        setUserProfile(null);
+        nav("/login", { replace: true });
       }
     } catch (error) {
       console.log(error);
@@ -66,7 +65,7 @@ function Nav({ navUserData, setNavUserData }) {
         <div>
           <Link to={`/@${navUserData?.username}`}>
             {" "}
-            <img src="" alt="your profile" />
+            <img src="" alt="click to go to your profile" />
           </Link>
         </div>
       </div>

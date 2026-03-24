@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Outlet, useOutletContext } from "react-router-dom";
 import Nav from "./nav.jsx";
+import "../css/hub.css";
 
 function Hub() {
   const { user, forYouFeed, setForYouFeed, forYouFeedErr, setForYouFeedErr } =
@@ -36,7 +37,7 @@ function Hub() {
   }
 
   return (
-    <div>
+    <div className="hubDiv">
       <Nav navUserData={navUserData} setNavUserData={setNavUserData} />
       <div className="outletDiv">
         <Outlet
