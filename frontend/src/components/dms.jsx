@@ -34,6 +34,7 @@ function Dms() {
         setGetDmError(null);
       } catch (error) {
         setGetDmError(error.errorMsg);
+        setsideBarDMS(null);
       }
     }
     getsideBarDMS();
@@ -139,37 +140,31 @@ function Dms() {
     setQueryResult(null);
   }
 
-  if (!sideBarDMS) {
-    return <div>loading..</div>;
-  }
-
   return (
-    <div className="outletHolderDiv">
-      <div>
+    <div className="outletHolderDiv dms">
+      <div className="leftOfDM">
         <div>
-          <div>
-            <div>Chat</div>
-            <div onClick={() => setSearchUserToMessage(true)}>new msg</div>
+          <div className="dmChatNewMsgText">
+            <h2>Chat</h2>
           </div>
+        </div>
+
+        <div className="renderedChatsOnSide">
+          {getDmError && <div>{getDmError}</div>}
           <div>
             <div>
               <input
-                placeholder="search"
+                placeholder="search in dms"
                 aria-label="search in dms"
                 value={msgSearch}
                 onChange={(e) => setMsgSearch(e.target.value)}
               />
             </div>
           </div>
-        </div>
-
-        <div className="renderedChatsOnSide">
-          {getDmError && <div>{getDmError}</div>}
-
           {msgSearchOpen ? (
             <div>
               {msgSeachRes &&
-                msgSeachRes.map((obj) => (
+                msgSeachRes?.map((obj) => (
                   <div key={obj.id} onClick={() => checkBlockStat(obj.id)}>
                     <div>
                       <img src={`${obj.pfp}`} />
@@ -182,22 +177,42 @@ function Dms() {
                 ))}
             </div>
           ) : (
-            sideBarDMS.map((obj) => (
-              <div key={obj.id} onClick={() => checkBlockStat(obj.id)}>
-                <div>
-                  <img src={`${obj.pfp}`} />
-                </div>
-                <div>
-                  <p>{obj.name}</p>
-                  <p>{obj.username}</p>
-                </div>
-              </div>
-            ))
+            <div>
+              {!sideBarDMS && <div>no chats found - send a msg today!</div>}
+              {sideBarDMS &&
+                sideBarDMS?.map((obj) => (
+                  <div key={obj.id} onClick={() => checkBlockStat(obj.id)}>
+                    <div>
+                      <img src={`${obj.pfp}`} />
+                    </div>
+                    <div>
+                      <p>{obj.name}</p>
+                      <p>{obj.username}</p>
+                    </div>
+                  </div>
+                ))}
+            </div>
           )}
         </div>
       </div>
-      {openMsg && <MsgOpened id={openMsgWith} isBlocked={isBlocked} />}
 
+      <div className="rightOfDM">
+        {!openMsg ? (
+          <div>
+            <h2>Wanna msg someone?</h2>
+            <div>start one today</div>
+            <button onClick={() => setSearchUserToMessage(true)}>
+              new chat
+            </button>
+          </div>
+        ) : (
+          <div>
+            <MsgOpened id={openMsgWith} isBlocked={isBlocked} />
+          </div>
+        )}
+      </div>
+
+      {/* modal down there */}
       {searchUserToMessage ? (
         <div className="searchUserToDmModal">
           <div>
@@ -217,14 +232,14 @@ function Dms() {
             {queryErr && <div>{queryErr}</div>}
             {noQRes && <div>{noQRes}</div>}
             {queryResult &&
-              queryResult.map((result) => (
-                <div key={result.id} onClick={() => checkBlockStat(result.id)}>
+              queryResult?.map((result) => (
+                <div key={result.id} onClick={() => checkBlockStat(result?.id)}>
                   <div>
-                    <img src={`${result.pfp}`} />
+                    <img src={`${result?.pfp}`} />
                   </div>
                   <div>
-                    <p>{result.name}</p>
-                    <p>{result.username}</p>
+                    <p>{result?.name}</p>
+                    <p>{result?.username}</p>
                   </div>
                 </div>
               ))}

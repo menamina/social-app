@@ -10,7 +10,6 @@
   justify-content: center;
   width: 95%;
   height: 100%;
-  background-color: pink;
 }
 
 .outletHolderDiv {
@@ -22,8 +21,36 @@
   border-radius: 20px;
   border: 1px solid rgb(207, 204, 204);
   padding: 10px;
-  background-color: peru;
 }
+
+/* nav nav nav */
+
+.navie {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.navOpts {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.brandLOGO {
+  width: 100px;
+}
+
+.navIMG {
+  width: 35px;
+}
+
+.navIMG-dms {
+  width: 45px;
+  margin-left: -8px;
+}
+
+/* feed feed feed */
 
 .feedOpts {
   display: flex;
@@ -56,35 +83,6 @@
   text-underline-offset: 22px;
 }
 
-/* nav */
-
-.navie {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.navOpts {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-}
-
-.brandLOGO {
-  width: 100px;
-}
-
-.navIMG {
-  width: 35px;
-}
-
-.navIMG-dms {
-  width: 45px;
-  margin-left: -8px;
-}
-
-/* rendering posts */
-
 .feedPosts {
   display: flex;
   flex-direction: column;
@@ -115,4 +113,24 @@
   width: 100%;
   border: 1px solid rgb(215, 215, 215);
   padding: 20px;
+}
+
+/* dms dms dms */
+
+.outletHolderDiv.dms {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.leftOfDM,
+.rightOfDM {
+  width: 50%;
+}
+
+.leftOfDM {
+}
+
+.dmChatNewMsgText > div:last-child {
+  text-align: end;
 }
