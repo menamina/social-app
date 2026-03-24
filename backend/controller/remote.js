@@ -43,10 +43,11 @@ async function signup(req, res) {
 async function sendIMGS(req, res) {
   try {
     const img = req.params.image;
-    const imgPath = path.resolve("uploads", img);
+    const imgPath = path.resolve(__dirname, "..", "uploads", img);
     return res.sendFile(imgPath);
   } catch (error) {
     console.log(error);
+    return res.status(404).json({ errorMsg: "Image not found" });
   }
 }
 

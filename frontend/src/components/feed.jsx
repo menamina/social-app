@@ -87,9 +87,8 @@ function Feed() {
         </div>
         {feedView === "for you" ? (
           <div className="forYouPosts">
-            {forYouFeedErr ? (
-              <div>{forYouFeedErr}</div>
-            ) : (
+            {forYouFeedErr && <div>{forYouFeedErr}</div>}
+            {forYouFeed && (
               <div>
                 {forYouFeed.map((post) => (
                   <PostCard
@@ -104,9 +103,8 @@ function Feed() {
           </div>
         ) : (
           <div className="followingPosts">
-            {followingFeedErr ? (
-              <div>{followingFeedErr}</div>
-            ) : (
+            {followingFeedErr && <div>{followingFeedErr}</div>}
+            {followingFeed && (
               <div>
                 {followingFeed.map((post) => (
                   <PostCard
