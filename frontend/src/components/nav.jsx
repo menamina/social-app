@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate, useOutletContext } from "react-router-dom";
 import MakeAPost from "./makePost";
+import koifish from "../../imgs/koi.png";
 
 function Nav({ navUserData, setNavUserData }) {
   const { setForYouFeed } = useOutletContext();
@@ -34,13 +35,17 @@ function Nav({ navUserData, setNavUserData }) {
 
   return (
     <div>
-      <div className="logoIMG"></div>
+      <div className="logoIMG">
+        <Link className="cursor-reg" to="/">
+          <img src={koifish} alt="social media brand logo to go to home feed" />
+        </Link>
+      </div>
 
       <div className="navOpts">
         <div>
           <Link className="cursor-reg" to="/">
             {" "}
-            <img src="" alt="home image for main feed" />
+            <img src="" alt="home img to go to home feed" />
           </Link>
         </div>
         <div>
