@@ -121,16 +121,47 @@
   display: flex;
   flex-direction: row;
   align-items: flex-start;
+  height: 100%;
 }
 
 .leftOfDM,
 .rightOfDM {
   width: 50%;
+  height: 100%;
 }
 
 .leftOfDM {
+  display: flex;
+  flex-direction: column;
 }
 
-.dmChatNewMsgText > div:last-child {
-  text-align: end;
+.msgSearchDM {
+  width: 100%;
+  text-align: center;
+}
+
+.renderedChatsOnSide {
+  height: 100%;
+}
+
+.renderedDMSideDiv {
+  display: flex;
+  flex-direction: column;
+  margin-top: 30px;
+}
+
+.noChats {
+  text-align: center;
+  align-self: center;
+}
+
+.rightOfDM {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.wannaMsgSomeone {
+  text-align: center;
 }

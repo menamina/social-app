@@ -144,9 +144,7 @@ function Dms() {
     <div className="outletHolderDiv dms">
       <div className="leftOfDM">
         <div>
-          <div className="dmChatNewMsgText">
-            <h2>Chat</h2>
-          </div>
+          <h2>Chat</h2>
         </div>
 
         <div className="renderedChatsOnSide">
@@ -154,6 +152,7 @@ function Dms() {
           <div>
             <div>
               <input
+                className="msgSearchDM"
                 placeholder="search in dms"
                 aria-label="search in dms"
                 value={msgSearch}
@@ -177,8 +176,10 @@ function Dms() {
                 ))}
             </div>
           ) : (
-            <div>
-              {!sideBarDMS && <div>no chats found - send a msg today!</div>}
+            <div className="renderedDMSideDiv">
+              {!sideBarDMS && (
+                <div className="noChats">it's kinda lonely here..</div>
+              )}
               {sideBarDMS &&
                 sideBarDMS?.map((obj) => (
                   <div key={obj.id} onClick={() => checkBlockStat(obj.id)}>
@@ -198,8 +199,8 @@ function Dms() {
 
       <div className="rightOfDM">
         {!openMsg ? (
-          <div>
-            <h2>Wanna msg someone?</h2>
+          <div className="wannaMsgSomeone">
+            <h1>Wanna msg someone?</h1>
             <div>start one today</div>
             <button onClick={() => setSearchUserToMessage(true)}>
               new chat
