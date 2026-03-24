@@ -82,6 +82,7 @@ function LoginSignUp() {
 
       if (data.usernameTaken) {
         setUsernameTaken(true);
+        console.log(data.usernameTaken);
         return;
       } else if (data.emailTaken) {
         setEmailTaken(true);
@@ -116,6 +117,7 @@ function LoginSignUp() {
             <div>
               <label>Password:</label>
               <input
+                type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               ></input>

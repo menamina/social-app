@@ -5,22 +5,23 @@ const prisma = require("../prisma/client");
 
 const strategy = new LocalStrategy({ usernameField: "email" }, verifyCB);
 
-function verifyCB(email, password, done) {
-  prisma.user
-    .findUnique({ where: { email } })
-    .then((user) => {
-      if (!user) {
-        return done(null, false, { message: "invalid email" });
-      }
-      if (user) {
-        const match = checkPassword(password, user.saltedHash);
-        if (!match) {
-          return done(null, false, { message: "invalid password" });
-        }
-        return done(null, user);
-      }
-    })
-    .catch((error) => done(error));
+async function verifyCB(email, password, done) {
+  try {
+    const user = await prisma.user.findUnique({ where: { email } });
+
+    if (!user) {
+      return done(null, false, { message: "invalid email" });
+    }
+
+    const match = await checkPassword(password, user.saltedHash);
+    if (!match) {
+      return done(null, false, { message: "invalid password" });
+    }
+
+    return done(null, user);
+  } catch (error) {
+    return done(error);
+  }
 }
 
 passport.serializeUser((user, done) => {

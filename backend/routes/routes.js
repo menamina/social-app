@@ -31,7 +31,7 @@ router.post("/login", (req, res, next) => {
         },
       });
     });
-  });
+  })(req, res, next);
 });
 
 router.post("/sign-up", validator, remote.signup);

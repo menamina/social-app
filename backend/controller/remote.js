@@ -7,15 +7,15 @@ async function signup(req, res) {
   try {
     const { name, username, email, password } = req.body;
 
-    const isThereAUserName = prisma.user.findUnique({
+    const isThereAUserName = await prisma.user.findUnique({
       where: {
         username: username,
       },
     });
 
-    const isThereAnEmail = prisma.user.findUnique({
+    const isThereAnEmail = await prisma.user.findUnique({
       where: {
-        username: username,
+        email: email,
       },
     });
 
