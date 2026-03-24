@@ -68,7 +68,7 @@ function Feed() {
         <div
           onClick={forYouRefresh}
           className={
-            forYouFeed === "for you"
+            feedView === "for you"
               ? "selectedFeedView cursor"
               : "cursor feedView"
           }
@@ -79,7 +79,7 @@ function Feed() {
         <div
           onClick={followingRefresh}
           className={
-            forYouFeed === "following"
+            feedView === "following"
               ? "selectedFeedView cursor"
               : "cursor feedView"
           }
