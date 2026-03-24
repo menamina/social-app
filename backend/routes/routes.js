@@ -36,6 +36,8 @@ router.post("/login", (req, res, next) => {
 
 router.post("/sign-up", validator, remote.signup);
 
+router.get("/pfpIMG/:image", remote.sendIMGS);
+
 router.post("/logout", (req, res, next) => {
   req.logout((error) => {
     if (error) {
