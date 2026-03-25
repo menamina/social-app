@@ -230,18 +230,19 @@ function Dms() {
         >
           <div className="searchwrapper" onClick={(e) => e.stopPropagation()}>
             <div>
-              <div>New message</div>
-              <div onClick={(e) => userSearchXClicked(e)}>X</div>
+              <h2>New message</h2>
+              <h3 onClick={(e) => userSearchXClicked(e)}>X</h3>
             </div>
             <div>
               <input
+                className="userSearchInput"
                 placeholder="search username"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
               />
             </div>
 
-            <div>
+            <div className="userSearchRes">
               {queryErr && <div>{queryErr}</div>}
               {noQRes && <div>{noQRes}</div>}
               {queryResult &&

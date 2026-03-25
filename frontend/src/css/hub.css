@@ -180,18 +180,44 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgba(0, 0, 0, 0.764);
 }
 
 .searchwrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
   position: relative;
   z-index: 2;
   background-color: white;
-  width: 600px;
+  width: 500px;
   height: 600px;
   max-width: 90vw;
   max-height: 80vh;
   border-radius: 16px;
   overflow: hidden;
   padding: 20px;
+}
+
+.searchwrapper > div:first-child {
+  display: flex;
+  justify-content: space-between;
+}
+
+.searchwrapper > div:nth-child(2) {
+  width: 100%;
+}
+
+.userSearchInput {
+  text-align: center;
+  font-size: 1.2rem;
+  width: 100%;
+  height: 50px;
+  border-radius: 10px;
+  border: 1px solid rgba(128, 128, 128, 0.471);
+}
+
+.userSearchRes {
+  flex-grow: 1;
+  overflow: scroll;
 }
