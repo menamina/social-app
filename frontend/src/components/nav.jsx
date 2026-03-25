@@ -89,7 +89,7 @@ function Nav({ navUserData, setNavUserData }) {
           </Link>
         </div>
         <div>
-          <Link className="cursor-reg" to={`/@${navUserData?.username}`}>
+          <Link className="cursor-reg" to={`/${navUserData?.username}`}>
             <img
               className="navIMG"
               src={profile}

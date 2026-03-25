@@ -90,7 +90,7 @@ function MsgOpened({ id, isBlocked }) {
   return (
     <div className="msgOpened div">
       <div>
-        <Link to={`/@${otherUser.username}`}>
+        <Link to={`/${otherUser.username}`}>
           {" "}
           <img
             src={`${otherUser.pfp}`}

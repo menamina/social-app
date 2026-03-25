@@ -25,10 +25,10 @@ const routes = createBrowserRouter([
         children: [
           { index: true, element: <Feed /> },
           { path: "search", element: <Search /> },
-          { path: "@:username", element: <Profile /> },
-          { path: "@:username/post/:id", element: <ExpandedPost /> },
           { path: "settings", element: <Settings /> },
           { path: "dms", element: <Dms /> },
+          { path: ":username", element: <Profile /> },
+          { path: ":username/post/:id", element: <ExpandedPost /> },
         ],
       },
     ],

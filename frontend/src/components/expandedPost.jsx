@@ -1,11 +1,16 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import PostCard from "./PostCard";
 
 function ExpandedPost() {
-  const { username, postId } = useParams();
-
+  const params = useParams();
+  const location = useLocation();
   const navigate = useNavigate();
+
+  // Parse username and postId from pathname (@username/post/id)
+  const pathParts = location.pathname.split('/').filter(Boolean);
+  const username = pathParts[0]?.startsWith('@') ? pathParts[0].slice(1) : pathParts[0];
+  const postId = pathParts[2]; // Should be the ID after 'post'
 
   const [post, setPost] = useState(null);
   const [postComments, setPostComments] = useState(null);
