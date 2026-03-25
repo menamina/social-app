@@ -367,3 +367,16 @@
 .settingsViewOpt > div > h2 {
   margin-bottom: 20px;
 }
+
+.accountSettings > form,
+.help > form {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.accountSettings > form > div,
+.help > form > div {
+  display: flex;
+  justify-content: space-between;
+}

@@ -230,7 +230,7 @@ function Settings() {
                     name="name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    placeholder="Enter name"
+                    placeholder={user?.name}
                   />
                 </div>
 
@@ -242,7 +242,7 @@ function Settings() {
                     name="username"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
-                    placeholder="Enter username"
+                    placeholder={user?.username}
                   />
                 </div>
 
@@ -254,7 +254,7 @@ function Settings() {
                     name="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Enter email"
+                    placeholder={user?.email}
                   />
                 </div>
 
@@ -265,7 +265,7 @@ function Settings() {
             </div>
           )}
           {viewOpt === "help" && (
-            <div>
+            <div className="help">
               <h2>Send us a message</h2>
               <form>
                 <div>
@@ -274,7 +274,7 @@ function Settings() {
                 </div>
                 <div>
                   <label>Message:</label>
-                  <input />
+                  <textarea />
                 </div>
                 <div>
                   <button>submit</button>
