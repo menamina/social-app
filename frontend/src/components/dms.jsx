@@ -113,6 +113,7 @@ function Dms() {
   }, [msgSearch]);
 
   async function checkBlockStat(id) {
+    e.stopPropogation;
     try {
       const res = await fetch("http://localhost:5555/check-block-status", {
         method: "POST",
@@ -135,7 +136,14 @@ function Dms() {
     }
   }
 
-  function clearSearchUserModal() {
+  function userSearchXClicked(e) {
+    e.stopPropagation();
+    setSearchUserToMessage(false);
+    setQueryResult(null);
+  }
+
+  function removeUserToSearchModal(e) {
+    e.stopPropagation();
     setSearchUserToMessage(false);
     setQueryResult(null);
   }
@@ -215,11 +223,16 @@ function Dms() {
 
       {/* modal down there */}
       {searchUserToMessage ? (
-        <div className="searchUserToDmModal">
+        <div
+          className="searchUserToDmModal"
+          onClick={(e) => {
+            removeUserToSearchModal(e);
+          }}
+        >
           <div>
             <div>
               <div>New message</div>
-              <div onClick={clearSearchUserModal}>X</div>
+              <div onClick={(e) => userSearchXClicked(e)}>X</div>
             </div>
             <div>
               <input

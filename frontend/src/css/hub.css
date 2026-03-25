@@ -122,6 +122,7 @@
   flex-direction: row;
   align-items: flex-start;
   height: 100%;
+  position: relative;
 }
 
 .leftOfDM,
@@ -141,6 +142,8 @@
 }
 
 .renderedChatsOnSide {
+  display: flex;
+  flex-direction: column;
   height: 100%;
 }
 
@@ -148,11 +151,12 @@
   display: flex;
   flex-direction: column;
   margin-top: 30px;
+  height: 100%;
 }
 
 .noChats {
   text-align: center;
-  align-self: center;
+  font-style: italic;
 }
 
 .rightOfDM {
@@ -164,4 +168,12 @@
 
 .wannaMsgSomeone {
   text-align: center;
+}
+
+.searchUserToDmModal {
+  position: absolute;
+  z-index: 1;
+  width: 100vw;
+  height: 100vh;
+  background-color: gray;
 }
