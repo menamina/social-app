@@ -68,45 +68,48 @@ function MakeAPost({ onClose }) {
 
           <form onSubmit={postIt}>
             <div>
-              <button onClick={cancel}>cancel</button>
-              <div>new post</div>
-              <div>
-                <img
-                  alt="Upload imgs"
-                  onClick={(e) => e.target.nextSibling.click()}
-                />
-                <input
-                  type="file"
-                  multiple
-                  accept="image/*"
-                  hidden
-                  onChange={(e) => setSelectedFiles(Array.from(e.target.files))}
-                />
+              <div onClick={cancel} className="xPost">
+                x
               </div>
             </div>
-            <div>
+            <div className="newPostMain">
               <div>
-                <img
-                  src={`http://localhost:5555/pfpIMG/${userProfile?.pfp || "default-png.jpg"}`}
-                />
-              </div>
-              <div>@{user?.username}</div>
-              <div>
-                <input
-                  placeholder="What's new?"
-                  value={msgToPost}
-                  onChange={(e) => setMsgToPost(e.target.value)}
-                ></input>
+                <div>
+                  <img
+                    className="newPostPFP"
+                    src={`http://localhost:5555/pfpIMG/${userProfile?.pfp || "default-png.jpg"}`}
+                  />
+                </div>
+                <div className="divInputForPostText">
+                  <textarea
+                    placeholder="What's new?"
+                    value={msgToPost}
+                    onChange={(e) => setMsgToPost(e.target.value)}
+                  ></textarea>
+                </div>
               </div>
             </div>
-            <div>
-              {msgToPost || selectedFiles.length > 0 ? (
-                <button className="can-post-btn" type="submit">
-                  post
-                </button>
-              ) : (
-                <div className="cannot-post-btn">post</div>
-              )}
+            <div className="postPost">
+              <img
+                alt="Upload imgs"
+                onClick={(e) => e.target.nextSibling.click()}
+              />
+              <input
+                type="file"
+                multiple
+                accept="image/*"
+                hidden
+                onChange={(e) => setSelectedFiles(Array.from(e.target.files))}
+              />
+              <div>
+                {msgToPost || selectedFiles.length > 0 ? (
+                  <button className="can-post-btn" type="submit">
+                    post
+                  </button>
+                ) : (
+                  <div className="cannot-post-btn">post</div>
+                )}
+              </div>
             </div>
           </form>
         </div>

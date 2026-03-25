@@ -78,6 +78,11 @@
   margin-left: 20px;
 }
 
+.utilWrapper a {
+  color: black;
+  text-decoration: none;
+}
+
 .modalBackdrop {
   position: fixed;
   left: 0;
@@ -87,12 +92,58 @@
   background-color: rgba(128, 128, 128, 0.406);
   display: flex;
   justify-content: center;
-  align-items: center;
+  z-index: 1;
+  padding-top: 50px;
 }
 
 .modalContent {
+  padding: 20px;
+  border-radius: 20px;
+  width: 600px;
+  height: 300px;
   position: absolute;
   background-color: white;
+}
+
+.newPostMain {
+  display: flex;
+  flex-direction: column;
+}
+
+.newPostMain > div,
+.postPost {
+  display: flex;
+}
+
+.newPostPFP {
+  width: 150px;
+}
+
+.divInputForPostText {
+  height: 100%;
+  flex-grow: 1;
+}
+
+.divInputForPostText > textarea {
+  width: 100%;
+  flex-grow: 1;
+  border: none;
+  padding: 10px;
+  font-size: 1.3rem;
+  font-family: inherit;
+  resize: none;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.postPost {
+  justify-content: space-between;
+}
+
+.xPost {
+  font-size: 30px;
 }
 
 /* feed feed feed */

@@ -81,7 +81,7 @@ function Search() {
             <div>
               {queryResultsUsername.map((user) => (
                 <Link
-                  to={`http://localhost:5555/@${user.username}`}
+                  to={`/@${user.username}`}
                   key={user.id}
                   id={user.id}
                 >
