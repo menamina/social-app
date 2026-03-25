@@ -90,11 +90,14 @@ function Settings() {
     e.preventDefault();
 
     const formData = new FormData();
-    formData.append("name", name);
-    formData.append("username", username);
-    formData.append("email", email);
-    if (profilePicture) {
-      formData.append("pfp", profilePicture);
+    name ? formData.append("name", name) : null;
+    username ? formData.append("username", username) : null;
+    email ? formData.append("email", email) : null;
+    profilePicture ? formData.append("pfp", profilePicture) : null;
+
+    if (!name && !username && !email && !profilePicture) {
+      alert("updating profile fields cannot be empty");
+      return;
     }
 
     try {
