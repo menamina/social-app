@@ -112,8 +112,8 @@ function Dms() {
     return () => clearTimeout(timeout);
   }, [msgSearch]);
 
-  async function checkBlockStat(id) {
-    e.stopPropogation;
+  async function checkBlockStat(e, id) {
+    e.stopPropagation();
     try {
       const res = await fetch("http://localhost:5555/check-block-status", {
         method: "POST",
@@ -172,7 +172,7 @@ function Dms() {
             <div>
               {msgSeachRes &&
                 msgSeachRes?.map((obj) => (
-                  <div key={obj.id} onClick={() => checkBlockStat(obj.id)}>
+                  <div key={obj.id} onClick={(e) => checkBlockStat(e, obj.id)}>
                     <div>
                       <img src={`${obj.pfp}`} />
                     </div>
@@ -190,7 +190,7 @@ function Dms() {
               )}
               {sideBarDMS &&
                 sideBarDMS?.map((obj) => (
-                  <div key={obj.id} onClick={() => checkBlockStat(obj.id)}>
+                  <div key={obj.id} onClick={(e) => checkBlockStat(e, obj.id)}>
                     <div>
                       <img src={`${obj.pfp}`} />
                     </div>
@@ -221,7 +221,6 @@ function Dms() {
         )}
       </div>
 
-      {/* modal down there */}
       {searchUserToMessage ? (
         <div
           className="searchUserToDmModal"
@@ -229,7 +228,7 @@ function Dms() {
             removeUserToSearchModal(e);
           }}
         >
-          <div>
+          <div className="searchwrapper" onClick={(e) => e.stopPropagation()}>
             <div>
               <div>New message</div>
               <div onClick={(e) => userSearchXClicked(e)}>X</div>
@@ -241,22 +240,26 @@ function Dms() {
                 onChange={(e) => setQuery(e.target.value)}
               />
             </div>
-          </div>
-          <div>
-            {queryErr && <div>{queryErr}</div>}
-            {noQRes && <div>{noQRes}</div>}
-            {queryResult &&
-              queryResult?.map((result) => (
-                <div key={result.id} onClick={() => checkBlockStat(result?.id)}>
-                  <div>
-                    <img src={`${result?.pfp}`} />
+
+            <div>
+              {queryErr && <div>{queryErr}</div>}
+              {noQRes && <div>{noQRes}</div>}
+              {queryResult &&
+                queryResult?.map((result) => (
+                  <div
+                    key={result.id}
+                    onClick={(e) => checkBlockStat(e, result?.id)}
+                  >
+                    <div>
+                      <img src={`${result?.pfp}`} />
+                    </div>
+                    <div>
+                      <p>{result?.name}</p>
+                      <p>{result?.username}</p>
+                    </div>
                   </div>
-                  <div>
-                    <p>{result?.name}</p>
-                    <p>{result?.username}</p>
-                  </div>
-                </div>
-              ))}
+                ))}
+            </div>
           </div>
         </div>
       ) : null}
