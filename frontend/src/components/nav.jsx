@@ -21,7 +21,7 @@ function Nav({ navUserData, setNavUserData }) {
   }
 
   function closeUtil(e) {
-    e.stopPropagaton();
+    e.stopPropagation();
     setUtilsToggle(false);
   }
 
