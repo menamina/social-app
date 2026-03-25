@@ -136,25 +136,33 @@ function Settings() {
         <div className="settingsSidebar">
           <div
             onClick={() => changeViewOpt("privacy")}
-            className={viewOpt === "privacy" ? "settingsOption active" : "settingsOption"}
+            className={
+              viewOpt === "privacy" ? "settingsOption active" : "settingsOption"
+            }
           >
             Privacy
           </div>
           <div
             onClick={() => changeViewOpt("account")}
-            className={viewOpt === "account" ? "settingsOption active" : "settingsOption"}
+            className={
+              viewOpt === "account" ? "settingsOption active" : "settingsOption"
+            }
           >
             Account
           </div>
           <div
             onClick={() => changeViewOpt("help")}
-            className={viewOpt === "help" ? "settingsOption active" : "settingsOption"}
+            className={
+              viewOpt === "help" ? "settingsOption active" : "settingsOption"
+            }
           >
             Help
           </div>
           <div
             onClick={() => changeViewOpt("blocked")}
-            className={viewOpt === "blocked" ? "settingsOption active" : "settingsOption"}
+            className={
+              viewOpt === "blocked" ? "settingsOption active" : "settingsOption"
+            }
           >
             Blocked accounts
           </div>
@@ -181,9 +189,7 @@ function Settings() {
                         className="blockedUserPfp"
                       />
                       <div className="blockedUserInfo">
-                        <p className="blockedUserName">
-                          {blockedUser.name}
-                        </p>
+                        <p className="blockedUserName">{blockedUser.name}</p>
                         <p className="blockedUserUsername">
                           @{blockedUser.username}
                         </p>
@@ -259,7 +265,7 @@ function Settings() {
           )}
           {viewOpt === "help" && (
             <div>
-              <div>Send us a message</div>
+              <h3>Send us a message</h3>
               <form>
                 <div>
                   <label>Email:</label>
