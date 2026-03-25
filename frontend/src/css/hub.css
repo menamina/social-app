@@ -78,6 +78,23 @@
   margin-left: 20px;
 }
 
+.modalBackdrop {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(128, 128, 128, 0.406);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modalContent {
+  position: absolute;
+  background-color: white;
+}
+
 /* feed feed feed */
 
 .feedOpts {

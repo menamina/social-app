@@ -82,7 +82,6 @@ function Nav({ navUserData, setNavUserData }) {
           {wannaMakeAPost && (
             <MakeAPost onClose={() => setWannaMakeAPost(false)} />
           )}
-          {/* going to pop up as modal overlay */}
         </div>
         <div>
           <Link className="cursor-reg" to="/dms">
