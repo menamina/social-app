@@ -130,7 +130,8 @@ function Settings() {
     <div className="settingsDiv">
       <div>
         <p>back</p>
-        <div>Settings</div>
+        <h1>Settings</h1>
+        <div></div>
       </div>
       <div className="settingsFlexContainer">
         <div className="settingsSidebar">
@@ -170,13 +171,13 @@ function Settings() {
         <div className="settingsViewOpt">
           {viewOpt === "privacy" && (
             <div className="privacySettings">
-              <h3>Privacy Settings</h3>
+              <h2>Privacy Settings</h2>
               <p>Privacy content goes here</p>
             </div>
           )}
           {viewOpt === "blocked" && (
             <div className="blockedAccountsSettings">
-              <h3>Blocked Accounts</h3>
+              <h2>Blocked Accounts</h2>
               {blockedUsers.length === 0 ? (
                 <p>No blocked accounts</p>
               ) : (
@@ -208,7 +209,7 @@ function Settings() {
           )}
           {viewOpt === "account" && (
             <div className="accountSettings">
-              <h3>Update Profile</h3>
+              <h2>Update Profile</h2>
               <form onSubmit={handleSubmit}>
                 <div className="formGroup">
                   <label htmlFor="profilePicture">Profile Picture</label>
@@ -265,7 +266,7 @@ function Settings() {
           )}
           {viewOpt === "help" && (
             <div>
-              <h3>Send us a message</h3>
+              <h2>Send us a message</h2>
               <form>
                 <div>
                   <label>Email:</label>

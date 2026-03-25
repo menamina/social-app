@@ -321,6 +321,13 @@
 
 /* settings settings settings */
 
+.settingsDiv > div:first-child {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding-left: 10px;
+}
+
 .settingsFlexContainer {
   display: flex;
   margin-top: 20px;
@@ -357,6 +364,6 @@
   padding: 20px;
 }
 
-.settingsViewOpt > div > h3 {
+.settingsViewOpt > div > h2 {
   margin-bottom: 20px;
 }
