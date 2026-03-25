@@ -12,7 +12,8 @@
   height: 100%;
 }
 
-.outletHolderDiv {
+.outletHolderDiv,
+.settingsDiv {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -316,4 +317,29 @@
 .userSearchRes {
   flex-grow: 1;
   overflow: scroll;
+}
+
+/* settings settings settings */
+
+.settingsFlexContainer {
+  display: flex;
+  margin-top: 20px;
+}
+
+.settingsFlexContainer {
+  height: 100%;
+  width: 100%;
+}
+
+.settingsSidebar,
+.settingsViewOpt {
+  width: 50%;
+}
+
+.settingsSidebar {
+  border-right: 1px solid rgba(128, 128, 128, 0.471);
+}
+
+.settingsOption.active {
+  background-color: gray;
 }

@@ -4,7 +4,6 @@ import { useOutletContext } from "react-router-dom";
 function Settings() {
   const { user, userProfile, setUserProfile } = useOutletContext();
   const [viewOpt, setViewOpt] = useState("privacy");
-  const [dropDown, setdropDown] = useState(null);
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -45,16 +44,10 @@ function Settings() {
     fetchUserProfile();
   }, [user]);
 
-  function changeViewOpt(option) {
+  async function changeViewOpt(option) {
     setViewOpt(option);
-  }
 
-  async function toggledropDown(option) {
-    if (dropDown === option) {
-      setdropDown(null);
-    } else {
-      setdropDown(option);
-
+    if (option === "blocked") {
       try {
         const res = await fetch("http://localhost:5555/blocked-users", {
           method: "GET",
@@ -136,64 +129,78 @@ function Settings() {
   return (
     <div className="settingsDiv">
       <div>
-        <div>
-          <p>back</p>
-        </div>
+        <p>back</p>
         <div>Settings</div>
       </div>
       <div className="settingsFlexContainer">
-        <div>
-          <div onClick={() => changeViewOpt("privacy")}>Privacy</div>
-          <div onClick={() => changeViewOpt("account")}>Account</div>
-          <div onClick={() => changeViewOpt("help")}>Help</div>
+        <div className="settingsSidebar">
+          <div
+            onClick={() => changeViewOpt("privacy")}
+            className={viewOpt === "privacy" ? "settingsOption active" : "settingsOption"}
+          >
+            Privacy
+          </div>
+          <div
+            onClick={() => changeViewOpt("account")}
+            className={viewOpt === "account" ? "settingsOption active" : "settingsOption"}
+          >
+            Account
+          </div>
+          <div
+            onClick={() => changeViewOpt("help")}
+            className={viewOpt === "help" ? "settingsOption active" : "settingsOption"}
+          >
+            Help
+          </div>
+          <div
+            onClick={() => changeViewOpt("blocked")}
+            className={viewOpt === "blocked" ? "settingsOption active" : "settingsOption"}
+          >
+            Blocked accounts
+          </div>
         </div>
-        <div>
-          {viewOpt === "privacy" ? (
+        <div className="settingsViewOpt">
+          {viewOpt === "privacy" && (
             <div className="privacySettings">
-              <div className="dropDownOpt">
-                <div
-                  onClick={() => toggledropDown("blocked")}
-                  className="privacyHeader"
-                >
-                  Blocked accounts
-                </div>
-                {dropDown === "blocked" ? (
-                  <div className="privacyContent">
-                    {blockedUsers.length === 0 ? (
-                      <p>No blocked accounts</p>
-                    ) : (
-                      <div className="blockedUsersList">
-                        {blockedUsers.map((blockedUser) => (
-                          <div key={blockedUser.id} className="blockedUserItem">
-                            <img
-                              src={`http://localhost:5555/pfpIMG/${blockedUser?.pfp || "default-png.jpg"}`}
-                              alt={blockedUser.username}
-                              className="blockedUserPfp"
-                            />
-                            <div className="blockedUserInfo">
-                              <p className="blockedUserName">
-                                {blockedUser.name}
-                              </p>
-                              <p className="blockedUserUsername">
-                                @{blockedUser.username}
-                              </p>
-                            </div>
-                            <button
-                              onClick={() => handleUnblock(blockedUser.id)}
-                              className="unblockButton"
-                            >
-                              Unblock
-                            </button>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                ) : null}
-              </div>
+              <h3>Privacy Settings</h3>
+              <p>Privacy content goes here</p>
             </div>
-          ) : null}
-          {viewOpt === "account" ? (
+          )}
+          {viewOpt === "blocked" && (
+            <div className="blockedAccountsSettings">
+              <h3>Blocked Accounts</h3>
+              {blockedUsers.length === 0 ? (
+                <p>No blocked accounts</p>
+              ) : (
+                <div className="blockedUsersList">
+                  {blockedUsers.map((blockedUser) => (
+                    <div key={blockedUser.id} className="blockedUserItem">
+                      <img
+                        src={`http://localhost:5555/pfpIMG/${blockedUser?.pfp || "default-png.jpg"}`}
+                        alt={blockedUser.username}
+                        className="blockedUserPfp"
+                      />
+                      <div className="blockedUserInfo">
+                        <p className="blockedUserName">
+                          {blockedUser.name}
+                        </p>
+                        <p className="blockedUserUsername">
+                          @{blockedUser.username}
+                        </p>
+                      </div>
+                      <button
+                        onClick={() => handleUnblock(blockedUser.id)}
+                        className="unblockButton"
+                      >
+                        Unblock
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+          {viewOpt === "account" && (
             <div className="accountSettings">
               <h3>Update Profile</h3>
               <form onSubmit={handleSubmit}>
@@ -249,8 +256,8 @@ function Settings() {
                 </button>
               </form>
             </div>
-          ) : null}
-          {viewOpt === "help" ? (
+          )}
+          {viewOpt === "help" && (
             <div>
               <div>Send us a message</div>
               <form>
@@ -267,7 +274,7 @@ function Settings() {
                 </div>
               </form>
             </div>
-          ) : null}
+          )}
         </div>
       </div>
     </div>

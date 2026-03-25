@@ -101,13 +101,19 @@ function Nav({ navUserData, setNavUserData }) {
 
       <div className="openSettings">
         {utilsToggle ? (
-          <div className="utilsOpen" onClick={(e) => closeUtil(e)}>
+          <div className="utilsOpen">
             <div className="utilWrapper" onClick={(e) => e.stopPropagation()}>
               <div className="cursor">
-                <Link to="/settings">Settings</Link>
+                <Link to="/settings" onClick={(e) => closeUtil(e)}>
+                  Settings
+                </Link>
               </div>
-              <div className="cursor">Report a problem</div>
-              <div className="cursor" onClick={logout}>Logout</div>
+              <div className="cursor" onClick={(e) => closeUtil(e)}>
+                Report a problem
+              </div>
+              <div className="cursor" onClick={logout}>
+                Logout
+              </div>
             </div>
           </div>
         ) : null}
