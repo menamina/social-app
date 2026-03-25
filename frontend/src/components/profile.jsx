@@ -56,6 +56,8 @@ function Profile() {
       setLoading(true);
       setError(null);
 
+      console.log('Fetching profile for username:', username);
+
       try {
         const res = await fetch(`http://localhost:5555/@${username}`, {
           method: "GET",
@@ -63,6 +65,7 @@ function Profile() {
         });
 
         const data = await res.json();
+        console.log('Profile data received:', data);
 
         if (data.youAreBlocked) {
           setYouAreBlockedStatus(true);
@@ -310,7 +313,9 @@ function Profile() {
                       <PostCard
                         key={post.id}
                         post={post}
-                        onClick={() => navigate(`/${post.username}/post/${post.id}`)}
+                        onClick={() =>
+                          navigate(`/${post.username}/post/${post.id}`)
+                        }
                         onDelete={handleDeletePost}
                       />
                     ))
@@ -321,7 +326,11 @@ function Profile() {
                       <PostCard
                         key={like.id}
                         post={like.post}
-                        onClick={() => navigate(`/${like.post.username}/post/${like.post.id}`)}
+                        onClick={() =>
+                          navigate(
+                            `/${like.post.username}/post/${like.post.id}`,
+                          )
+                        }
                         onDelete={handleDeletePost}
                       />
                     ))
