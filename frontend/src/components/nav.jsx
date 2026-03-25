@@ -20,6 +20,11 @@ function Nav({ navUserData, setNavUserData }) {
     setUtilsToggle((prev) => !prev);
   }
 
+  function closeUtil(e) {
+    e.stopPropagaton();
+    setUtilsToggle(false);
+  }
+
   async function logout() {
     try {
       const res = await fetch("http://localhost:5555/logout", {
@@ -96,19 +101,21 @@ function Nav({ navUserData, setNavUserData }) {
       </div>
 
       <div className="openSettings">
+        {utilsToggle ? (
+          <div className="utilsOpen" onClick={(e) => closeUtil(e)}>
+            <div className="utilWrapper" onClick={(e) => e.stopPropagation()}>
+              <div>
+                <Link to="/settings">Settings</Link>
+              </div>
+              <div>Report a problem</div>
+              <div onClick={logout}>Logout</div>
+            </div>
+          </div>
+        ) : null}
+
         <div onClick={utilToggle} className="cursor-reg">
           <img className="navIMG" src={settings} alt="open settings" />
         </div>
-
-        {utilsToggle ? (
-          <div className="utilsOpen">
-            <div>
-              <Link to="/settings">Settings</Link>
-            </div>
-            <div>Report a problem</div>
-            <div onClick={logout}>Logout</div>
-          </div>
-        ) : null}
       </div>
     </div>
   );
