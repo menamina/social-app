@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext, useNavigate } from "react-router-dom";
 
 function Settings() {
   const { user, userProfile, setUserProfile } = useOutletContext();
+  const navigate = useNavigate();
   const [viewOpt, setViewOpt] = useState("privacy");
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
@@ -13,6 +14,11 @@ function Settings() {
 
   useEffect(() => {
     async function fetchUserProfile() {
+      if (!user) {
+        navigate("/");
+        return;
+      }
+
       if (!userProfile) {
         try {
           const res = await fetch(`http://localhost:5555/@${user.username}`, {
@@ -42,7 +48,7 @@ function Settings() {
     }
 
     fetchUserProfile();
-  }, [user]);
+  }, [user, userProfile, setUserProfile, navigate]);
 
   async function changeViewOpt(option) {
     setViewOpt(option);
