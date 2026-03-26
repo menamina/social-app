@@ -3,13 +3,21 @@ const { faker } = require("@faker-js/faker");
 
 const prisma = new PrismaClient();
 
+function createRandomUser() {
+  return {
+    name: faker.person.fullName(),
+    username: faker.internet.username(),
+    email: faker.internet.email(),
+    saltedHash: faker.internet.password(),
+  };
+}
+
 async function main() {
-  for (let i = 0; i < 5; i++) {
-    const fakeUser = createRandomUser();
-    await prisma.user.create({
-      data: fakeUser,
-    });
-  }
+  const users = faker.helpers.multiple(createRandomUser, { count: 5 });
+
+  await prisma.user.createMany({
+    data: users,
+  });
 }
 
 main()
