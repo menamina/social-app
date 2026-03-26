@@ -391,4 +391,78 @@
 .slashSearchInput {
   margin-top: 30px;
   height: 3em;
+  width: 90%;
+  border-radius: 10px;
+  border: 1px solid rgba(128, 128, 128, 0.471);
+  padding: 10px;
+  font-size: 1rem;
+}
+
+.resultsDiv {
+  width: 100%;
+  margin-top: 20px;
+  overflow-y: auto;
+}
+
+.usersResults,
+.postRes {
+  margin-bottom: 30px;
+}
+
+.usersResults h3,
+.postRes h3 {
+  margin-bottom: 15px;
+  padding-left: 10px;
+}
+
+.seeMoreButton,
+.backButton {
+  width: 100%;
+  padding: 15px;
+  margin-top: 10px;
+  border: 1px solid rgba(128, 128, 128, 0.471);
+  border-radius: 10px;
+  background-color: white;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.seeMoreButton:hover,
+.backButton:hover {
+  background-color: rgba(207, 205, 205, 0.412);
+}
+
+.backButton {
+  margin-bottom: 15px;
+}
+
+.moreSearchResults {
+  width: 100%;
+}
+
+.moreSearchHeader {
+  margin-bottom: 20px;
+}
+
+.moreSearchContent {
+  overflow-y: auto;
+}
+
+.userResultsList,
+.postResultsList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.userResultItem {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  border: 1px solid rgba(128, 128, 128, 0.2);
+  border-radius: 10px;
+}
+
+.userResultItem:hover {
+  background-color: rgba(207, 205, 205, 0.2);
 }
