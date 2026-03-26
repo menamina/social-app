@@ -15,7 +15,6 @@ function Profile() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [loading, setLoading] = useState(true);
   const [isOwnProfile, setIsOwnProfile] = useState(false);
 
   const [profileViewOption, setProfileViewOption] = useState("posts");
@@ -33,8 +32,6 @@ function Profile() {
   const [followStatus, setFollowStatus] = useState(null);
   const [followerStatus, setFollowerStatus] = useState(null);
 
-  const [error, setError] = useState(null);
-
   const [cameFromSearchURL, setCameFromSearchURL] = useState(false);
 
   function profileViewOpt(option) {
@@ -49,7 +46,7 @@ function Profile() {
       }
     }
     checkURL();
-  }, []);
+  }, [location.pathname]);
 
   useEffect(() => {
     async function fetchProfileData() {
@@ -153,7 +150,7 @@ function Profile() {
       }
     }
     fetchProfileData();
-  }, [username]);
+  }, [username, user, navigate]);
 
   async function updateFollowStatus() {
     try {
@@ -181,8 +178,8 @@ function Profile() {
         }));
       }
       return;
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      console.log(err);
       alert("Sever error while trying to update follow");
     }
   }
@@ -222,35 +219,28 @@ function Profile() {
 
   return (
     <div className="outletHolderDiv">
-      <div>Profile</div>
-      {loading && <div>Loading...</div>}
-      {error && <div>{error}</div>}
-      {!loading && !error && !profileData && !youAreBlocked && !youBlocked && (
-        <div>Profile not found</div>
-      )}
-      {!loading && !error && profileData && (
+      <div>
         <div>
+          {cameFromSearchURL && (
+            <div onClick={() => navigate(-1)}>← go back</div>
+          )}
           <div>
-            {cameFromSearchURL && (
-              <div onClick={() => navigate(-1)}>← go back</div>
-            )}
             <div>
               <div>
                 <div>
                   <div>
                     <div>
-                      <div>
-                        <img
-                          src={`http://localhost:5555/pfpIMG/${profileData?.profile?.pfp || profileData?.pfp || "default-png.jpg"}`}
-                        />
-                      </div>
-                    </div>
-                    <div>{profileData?.name}</div>
-                    <div>
-                      <div>@{profileData?.username}</div>
-                      {followerStatus && <div>FOLLOWS YOU</div>}
+                      <img
+                        src={`http://localhost:5555/pfpIMG/${profileData?.profile?.pfp || profileData?.pfp || "default-png.jpg"}`}
+                      />
                     </div>
                   </div>
+                  <div>{profileData?.name}</div>
+                  <div>
+                    <div>@{profileData?.username}</div>
+                    {followerStatus && <div>FOLLOWS YOU</div>}
+                  </div>
+                </div>
                 <div>
                   {!isOwnProfile && (
                     <div>
@@ -355,7 +345,6 @@ function Profile() {
           )}
         </div>
       </div>
-      )}
     </div>
   );
 }
