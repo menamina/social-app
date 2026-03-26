@@ -22,11 +22,13 @@ function Search() {
       setNoQueryToReturn(null);
       setShowMoreUsers(false);
       setShowMorePosts(false);
+      setLoading(false);
       return;
     }
-
+    setNoQueryToReturn(null);
+    setQueryError(null);
+    setLoading(true);
     const timeout = setTimeout(async () => {
-      setLoading(true);
       try {
         const res = await fetch(
           `http://localhost:5555/search?query=${encodeURIComponent(query)}`,
@@ -38,8 +40,8 @@ function Search() {
 
         const data = await res.json();
 
-        if (!res.ok) {
-          setNoQueryToReturn(data.noResult);
+        if (res.status === 404) {
+          setNoQueryToReturn(data.errorMsg);
           setLoading(false);
           return;
         }
