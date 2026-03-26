@@ -21,6 +21,11 @@ function Feed() {
   const [feedView, setFeedView] = useState("for you");
   const [wannaMakeAPost, setWannaMakeAPost] = useState(false);
 
+  if (!user) {
+    navigate("/");
+    return null;
+  }
+
   async function forYouRefresh() {
     setFeedView("for you");
     try {

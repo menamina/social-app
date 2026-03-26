@@ -13,45 +13,50 @@ function Search() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const timeout = setTimeout(async () => {
-      setLoading(true);
-      try {
-        const res = await fetch("http://localhost:5555/search", {
-          method: "GET",
-          credentials: "include",
-          body: JSON.stringify({
-            query,
-          }),
-        });
+    if (!query) {
+      setLoading(false);
+      return;
+    } else {
+      const timeout = setTimeout(async () => {
+        setLoading(true);
+        try {
+          const res = await fetch(
+            `http://localhost:5555/search?query=${encodeURIComponent(query)}`,
+            {
+              method: "GET",
+              credentials: "include",
+            },
+          );
 
-        const data = await res.json();
+          const data = await res.json();
 
-        if (!res.ok) {
-          setNoQueryToReturn(data.noResult);
+          if (!res.ok) {
+            setNoQueryToReturn(data.noResult);
+            setLoading(false);
+            return;
+          }
+
+          const userResults = data.userSearchRes || [];
+          const postResults = data.postSearchRes || [];
+
+          if (userResults.length === 0 && postResults.length === 0) {
+            setNoQueryToReturn("No results found");
+            setQueryResultsUserName(null);
+            setQueryResultsPosts(null);
+            setLoading(false);
+            return;
+          }
+
+          setQueryResultsUserName(userResults.length > 0 ? userResults : null);
+          setQueryResultsPosts(postResults.length > 0 ? postResults : null);
+          setNoQueryToReturn(null);
           setLoading(false);
           return;
+        } catch (error) {
+          setQueryError(error.errMsg);
         }
-
-        const userResults = data.userSearchRes || [];
-        const postResults = data.postSearchRes || [];
-
-        if (userResults.length === 0 && postResults.length === 0) {
-          setNoQueryToReturn("No results found");
-          setQueryResultsUserName(null);
-          setQueryResultsPosts(null);
-          setLoading(false);
-          return;
-        }
-
-        setQueryResultsUserName(userResults.length > 0 ? userResults : null);
-        setQueryResultsPosts(postResults.length > 0 ? postResults : null);
-        setNoQueryToReturn(null);
-        setLoading(false);
-        return;
-      } catch (error) {
-        setQueryError(error.errMsg);
-      }
-    }, 3000);
+      }, 3000);
+    }
 
     return () => clearTimeout(timeout);
   }, [query]);
@@ -62,8 +67,8 @@ function Search() {
 
   return (
     <div className="outletHolderDiv">
-      <div>Search</div>
       <div>
+        <div>Search</div>
         <div>
           <input
             name="seach bar"
@@ -73,18 +78,16 @@ function Search() {
             onChange={(e) => setQuery(e.target.value)}
           ></input>
         </div>
+      </div>
+      <div className="resultsDiv">
         <div>
           {loading && <div>...</div>}
           {noQueryToReturn && <div>{noQueryToReturn}</div>}
           {queryError && <div>{queryError}</div>}
           {queryResultsUsername && (
-            <div>
+            <div className="usersResults">
               {queryResultsUsername.map((user) => (
-                <Link
-                  to={`/${user.username}`}
-                  key={user.id}
-                  id={user.id}
-                >
+                <Link to={`/${user.username}`} key={user.id} id={user.id}>
                   <div>
                     <img
                       src={`http://localhost:5555/img/${user.profile.pfp}`}
@@ -99,7 +102,7 @@ function Search() {
             </div>
           )}
           {queryResultsPosts && (
-            <div>
+            <div className="postRes">
               {queryResultsPosts.map((post) => (
                 <PostCard
                   key={post.id}

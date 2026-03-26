@@ -53,6 +53,11 @@ function Profile() {
 
   useEffect(() => {
     async function fetchProfileData() {
+      if (!user) {
+        navigate("/");
+        return;
+      }
+
       setLoading(true);
       setError(null);
 
