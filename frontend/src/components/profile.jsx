@@ -61,16 +61,19 @@ function Profile() {
       setLoading(true);
       setError(null);
 
-      console.log('Fetching profile for username:', username);
+      console.log("Fetching profile for username:", username);
 
       try {
-        const res = await fetch(`http://localhost:5555/@${username}`, {
+        const res = await fetch(`http://localhost:5555/${username}`, {
           method: "GET",
           credentials: "include",
         });
 
         const data = await res.json();
-        console.log('Profile data received:', data);
+        console.log(
+          "Profile data received:",
+          data.viewThisUserProfile || data.userProfile,
+        );
 
         if (data.youAreBlocked) {
           setYouAreBlockedStatus(true);

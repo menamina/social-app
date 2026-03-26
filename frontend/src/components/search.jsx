@@ -27,6 +27,8 @@ function Search() {
     }
     setNoQueryToReturn(null);
     setQueryError(null);
+    setQueryResultsUserName(null);
+    setQueryResultsPosts(null);
     setLoading(true);
     const timeout = setTimeout(async () => {
       try {
@@ -94,8 +96,8 @@ function Search() {
       <div className="resultsDiv">
         <div>
           {loading && <div>...</div>}
-          {noQueryToReturn && <div>{noQueryToReturn}</div>}
-          {queryError && <div>{queryError}</div>}
+          {!loading && noQueryToReturn && <div>{noQueryToReturn}</div>}
+          {!loading && queryError && <div>{queryError}</div>}
           {!showMoreUsers && !showMorePosts && (
             <>
               {queryResultsUsername && (

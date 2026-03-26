@@ -191,15 +191,13 @@ async function getNavData(req, res) {
 async function viewProfile(req, res) {
   try {
     const id = req.user.id;
+
     const { profile } = req.params;
-
     const userID = Number(id);
-
-    const username = profile.startsWith("@") ? profile.slice(1) : profile;
 
     const wantedUser = await prisma.user.findUnique({
       where: {
-        username: username,
+        username: profile,
       },
       select: {
         id: true,
