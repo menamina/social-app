@@ -134,7 +134,15 @@ function Settings() {
   return (
     <div className="settingsDiv">
       <div>
-        <p>back</p>
+        <p
+          onClick={() => navigate(-1)}
+          className="backCursor"
+          style={{
+            cursor: "pointer",
+          }}
+        >
+          back
+        </p>
         <h1>Settings</h1>
         <div></div>
       </div>
