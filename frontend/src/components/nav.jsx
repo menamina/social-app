@@ -101,7 +101,7 @@ function Nav({ navUserData, setNavUserData }) {
 
       <div className="openSettings">
         {utilsToggle ? (
-          <div className="utilsOpen">
+          <div className="utilsOpen" onClick={(e) => closeUtil(e)}>
             <div className="utilWrapper" onClick={(e) => e.stopPropagation()}>
               <div className="cursor">
                 <Link to="/settings" onClick={(e) => closeUtil(e)}>

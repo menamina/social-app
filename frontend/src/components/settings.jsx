@@ -95,13 +95,6 @@ function Settings() {
     formData.append("email", email || user.email);
     if (profilePicture) formData.append("pfp", profilePicture);
 
-    console.log("Sending data:", {
-      name: name || user.name,
-      username: username || user.username,
-      email: email || user.email,
-      hasPfp: !!profilePicture,
-    });
-
     try {
       const res = await fetch("http://localhost:5555/update-profile", {
         method: "PATCH",
@@ -110,22 +103,20 @@ function Settings() {
       });
 
       const data = await res.json();
-      console.log("Backend response:", data);
 
       if (data.success) {
         setUserProfile({
           ...userProfile,
-          name: name || userProfile.name,
-          username: username || userProfile.username,
-          email: email || userProfile.email,
+          name: name || user.name,
+          username: username || user.username,
+          email: email || user.email,
         });
-
         alert("Profile updated successfully");
       } else {
-        alert("Failed to update profile: " + (data.message || "Unknown error"));
+        alert("Failed to update profile");
       }
     } catch (error) {
-      console.error("Error updating profile:", error.errorMsg);
+      console.error("Error updating profile:", error);
       alert("An error occurred while updating profile");
     }
   }
