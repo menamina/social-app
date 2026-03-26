@@ -374,6 +374,7 @@
   flex-direction: column;
   gap: 25px;
   max-width: 500px;
+  height: auto;
 }
 
 .formGroup {
@@ -402,21 +403,39 @@
   border-color: rgb(100, 100, 100);
 }
 
+.formGroup textarea {
+  padding: 12px 16px;
+  border: 1px solid rgb(207, 204, 204);
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: border-color 0.2s;
+  resize: vertical;
+  overflow: scroll;
+  min-height: 120px;
+  max-height: 500px;
+  field-sizing: content;
+}
+
+.formGroup textarea:focus {
+  outline: none;
+  border-color: rgb(100, 100, 100);
+}
+
 .saveButton {
-  padding: 12px 24px;
-  background-color: rgb(37, 7, 88);
+  padding: 10px 20px;
+  background-color: black;
   color: white;
   border: none;
   border-radius: 20px;
   font-size: 1rem;
-  font-weight: 600;
   cursor: pointer;
   transition: background-color 0.2s;
   align-self: flex-start;
 }
 
 .saveButton:hover {
-  background-color: rgb(50, 10, 110);
+  background-color: rgb(40, 40, 40);
 }
 
 .accountSettings > form > div,

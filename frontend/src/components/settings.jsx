@@ -281,17 +281,15 @@ function Settings() {
             <div className="help">
               <h2>Send us a message</h2>
               <form>
-                <div>
+                <div className="formGroup">
                   <label>Email:</label>
-                  <input />
+                  <input type="email" placeholder="your@email.com" />
                 </div>
-                <div>
+                <div className="formGroup">
                   <label>Message:</label>
-                  <textarea />
+                  <textarea placeholder="How can we help you?" rows="6" />
                 </div>
-                <div>
-                  <button>submit</button>
-                </div>
+                <button className="saveButton" type="submit">Submit</button>
               </form>
             </div>
           )}
