@@ -226,20 +226,19 @@ function Profile() {
           <div className="preProfPostRender">
             <div>
               <div>
-                <div>
-                  <img
-                    className="profilePFP"
-                    src={`http://localhost:5555/pfpIMG/${profileData?.profile?.pfp || profileData?.pfp || "default-png.jpg"}`}
-                    alt="profile picture"
-                  />
+                <img
+                  className="profilePFP"
+                  src={`http://localhost:5555/pfpIMG/${profileData?.profile?.pfp || profileData?.pfp || "default-png.jpg"}`}
+                  alt="profile picture"
+                />
+              </div>
+              <div className="profileHeader">
+                <div className="profileInfo">
+                  <div>{profileData?.name}</div>
+                  <div>@{profileData?.username}</div>
+                  {followerStatus && <div>FOLLOWS YOU</div>}
                 </div>
-                <div className="profileHeader">
-                  <div className="profileInfo">
-                    <div>{profileData?.name}</div>
-                    <div>@{profileData?.username}</div>
-                    {followerStatus && <div>FOLLOWS YOU</div>}
-                  </div>
-                  <div className="profileActions">
+                <div className="profileActions">
                   {!isOwnProfile && (
                     <div>
                       {youAreBlocked && <div>This user blocked you</div>}

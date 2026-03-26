@@ -474,7 +474,16 @@
   width: 100%;
 }
 
-.preProfPostRender,
+.preProfPostRender {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.preProfPostRender > div {
+  width: 100%;
+}
+
 .follow {
   display: flex;
   width: 100%;
@@ -497,6 +506,11 @@
   justify-content: space-between;
   align-items: flex-start;
   width: 100%;
+}
+
+.profileInfo {
+  display: flex;
+  flex-direction: column;
 }
 
 .profileActions {
