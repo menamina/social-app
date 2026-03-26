@@ -90,15 +90,17 @@ function Settings() {
     e.preventDefault();
 
     const formData = new FormData();
-    name ? formData.append("name", name) : null;
-    username ? formData.append("username", username) : null;
-    email ? formData.append("email", email) : null;
-    profilePicture ? formData.append("pfp", profilePicture) : null;
+    formData.append("name", name || user.name);
+    formData.append("username", username || user.username);
+    formData.append("email", email || user.email);
+    if (profilePicture) formData.append("pfp", profilePicture);
 
-    if (!name && !username && !email && !profilePicture) {
-      alert("updating profile fields cannot be empty");
-      return;
-    }
+    console.log("Sending data:", {
+      name: name || user.name,
+      username: username || user.username,
+      email: email || user.email,
+      hasPfp: !!profilePicture,
+    });
 
     try {
       const res = await fetch("http://localhost:5555/update-profile", {
@@ -108,19 +110,22 @@ function Settings() {
       });
 
       const data = await res.json();
+      console.log("Backend response:", data);
 
       if (data.success) {
         setUserProfile({
           ...userProfile,
-          name,
-          username,
-          email,
+          name: name || userProfile.name,
+          username: username || userProfile.username,
+          email: email || userProfile.email,
         });
+
+        alert("Profile updated successfully");
       } else {
-        alert("Failed to update profile");
+        alert("Failed to update profile: " + (data.message || "Unknown error"));
       }
     } catch (error) {
-      console.error("Error updating profile:", error);
+      console.error("Error updating profile:", error.errorMsg);
       alert("An error occurred while updating profile");
     }
   }

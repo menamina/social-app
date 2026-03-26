@@ -624,7 +624,7 @@ async function updateProfileSettings(req, res) {
     const id = req.user.id;
     const userID = Number(id);
 
-    const { name, username, email, accountStatus } = req.body;
+    const { name, username, email, originalUserOBJ } = req.body;
     const pfp = req.file ? req.file.path : null;
 
     await prisma.profile.update({
@@ -632,11 +632,22 @@ async function updateProfileSettings(req, res) {
         user: userID,
       },
       data: {
-        pfp: pfp ? pfp : "default-png",
-        name: name,
-        username: username,
-        email: email,
-        accountStatus: accountStatus,
+        pfp: pfp ? pfp : "default-png.jpng",
+        name: name ? name : originalUserOBJ.name,
+        username: username ? username : originalUserOBJ.username,
+        email: email ? email : originalUserOBJ,
+      },
+    });
+
+    await prisma.user.update({
+      where: {
+        user: userID,
+      },
+      data: {
+        pfp: pfp ? pfp : "default-png.jpng",
+        name: name ? name : originalUserOBJ.name,
+        username: username ? username : originalUserOBJ.username,
+        email: email ? email : originalUserOBJ,
       },
     });
     return res.status(200).json({ success: true });
