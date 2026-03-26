@@ -191,13 +191,14 @@ async function getNavData(req, res) {
 async function viewProfile(req, res) {
   try {
     const id = req.user.id;
-
     const { profile } = req.params;
     const userID = Number(id);
 
+    const username = profile.startsWith("@") ? profile.slice(1) : profile;
+
     const wantedUser = await prisma.user.findUnique({
       where: {
-        username: profile,
+        username: username,
       },
       select: {
         id: true,
@@ -229,13 +230,43 @@ async function viewProfile(req, res) {
     );
 
     if (theyBlockedYou) {
-      return res
-        .status(403)
-        .json({ youAreBlocked: "This user has blocked you" });
+      const blockedUserProfile = await prisma.user.findUnique({
+        where: { id: wantedProfile },
+        select: {
+          id: true,
+          name: true,
+          username: true,
+          profile: {
+            select: {
+              pfp: true,
+            },
+          },
+        },
+      });
+      return res.status(403).json({
+        youAreBlocked: "This user has blocked you",
+        blockedUserProfile: blockedUserProfile
+      });
     }
 
     if (youBlockedThem) {
-      return res.status(403).json({ youBlocked: "You have blocked this user" });
+      const blockedUserProfile = await prisma.user.findUnique({
+        where: { id: wantedProfile },
+        select: {
+          id: true,
+          name: true,
+          username: true,
+          profile: {
+            select: {
+              pfp: true,
+            },
+          },
+        },
+      });
+      return res.status(403).json({
+        youBlocked: "You have blocked this user",
+        blockedUserProfile: blockedUserProfile
+      });
     }
 
     const userProfile = await prisma.user.findUnique({

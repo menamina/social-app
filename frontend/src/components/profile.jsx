@@ -81,6 +81,14 @@ function Profile() {
           setLoading(false);
           setFollowStatus(null);
           setNoBlockRelation(false);
+          setProfileData(
+            data.blockedUserProfile || {
+              username: username,
+              name: username,
+              followers: [],
+              following: [],
+            },
+          );
           return;
         }
 
@@ -90,6 +98,14 @@ function Profile() {
           setNoBlockRelation(false);
           setFollowStatus(null);
           setLoading(false);
+          setProfileData(
+            data.blockedUserProfile || {
+              username: username,
+              name: username,
+              followers: [],
+              following: [],
+            },
+          );
           return;
         }
 
@@ -139,24 +155,12 @@ function Profile() {
     fetchProfileData();
   }, [username]);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>{error}</div>;
-  }
-
-  if (!profileData) {
-    return <div>Profile not found</div>;
-  }
-
   async function updateFollowStatus() {
     try {
       const res = await fetch(
-        `http://localhost:5555/follow:/${profileData.id}`,
+        `http://localhost:5555/follow/${profileData.id}`,
         {
-          method: "GET",
+          method: "POST",
           credentials: "include",
         },
       );
@@ -185,18 +189,15 @@ function Profile() {
 
   async function handleBlockStatus() {
     try {
-      const res = await fetch(
-        `http://localhost:5555/block:/${profileData.id}`,
-        {
-          method: "GET",
-          credentials: "include",
-        },
-      );
+      const res = await fetch(`http://localhost:5555/block/${profileData.id}`, {
+        method: "POST",
+        credentials: "include",
+      });
 
       const data = await res.json();
 
       if (data.userBlocked || data.userUnblocked) {
-        await fetchProfileData();
+        window.location.reload();
       }
       return;
     } catch (error) {
@@ -222,28 +223,34 @@ function Profile() {
   return (
     <div className="outletHolderDiv">
       <div>Profile</div>
-      <div>
+      {loading && <div>Loading...</div>}
+      {error && <div>{error}</div>}
+      {!loading && !error && !profileData && !youAreBlocked && !youBlocked && (
+        <div>Profile not found</div>
+      )}
+      {!loading && !error && profileData && (
         <div>
-          {cameFromSearchURL && (
-            <div onClick={() => navigate(-1)}>← go back</div>
-          )}
           <div>
+            {cameFromSearchURL && (
+              <div onClick={() => navigate(-1)}>← go back</div>
+            )}
             <div>
               <div>
                 <div>
                   <div>
                     <div>
-                      <img
-                        src={`http://localhost:5555/pfpIMG/${profileData?.profile?.pfp || profileData?.pfp || "default-png.jpg"}`}
-                      />
+                      <div>
+                        <img
+                          src={`http://localhost:5555/pfpIMG/${profileData?.profile?.pfp || profileData?.pfp || "default-png.jpg"}`}
+                        />
+                      </div>
+                    </div>
+                    <div>{profileData?.name}</div>
+                    <div>
+                      <div>@{profileData?.username}</div>
+                      {followerStatus && <div>FOLLOWS YOU</div>}
                     </div>
                   </div>
-                  <div>{profileData.name}</div>
-                  <div>
-                    <div>@{profileData.username}</div>
-                    {followerStatus && <div>FOLLOWS YOU</div>}
-                  </div>
-                </div>
                 <div>
                   {!isOwnProfile && (
                     <div>
@@ -289,22 +296,22 @@ function Profile() {
                 </div>
               </div>
               <div>
-                <div>{profileData.followers.length} followers</div>
-                <div>{profileData.following.length} folowing</div>
+                <div>{profileData?.followers.length} followers</div>
+                <div>{profileData?.following.length} folowing</div>
               </div>
             </div>
           </div>
 
           {youBlocked && (
             <div>
-              <h2>@{profileData.username} is blocked</h2>
+              <h2>@{profileData?.username} is blocked</h2>
               <div>unblock them to view their posts</div>
             </div>
           )}
 
           {youAreBlocked && (
             <div>
-              <h2>@{profileData.username} has blocked you</h2>
+              <h2>@{profileData?.username} has blocked you</h2>
               <div>sad face</div>
             </div>
           )}
@@ -330,7 +337,7 @@ function Profile() {
                   : null}
 
                 {profileViewOption === "likes"
-                  ? profileData.likes.map((like) => (
+                  ? profileData?.likes.map((like) => (
                       <PostCard
                         key={like.id}
                         post={like.post}
@@ -348,6 +355,7 @@ function Profile() {
           )}
         </div>
       </div>
+      )}
     </div>
   );
 }
