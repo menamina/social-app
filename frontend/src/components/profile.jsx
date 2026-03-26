@@ -32,6 +32,8 @@ function Profile() {
   const [followStatus, setFollowStatus] = useState(null);
   const [followerStatus, setFollowerStatus] = useState(null);
 
+  const [error, setError] = useState(null);
+
   const [cameFromSearchURL, setCameFromSearchURL] = useState(false);
 
   function profileViewOpt(option) {
@@ -54,8 +56,6 @@ function Profile() {
         navigate("/");
         return;
       }
-
-      setLoading(true);
       setError(null);
 
       console.log("Fetching profile for username:", username);
@@ -71,11 +71,14 @@ function Profile() {
           "Profile data received:",
           data.viewThisUserProfile || data.userProfile,
         );
+        console.log(
+          "PFP value:",
+          (data.viewThisUserProfile || data.userProfile)?.profile?.pfp,
+        );
 
         if (data.youAreBlocked) {
           setYouAreBlockedStatus(true);
           setYouBlockedStatus(false);
-          setLoading(false);
           setFollowStatus(null);
           setNoBlockRelation(false);
           setProfileData(
@@ -94,7 +97,6 @@ function Profile() {
           setYouBlockedStatus(true);
           setNoBlockRelation(false);
           setFollowStatus(null);
-          setLoading(false);
           setProfileData(
             data.blockedUserProfile || {
               username: username,
@@ -142,11 +144,8 @@ function Profile() {
             ? setFollowerStatus("Follows you")
             : setFollowerStatus("");
         }
-
-        setLoading(false);
       } catch (error) {
         setError("Failed to load profile");
-        setLoading(false);
       }
     }
     fetchProfileData();
@@ -232,6 +231,8 @@ function Profile() {
                     <div>
                       <img
                         src={`http://localhost:5555/pfpIMG/${profileData?.profile?.pfp || profileData?.pfp || "default-png.jpg"}`}
+                        alt="profile picture"
+                        style={{ width: "80px", height: "80px", borderRadius: "50%", objectFit: "cover" }}
                       />
                     </div>
                   </div>

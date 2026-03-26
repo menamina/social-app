@@ -198,7 +198,7 @@ async function viewProfile(req, res) {
 
     const wantedUser = await prisma.user.findUnique({
       where: {
-        username: username,
+        username,
       },
       select: {
         id: true,
@@ -245,7 +245,7 @@ async function viewProfile(req, res) {
       });
       return res.status(403).json({
         youAreBlocked: "This user has blocked you",
-        blockedUserProfile: blockedUserProfile
+        blockedUserProfile: blockedUserProfile,
       });
     }
 
@@ -265,7 +265,7 @@ async function viewProfile(req, res) {
       });
       return res.status(403).json({
         youBlocked: "You have blocked this user",
-        blockedUserProfile: blockedUserProfile
+        blockedUserProfile: blockedUserProfile,
       });
     }
 
@@ -301,7 +301,7 @@ async function viewProfile(req, res) {
             likes: true,
             commentReplies: true,
             reposts: {
-              incude: {
+              include: {
                 user: {
                   select: {
                     id: true,
@@ -340,7 +340,7 @@ async function viewProfile(req, res) {
                 likes: true,
                 commentReplies: true,
                 reposts: {
-                  incude: {
+                  include: {
                     user: {
                       select: {
                         id: true,
@@ -396,6 +396,7 @@ async function viewProfile(req, res) {
     }
     return res.json({ userProfile: userProfile });
   } catch (error) {
+    console.error("Error in viewProfile:", error);
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
   }
 }
