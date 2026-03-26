@@ -25,7 +25,7 @@ async function signup(req, res) {
       return res.status(401).json({ emailTaken: true });
     } else {
       const saltHash = await hashPass(password);
-      await prisma.user.create({
+      const newUser = await prisma.user.create({
         data: {
           name: name,
           username: username,
@@ -33,6 +33,16 @@ async function signup(req, res) {
           saltedHash: saltHash,
         },
       });
+
+      await prisma.profile.create({
+        data: {
+          user: newUser.id,
+          name: name,
+          username: username,
+          email: email,
+        },
+      });
+
       return res.status(200).json({ success: true });
     }
   } catch (error) {
@@ -630,10 +640,9 @@ async function updateProfileSettings(req, res) {
     const updateData = { name, username, email };
     if (pfp) updateData.pfp = pfp;
 
-    await prisma.profile.upsert({
+    await prisma.profile.update({
       where: { user: userID },
       update: updateData,
-      create: { user: userID, ...updateData },
     });
 
     await prisma.user.update({
