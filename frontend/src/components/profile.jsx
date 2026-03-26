@@ -218,31 +218,28 @@ function Profile() {
 
   return (
     <div className="outletHolderDiv">
-      <div>
+      <div className="profileDivMain">
         <div>
           {cameFromSearchURL && (
             <div onClick={() => navigate(-1)}>← go back</div>
           )}
-          <div>
+          <div className="preProfPostRender">
             <div>
               <div>
                 <div>
-                  <div>
-                    <div>
-                      <img
-                        src={`http://localhost:5555/pfpIMG/${profileData?.profile?.pfp || profileData?.pfp || "default-png.jpg"}`}
-                        alt="profile picture"
-                        style={{ width: "80px", height: "80px", borderRadius: "50%", objectFit: "cover" }}
-                      />
-                    </div>
-                  </div>
-                  <div>{profileData?.name}</div>
-                  <div>
+                  <img
+                    className="profilePFP"
+                    src={`http://localhost:5555/pfpIMG/${profileData?.profile?.pfp || profileData?.pfp || "default-png.jpg"}`}
+                    alt="profile picture"
+                  />
+                </div>
+                <div className="profileHeader">
+                  <div className="profileInfo">
+                    <div>{profileData?.name}</div>
                     <div>@{profileData?.username}</div>
                     {followerStatus && <div>FOLLOWS YOU</div>}
                   </div>
-                </div>
-                <div>
+                  <div className="profileActions">
                   {!isOwnProfile && (
                     <div>
                       {youAreBlocked && <div>This user blocked you</div>}
@@ -280,13 +277,13 @@ function Profile() {
                   )}
 
                   {isOwnProfile && (
-                    <div>
+                    <div className="editProfileLink">
                       <Link to="/settings">edit</Link>
                     </div>
                   )}
                 </div>
               </div>
-              <div>
+              <div className="follow">
                 <div>{profileData?.followers.length} followers</div>
                 <div>{profileData?.following.length} folowing</div>
               </div>

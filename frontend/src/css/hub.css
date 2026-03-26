@@ -466,3 +466,40 @@
 .userResultItem:hover {
   background-color: rgba(207, 205, 205, 0.2);
 }
+
+/* profile profile profile */
+
+.profileDivMain,
+.profileDivMain > div {
+  width: 100%;
+}
+
+.preProfPostRender,
+.follow {
+  display: flex;
+  width: 100%;
+}
+
+.profilePFP {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.follow {
+  display: flex;
+  background-color: yellow;
+}
+
+.profileHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.profileActions {
+  display: flex;
+  align-items: center;
+}
