@@ -224,7 +224,7 @@ function Profile() {
             <div onClick={() => navigate(-1)}>← go back</div>
           )}
           <div className="preProfPostRender">
-            <div>
+            <div className="profileContainer">
               <div>
                 <img
                   className="profilePFP"
@@ -235,8 +235,10 @@ function Profile() {
               <div className="profileHeader">
                 <div className="profileInfo">
                   <div>{profileData?.name}</div>
-                  <div>@{profileData?.username}</div>
-                  {followerStatus && <div>FOLLOWS YOU</div>}
+                  <div>
+                    <div>@{profileData?.username}</div>
+                    {followerStatus && <div>FOLLOWS YOU</div>}
+                  </div>
                 </div>
                 <div className="profileActions">
                   {!isOwnProfile && (
@@ -276,15 +278,17 @@ function Profile() {
                   )}
 
                   {isOwnProfile && (
-                    <div className="editProfileLink">
-                      <Link to="/settings">edit</Link>
+                    <div>
+                      <Link className="editProfileLink" to="/settings">
+                        edit
+                      </Link>
                     </div>
                   )}
                 </div>
               </div>
               <div className="follow">
                 <div>{profileData?.followers.length} followers</div>
-                <div>{profileData?.following.length} folowing</div>
+                <div>{profileData?.following.length} following</div>
               </div>
             </div>
           </div>
@@ -304,10 +308,28 @@ function Profile() {
           )}
 
           {noBlockRelation && (
-            <div>
-              <div>
-                <div onClick={() => profileViewOpt("posts")}>Posts</div>
-                <div onClick={() => profileViewOpt("likes")}>Likes</div>
+            <div className="posts-likes-etc">
+              <div className="profViewOpts">
+                <div
+                  onClick={() => profileViewOpt("posts")}
+                  className={
+                    profileViewOption === "posts"
+                      ? "selectedProfViewOpt clickableOpt"
+                      : "clickableProfVieOption clickableOpt"
+                  }
+                >
+                  Posts
+                </div>
+                <div
+                  onClick={() => profileViewOpt("likes")}
+                  className={
+                    profileViewOption === "likes"
+                      ? "selectedProfViewOpt clickableOpt"
+                      : "clickableProfVieOption clickableOpt"
+                  }
+                >
+                  Likes
+                </div>
               </div>
               <div>
                 {profileViewOption === "posts"
