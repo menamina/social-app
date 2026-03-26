@@ -67,10 +67,11 @@ function Search() {
 
   return (
     <div className="outletHolderDiv">
-      <div>
+      <div className="searchTop">
         <div>Search</div>
         <div>
           <input
+            className="slashSearchInput"
             name="seach bar"
             placeholder="search"
             aria-label="search bar"
