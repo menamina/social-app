@@ -88,9 +88,9 @@ function MsgOpened({ id, isBlocked }) {
     <div className="msgOpened div">
       <div>
         <Link to={`/${otherUser?.username}`}>
-          {" "}
+          <div>{otherUser?.name}</div>
           <img
-            src={`${otherUser?.profile.pfp}`}
+            src={otherUser?.profile.pfp}
             alt={`${otherUser?.username} profile pic`}
           />
         </Link>
@@ -173,7 +173,7 @@ function MsgOpened({ id, isBlocked }) {
             <p>You cannot send messages to this user.</p>
           </div>
         ) : (
-          <SendMsg to={otherUser} />
+          <SendMsg otherUser={otherUser} />
         )}
       </div>
     </div>
