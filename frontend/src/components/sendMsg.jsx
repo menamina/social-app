@@ -36,7 +36,7 @@ function SendMsg({ otherUser }) {
     <div className="sendMsg div">
       <div>
         <input
-          aria-label={`send message to ${otherUser.username} `}
+          aria-label={`send message to ${otherUser?.username} `}
           placeholder="Send a message"
           value={msg}
           onChange={(e) => setMsg(e.target.value)}
@@ -44,7 +44,7 @@ function SendMsg({ otherUser }) {
       </div>
       <div>
         <input
-          aria-label={`send image to ${otherUser.username} `}
+          aria-label={`send image to ${otherUser?.username} `}
           value={imgs}
           type="files"
         ></input>

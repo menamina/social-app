@@ -83,18 +83,14 @@ function MsgOpened({ id, isBlocked }) {
     return <div>{msgAPIError}</div>;
   }
 
-  if (!msgs) {
-    return <div>loading..</div>;
-  }
-
   return (
     <div className="msgOpened div">
       <div>
-        <Link to={`/${otherUser.username}`}>
+        <Link to={`/${otherUser?.username}`}>
           {" "}
           <img
-            src={`${otherUser.pfp}`}
-            alt={`${otherUser.username} profile pic`}
+            src={`${otherUser?.pfp}`}
+            alt={`${otherUser?.username} profile pic`}
           />
         </Link>
       </div>
@@ -136,9 +132,9 @@ function MsgOpened({ id, isBlocked }) {
                         ))}
                       </div>
                     )}
-                    {msg.message && <div>{msg.message}</div>}
+                    {msg?.message && <div>{msg?.message}</div>}
                   </div>
-                  <div>{msg.createdAt}</div>
+                  <div>{msg?.createdAt}</div>
                 </div>
               );
             })}
