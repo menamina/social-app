@@ -45,8 +45,9 @@ function SendMsg({ otherUser }) {
       <div>
         <input
           aria-label={`send image to ${otherUser?.username} `}
-          value={imgs}
-          type="files"
+          onChange={(e) => setImgs(e.target.files)}
+          type="file"
+          multiple
         ></input>
       </div>
       <div>

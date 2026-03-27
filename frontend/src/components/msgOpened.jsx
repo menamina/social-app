@@ -25,6 +25,7 @@ function MsgOpened({ id, isBlocked }) {
           });
 
           const data = await res.json();
+          console.log("data from msgOpened:", data);
           setMsgs(data.one2one);
           setOtherUser(data.otherUser);
         } catch (error) {

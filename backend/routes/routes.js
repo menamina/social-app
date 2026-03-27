@@ -56,7 +56,7 @@ router.get("/nav-data", isAuth, remote.getNavData);
 router.get("/search", isAuth, remote.search);
 router.get("/settings", isAuth, remote.settings);
 router.get("/dms", isAuth, remote.dms);
-router.get("/dms/:wUser", isAuth, remote.dms);
+router.get("/dms/:wUser", isAuth, remote.one2oneDMS);
 router.get("/:username/post/:postId", isAuth, remote.getPost);
 router.get("/:profile", isAuth, remote.viewProfile);
 
