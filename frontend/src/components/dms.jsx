@@ -51,7 +51,7 @@ function Dms() {
 
       try {
         const res = await fetch(
-          `http://localhost:5555/dms/searchUser?query=${encodeURIComponent(query)}`,
+          `http://localhost:5555/dms/search/user?query=${encodeURIComponent(query)}`,
           {
             method: "GET",
             credentials: "include",
