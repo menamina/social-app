@@ -16,24 +16,24 @@ function MsgOpened({ id, isBlocked }) {
   const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      async function get1to1Msgs() {
-        try {
-          const res = await fetch(`http://localhost:5555/dms/${id}`, {
-            method: "GET",
-            credentials: "include",
-          });
+    async function get1to1Msgs() {
+      try {
+        const res = await fetch(`http://localhost:5555/dms/${id}`, {
+          method: "GET",
+          credentials: "include",
+        });
 
-          const data = await res.json();
-          console.log("data from msgOpened:", data);
-          setMsgs(data.one2one);
-          setOtherUser(data.otherUser);
-        } catch (error) {
-          setMsgsAPIError(error.errorMsg);
-        }
+        const data = await res.json();
+        console.log("data from msgOpened:", data);
+        setMsgs(data.one2one);
+        setOtherUser(data.otherUser);
+      } catch (error) {
+        setMsgsAPIError(error.errorMsg);
       }
-      get1to1Msgs();
-    }, 20000);
+    }
+
+    get1to1Msgs();
+    const interval = setInterval(get1to1Msgs, 20000);
     return () => clearInterval(interval);
   }, [id]);
 
@@ -86,15 +86,17 @@ function MsgOpened({ id, isBlocked }) {
 
   return (
     <div className="msgOpened div">
-      <div>
-        <Link to={`/${otherUser?.username}`}>
-          <div>{otherUser?.name}</div>
-          <img
-            src={otherUser?.profile.pfp}
-            alt={`${otherUser?.username} profile pic`}
-          />
-        </Link>
-      </div>
+      {otherUser && (
+        <div>
+          <Link to={`/${otherUser?.username}`}>
+            <div>{otherUser?.name}</div>
+            <img
+              src={otherUser?.profile?.pfp}
+              alt={`${otherUser?.username} profile pic`}
+            />
+          </Link>
+        </div>
+      )}
       <div className="renderedMsgs">
         {msgs && (
           <div>
