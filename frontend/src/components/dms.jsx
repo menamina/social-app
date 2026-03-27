@@ -229,7 +229,7 @@ function Dms() {
             </button>
           </div>
         ) : (
-          <div>
+          <div className="msgOpened">
             <MsgOpened id={openMsgWith} isBlocked={isBlocked} />
           </div>
         )}
@@ -266,7 +266,9 @@ function Dms() {
                     onClick={(e) => checkBlockStat(e, result?.id)}
                   >
                     <div>
-                      <img src={`http://localhost:5555/pfpIMG/${result?.profile?.pfp || "default-png.jpg"}`} />
+                      <img
+                        src={`http://localhost:5555/pfpIMG/${result?.profile?.pfp || "default-png.jpg"}`}
+                      />
                     </div>
                     <div>
                       <p>{result?.name}</p>

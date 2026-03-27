@@ -89,7 +89,7 @@ function MsgOpened({ id, isBlocked }) {
         <Link to={`/${otherUser?.username}`}>
           {" "}
           <img
-            src={`${otherUser?.pfp}`}
+            src={`${otherUser?.profile.pfp}`}
             alt={`${otherUser?.username} profile pic`}
           />
         </Link>
