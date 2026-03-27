@@ -848,15 +848,19 @@ async function one2oneDMS(req, res) {
       },
     });
 
-    const otherUser = await prisma.profile.findUnique({
+    const otherUser = await prisma.user.findUnique({
       where: {
-        user: withThisUSER,
+        id: withThisUSER,
       },
       select: {
-        user: true,
-        pfp: true,
+        id: true,
         name: true,
         username: true,
+        profile: {
+          select: {
+            pfp: true,
+          },
+        },
       },
     });
 

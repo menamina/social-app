@@ -88,11 +88,11 @@ function MsgOpened({ id, isBlocked }) {
     <div className="msgOpened div">
       {otherUser && (
         <div>
-          <Link to={`/${otherUser?.username}`}>
-            <div>{otherUser?.name}</div>
+          <Link to={`/${otherUser.username}`}>
+            <div>{otherUser.name}</div>
             <img
-              src={otherUser?.profile?.pfp}
-              alt={`${otherUser?.username} profile pic`}
+              src={otherUser.profile?.pfp}
+              alt={`${otherUser.username} profile pic`}
             />
           </Link>
         </div>
