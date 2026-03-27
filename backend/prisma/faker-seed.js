@@ -1,7 +1,5 @@
-const { PrismaClient } = require("@prisma/client");
+const prisma = require("./client");
 const { faker } = require("@faker-js/faker");
-
-const prisma = new PrismaClient();
 
 function createRandomUser() {
   return {
@@ -15,9 +13,21 @@ function createRandomUser() {
 async function main() {
   const users = faker.helpers.multiple(createRandomUser, { count: 5 });
 
-  await prisma.user.createMany({
-    data: users,
-  });
+  for (const u of users) {
+    await prisma.user.create({
+      data: {
+        ...u,
+        profile: {
+          create: {
+            name: u.name,
+            username: u.username,
+            email: u.email,
+            pfp: "default-png.jpg",
+          },
+        },
+      },
+    });
+  }
 }
 
 main()

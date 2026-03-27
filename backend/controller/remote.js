@@ -479,9 +479,20 @@ async function search(req, res) {
     const { query } = req.query;
     const userSearchRes = await prisma.user.findMany({
       where: {
-        username: {
-          in: query,
-        },
+        OR: [
+          {
+            username: {
+              contains: query,
+              mode: "insensitive",
+            },
+          },
+          {
+            name: {
+              contains: query,
+              mode: "insensitive",
+            },
+          },
+        ],
       },
       select: {
         id: true,
@@ -498,8 +509,26 @@ async function search(req, res) {
     const postSearchRes = await prisma.posts.findMany({
       where: {
         msg: {
-          in: query,
+          contains: query,
+          mode: "insensitive",
         },
+      },
+      include: {
+        postedBy: {
+          select: {
+            id: true,
+            name: true,
+            username: true,
+            profile: {
+              select: {
+                pfp: true,
+              },
+            },
+          },
+        },
+        likes: true,
+        commentReplies: true,
+        reposts: true,
       },
     });
 
@@ -509,6 +538,7 @@ async function search(req, res) {
 
     return res.status(200).json({ userSearchRes, postSearchRes });
   } catch (error) {
+    console.error("Search error:", error);
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
   }
 }

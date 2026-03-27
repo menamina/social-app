@@ -107,7 +107,7 @@ function Search() {
                     <Link to={`/${user.username}`} key={user.id} id={user.id}>
                       <div>
                         <img
-                          src={`http://localhost:5555/img/${user.profile.pfp}`}
+                          src={`http://localhost:5555/pfpIMG/${user.profile.pfp}`}
                           alt={user.username}
                         />
                       </div>
