@@ -641,9 +641,20 @@ async function dmUserSearch(req, res) {
 
     const userSearchRes = await prisma.user.findMany({
       where: {
-        username: {
-          in: query,
-        },
+        OR: [
+          {
+            username: {
+              contains: query,
+              mode: "insensitive",
+            },
+          },
+          {
+            name: {
+              contains: query,
+              mode: "insensitive",
+            },
+          },
+        ],
       },
       select: {
         id: true,
@@ -657,9 +668,11 @@ async function dmUserSearch(req, res) {
       },
     });
 
-    if (!userSearchRes) {
+    console.log("DM user search results:", userSearchRes);
+
+    if (!userSearchRes || userSearchRes.length === 0) {
       return res
-        .status(403)
+        .status(404)
         .json({ message: "There is no user with that name" });
     }
 

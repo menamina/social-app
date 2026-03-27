@@ -77,7 +77,7 @@ router.post("/block/:thisID", isAuth, remote.blockHandler);
 
 // dms //
 
-router.get("/dms/searchUser/", isAuth, remote.dmUserSearch);
+router.get("/dms/searchUser", isAuth, remote.dmUserSearch);
 router.get("/dms/msgSearch/", isAuth, remote.dmMsgSearch);
 router.get("/dms/:wUser", isAuth, remote.one2oneDMS);
 router.post("/check-block-status", isAuth, remote.checkBlockStatus);

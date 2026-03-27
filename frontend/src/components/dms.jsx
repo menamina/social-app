@@ -51,7 +51,7 @@ function Dms() {
 
       try {
         const res = await fetch(
-          `http://localhost:5555/dms/searchUser/${query}`,
+          `http://localhost:5555/dms/searchUser?query=${encodeURIComponent(query)}`,
           {
             method: "GET",
             credentials: "include",
@@ -59,14 +59,28 @@ function Dms() {
         );
 
         const data = await res.json();
+        console.log("DM Search response:", data);
+        console.log("Response status:", res.status);
+        console.log("Response keys:", Object.keys(data));
+        console.log("userSearchRes:", data.userSearchRes);
+        console.log("Has message?:", data.message);
+
         if (!res.ok) {
           setNoQRes("No users found with that name");
           setQueryErr(null);
+          setQueryResult(null);
           return;
         }
-        setQueryResult(data.userSearchRes);
-        setNoQRes(null);
-        setQueryErr(null);
+
+        if (data.userSearchRes && data.userSearchRes.length > 0) {
+          setQueryResult(data.userSearchRes);
+          setNoQRes(null);
+          setQueryErr(null);
+        } else {
+          setNoQRes("No users found");
+          setQueryResult(null);
+          setQueryErr(null);
+        }
         return;
       } catch (error) {
         setQueryErr(error.errorMsg);
@@ -252,7 +266,7 @@ function Dms() {
                     onClick={(e) => checkBlockStat(e, result?.id)}
                   >
                     <div>
-                      <img src={`${result?.pfp}`} />
+                      <img src={`http://localhost:5555/pfpIMG/${result?.profile?.pfp || "default-png.jpg"}`} />
                     </div>
                     <div>
                       <p>{result?.name}</p>
