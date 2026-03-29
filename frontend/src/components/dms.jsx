@@ -165,7 +165,13 @@ function Dms() {
   return (
     <div className="outletHolderDiv dms">
       <div className="leftOfDM">
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
           <h2>Chat</h2>
           <button onClick={() => setSearchUserToMessage(true)}>+</button>
         </div>
