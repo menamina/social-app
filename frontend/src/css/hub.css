@@ -709,3 +709,29 @@
   object-fit: cover;
   display: block;
 }
+
+.postOptions {
+  display: flex;
+  justify-content: space-between;
+  max-width: 425px;
+  margin-top: 10px;
+}
+
+.postOptions > div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  transition: background-color 0.2s;
+}
+
+.postOptions > div:hover {
+  background-color: rgba(207, 205, 205, 0.3);
+}
+
+.postOptions img {
+  width: 20px;
+  height: 20px;
+}
