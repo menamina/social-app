@@ -250,7 +250,13 @@ function Profile() {
                     <div>
                       {youAreBlocked && <div>This user blocked you</div>}
                       {youBlocked && (
-                        <div onClick={handleBlockStatus}>Unblock</div>
+                        <div
+                          onClick={(e) => {
+                            (e.stopPropagation(), handleBlockStatus);
+                          }}
+                        >
+                          Unblock
+                        </div>
                       )}
                       {noBlockRelation && (
                         <>
@@ -272,26 +278,39 @@ function Profile() {
                             </div>
                           )}
                           {blockButtonClicked && (
-                            <div>
-                              <h2>Block {profileData?.username} </h2>
-                              <div>
-                                {profileData?.username} won't be able to find
-                                your profile or content. No one will see their
-                                replies to your posts, and they won't be
-                                notified that you blocked them.
-                              </div>
-                              <div>
-                                <div
-                                  onClick={handleBlockStatus}
-                                  className="cursorPoint"
-                                >
-                                  block
+                            <div
+                              className="blockModal"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setDotsClicked(false);
+                                setBlockButtonClicked(false);
+                              }}
+                            >
+                              <div className="blockingModalOpen">
+                                <h2>Block {profileData?.username}? </h2>
+                                <div>
+                                  {profileData?.username} won't be able to find
+                                  your profile or content. No one will see their
+                                  replies to your posts, and they won't be
+                                  notified that you blocked them.
                                 </div>
-                                <div
-                                  onClick={cancelBlock}
-                                  className="cursorPoint"
-                                >
-                                  cancel
+                                <div className="blockOpts">
+                                  <div
+                                    onClick={(e) => {
+                                      (e.stopPropagation(), handleBlockStatus);
+                                    }}
+                                    className="cursorPoint"
+                                  >
+                                    block
+                                  </div>
+                                  <div
+                                    onClick={(e) => {
+                                      (e.stopPropagation(), cancelBlock);
+                                    }}
+                                    className="cursorPoint"
+                                  >
+                                    cancel
+                                  </div>
                                 </div>
                               </div>
                             </div>

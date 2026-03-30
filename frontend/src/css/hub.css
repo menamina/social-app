@@ -772,6 +772,31 @@
   cursor: pointer;
 }
 
+.blockModal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(128, 128, 128, 0.536);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.blockingModalOpen {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  width: 20em;
+  height: 10em;
+}
+
+.blockingModalOpen > div:last-child {
+  display: flex;
+  justify-content: space-between;
+}
+
 .follow {
   display: flex;
   gap: 20px;
