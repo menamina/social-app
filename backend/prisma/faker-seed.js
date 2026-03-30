@@ -15,6 +15,10 @@ async function main() {
     where: { username: "mena" },
   });
 
+  if (menaUser) {
+    console.log("found mena");
+  }
+
   if (!menaUser) {
     return;
   }
