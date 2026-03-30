@@ -286,7 +286,10 @@ function Profile() {
                                 setBlockButtonClicked(false);
                               }}
                             >
-                              <div className="blockingModalOpen">
+                              <div
+                                className="blockingModalOpen"
+                                onClick={(e) => e.stopPropagation()}
+                              >
                                 <h2>Block {profileData?.username}? </h2>
                                 <div>
                                   {profileData?.username} won't be able to find
@@ -297,20 +300,22 @@ function Profile() {
                                 <div className="blockOpts">
                                   <div
                                     onClick={(e) => {
-                                      (e.stopPropagation(), handleBlockStatus);
+                                      cancelBlock;
+                                      e.stopPropagation();
                                     }}
                                     className="cursorPoint"
                                   >
-                                    block
+                                    Cancel
                                   </div>
-                                  <div
+                                  <h2
                                     onClick={(e) => {
-                                      (e.stopPropagation(), cancelBlock);
+                                      e.stopPropagation();
+                                      handleBlockStatus;
                                     }}
                                     className="cursorPoint"
                                   >
-                                    cancel
-                                  </div>
+                                    Block
+                                  </h2>
                                 </div>
                               </div>
                             </div>
