@@ -19,16 +19,12 @@ function PostCard({ post, onClick, onDelete }) {
 
   const [openMakeACommentModal, setOpenCommentModal] = useState(false);
 
-  const [cameFromSearch, setCameFromSearch] = useState(false)
+  const [cameFromSearch, setCameFromSearch] = useState(false);
 
   useEffect(() => {
-    function checkURL(){
-
-
-    }
-    checkURL()
-
-  }, [])
+    function checkURL() {}
+    checkURL();
+  }, []);
 
   function openSettings(e) {
     e.stopPropagation();
@@ -61,7 +57,24 @@ function PostCard({ post, onClick, onDelete }) {
         alert("Error liking/unliking post - post may have been deleted");
         return;
       }
-      return;
+
+      setRefreshPost((prev) => {
+        const userLiked = prev.likes?.some(
+          (like) => like.idOfLiker === user?.id,
+        );
+
+        if (userLiked) {
+          return {
+            ...prev,
+            likes: prev.likes.filter((like) => like.idOfLiker !== user?.id),
+          };
+        } else {
+          return {
+            ...prev,
+            likes: [...(prev.likes || []), { idOfLiker: user?.id }],
+          };
+        }
+      });
     } catch (error) {
       alert("Server error while trying to like/unlike post");
     }
@@ -83,7 +96,25 @@ function PostCard({ post, onClick, onDelete }) {
         return;
       }
 
-      return;
+      setRefreshPost((prev) => {
+        const userReposted = prev.reposts?.some(
+          (repost) => repost.repostedBy === user?.id,
+        );
+
+        if (userReposted) {
+          return {
+            ...prev,
+            reposts: prev.reposts.filter(
+              (repost) => repost.repostedBy !== user?.id,
+            ),
+          };
+        } else {
+          return {
+            ...prev,
+            reposts: [...(prev.reposts || []), { repostedBy: user?.id }],
+          };
+        }
+      });
     } catch (error) {
       alert("Server error, cannot like/unlike post");
     }
@@ -117,6 +148,7 @@ function PostCard({ post, onClick, onDelete }) {
   }
 
   function closeModal(e) {
+    e.stopPropagation();
     setOpenCommentModal(false);
     e.stopPropagation();
   }
@@ -126,7 +158,9 @@ function PostCard({ post, onClick, onDelete }) {
       <div className="postContainer" onClick={onClick}>
         <div className="postersPFP">
           <Link to={`/${username}`}>
-            <img src={`http://localhost:5555/pfpIMG/${pfp || "default-png.jpg"}`} />
+            <img
+              src={`http://localhost:5555/pfpIMG/${pfp || "default-png.jpg"}`}
+            />
           </Link>
         </div>
         <div>
@@ -160,42 +194,66 @@ function PostCard({ post, onClick, onDelete }) {
             </div>
             <div className="postContent">
               {post.img && (
-                <div className="postImg">
+                <Link
+                  to="/${post.username}"
+                  className="postImg"
+                  onClick={(e) => e.stopPropagation()}
+                >
                   <img src={`http://localhost:5555/img/${post.img}`} />
-                </div>
+                </Link>
               )}
 
               {post.msg && <div className="postMsg">{post.msg}</div>}
             </div>
           </div>
           <div className="postOptions">
-            <div className="likes">
+            <div
+              className="likes"
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleLike();
+              }}
+            >
               <div>
                 <img
-                  onClick={toggleLike}
+                  src="/imgs/heart-svgrepo-com.svg"
+                  alt="like"
                   className={
-                    post.likes?.some((like) => like.idOfLiker === user?.id)
+                    refreshPost.likes?.some((like) => like.idOfLiker === user?.id)
                       ? "userLikedThisPost"
                       : "heartTolike"
                   }
                 />
               </div>
-              <div>{post.likes?.length || ""}</div>
+              <div>{refreshPost.likes?.length || ""}</div>
             </div>
 
-            <div className="comments">
+            <div
+              className="comments"
+              onClick={(e) => {
+                e.stopPropagation();
+                setOpenCommentModal(true);
+              }}
+            >
               <div>
-                <img onClick={() => setOpenCommentModal(true)} />
+                <img src="/imgs/comment-4-svgrepo-com.svg" alt="comment" />
               </div>
-              <div>{post.comments?.length || ""}</div>
+              <div>{refreshPost.comments?.length || ""}</div>
             </div>
 
-            <div className="reposts">
+            <div
+              className="reposts"
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleRepost();
+              }}
+            >
               <div>
                 <img
-                  onClick={toggleRepost}
+                  src="/imgs/repost-2-svgrepo-com.svg"
+                  alt="repost"
                   className={
-                    post.reposts?.some(
+                    refreshPost.reposts?.some(
                       (repost) => repost.repostedBy === user?.id,
                     )
                       ? "userRepostedThisPost"
@@ -203,12 +261,12 @@ function PostCard({ post, onClick, onDelete }) {
                   }
                 />
               </div>
-              <div>{post.reposts?.length || ""}</div>
+              <div>{refreshPost.reposts?.length || ""}</div>
             </div>
 
             <div className="share">
               <div>
-                <img />
+                <img src="/imgs/share-1-svgrepo-com.svg" alt="share" />
               </div>
               <div>Share</div>
             </div>

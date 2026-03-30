@@ -2,13 +2,13 @@ import { useState } from "react";
 import { Link, useNavigate, useOutletContext } from "react-router-dom";
 import MakeAPost from "./makePost";
 
-import koifish from "../../imgs/koi.png";
-import home from "../../imgs/home.svg";
-import search from "../../imgs/search.svg";
-import newpost from "../../imgs/post.png";
-import dms from "../../imgs/letter.png";
-import profile from "../../imgs/profile.svg";
-import settings from "../../imgs/settings.png";
+const koifish = "/imgs/koi.png";
+const home = "/imgs/home.svg";
+const search = "/imgs/search.svg";
+const newpost = "/imgs/post.png";
+const dms = "/imgs/letter.png";
+const profile = "/imgs/profile.svg";
+const settings = "/imgs/settings.png";
 
 function Nav({ navUserData, setNavUserData }) {
   const { setForYouFeed } = useOutletContext();
