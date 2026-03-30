@@ -233,6 +233,12 @@
   flex-direction: column;
 }
 
+.leftOfDM h2 {
+  color: #1d9bf0;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
 .msgSearchDM {
   width: 100%;
   text-align: center;
