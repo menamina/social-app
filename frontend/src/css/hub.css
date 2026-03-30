@@ -973,3 +973,22 @@
   width: 20px;
   height: 20px;
 }
+
+/* comments comments comments */
+
+.modalContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.modalContent > div:nth-child(2) {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.modalContent > div:nth-child(2) > div {
+  display: flex;
+  gap: 20px;
+}

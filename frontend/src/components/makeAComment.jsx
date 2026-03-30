@@ -34,23 +34,21 @@ function MakeAComment({ post, closeModal }) {
         <div>
           <div>
             <div>
+              <img
+                src={`http://localhost:5555/img/${post.postedBy.profile.pfp}`}
+                alt={`${post.postedBy.username} profile pic`}
+              />
+            </div>
+            <div>
               <div>
-                <img
-                  src={`http://localhost:5555/img/${post.postedBy.profile.pfp}`}
-                  alt={`${post.postedBy.username} profile pic`}
-                />
+                <div>{post.username}</div> <div>{post.createdAt}</div>
               </div>
-              <div>
+              {post.img && (
                 <div>
-                  <div>{post.username}</div> <div>{post.createdAt}</div>
+                  <img src={`http://localhost:5555/img/${post.img}`} />
                 </div>
-                {post.img && (
-                  <div>
-                    <img src={`http://localhost:5555/img/${post.img}`} />
-                  </div>
-                )}
-                {post.msg && <div>{post.msg}</div>}
-              </div>
+              )}
+              {post.msg && <div>{post.msg}</div>}
             </div>
           </div>
           <div>
