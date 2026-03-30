@@ -298,8 +298,8 @@ function Profile() {
                 </div>
               </div>
               <div className="follow">
-                <div>{profileData?.followers.length} followers</div>
-                <div>{profileData?.following.length} following</div>
+                <div>{profileData?.followers?.length} followers</div>
+                <div>{profileData?.following?.length} following</div>
               </div>
             </div>
           </div>
