@@ -889,12 +889,13 @@ async function sendMsg(req, res) {
         senderID: thisUsersID,
         receiverID: sendTo,
         message: msg,
-        images: files.length > 0 ? files : null,
+        image: files.length > 0 ? files[0] : null,
       },
     });
 
     return res.status(200).json({ success: true });
   } catch (error) {
+    console.error("Send message error:", error);
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
   }
 }

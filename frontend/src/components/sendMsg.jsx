@@ -9,14 +9,20 @@ function SendMsg({ otherUser }) {
 
   async function sendMsg() {
     try {
-      const res = await await fetch("http://localhost:5555/send-msg", {
+      const formData = new FormData();
+      formData.append("sendToID", otherUser.id);
+      formData.append("msg", msg || "");
+
+      if (imgs && imgs.length > 0) {
+        for (let i = 0; i < imgs.length; i++) {
+          formData.append("files", imgs[i]);
+        }
+      }
+
+      const res = await fetch("http://localhost:5555/send-msg", {
         method: "POST",
         credentials: "include",
-        body: JSON.stringify({
-          sendToID: otherUser.id,
-          msg: msg ? msg : null,
-          files: imgs ? imgs : null,
-        }),
+        body: formData,
       });
 
       const data = await res.json();
@@ -26,6 +32,11 @@ function SendMsg({ otherUser }) {
         setSendMsgAPIErr(null);
         return;
       }
+
+      setMsg("");
+      setImgs([]);
+      setSendMsgErr(null);
+      setSendMsgAPIErr(null);
     } catch (error) {
       setSendMsgAPIErr(error.errorMsg);
       setSendMsgErr(null);
