@@ -636,3 +636,22 @@
 .selectedProfViewOpt {
   border-bottom: 2px solid rgb(148, 147, 147);
 }
+
+/* post card post card post card */
+
+.postCardDiv {
+  width: 100%;
+  border-bottom: 1px solid rgb(207, 204, 204);
+  padding: 15px;
+}
+
+.postContainer {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  cursor: pointer;
+}
+
+.postContainer:hover {
+  background-color: rgba(207, 205, 205, 0.1);
+}
