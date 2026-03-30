@@ -773,6 +773,10 @@ async function dms(req, res) {
       },
     });
 
+    if(!queryRes){
+      return res.status(403).json({ "no messages" })
+    }
+
     queryRes.forEach((msg) => {
       const otherUser =
         msg.receiverID === thisUsersID ? msg.sender : msg.receiver;

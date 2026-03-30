@@ -29,9 +29,15 @@ function Dms() {
           credentials: "include",
         });
 
+        if (res.status === 403) {
+          setsideBarDMS(null);
+          return;
+        }
+
         const data = await res.json();
         setsideBarDMS(data.sideBarDMS);
         setGetDmError(null);
+        return;
       } catch (error) {
         setGetDmError(error.errorMsg);
         setsideBarDMS(null);
@@ -166,11 +172,11 @@ function Dms() {
     <div className="outletHolderDiv dms">
       <div className="leftOfDM">
         <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
+        // style={{
+        //   display: "flex",
+        //   justifyContent: "space-between",
+        //   alignItems: "center",
+        // }}
         >
           <h2>Chat</h2>
           <button onClick={() => setSearchUserToMessage(true)}>+</button>
