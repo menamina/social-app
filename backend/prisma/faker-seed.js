@@ -11,10 +11,18 @@ function createRandomUser() {
 }
 
 async function main() {
+  const menaUser = await prisma.user.findUnique({
+    where: { username: "mena" },
+  });
+
+  if (!menaUser) {
+    return;
+  }
+
   const users = faker.helpers.multiple(createRandomUser, { count: 5 });
 
   for (const u of users) {
-    await prisma.user.create({
+    const newUser = await prisma.user.create({
       data: {
         ...u,
         profile: {
@@ -27,7 +35,34 @@ async function main() {
         },
       },
     });
+
+    const postCount = faker.number.int({ min: 3, max: 10 });
+    for (let i = 0; i < postCount; i++) {
+      await prisma.posts.create({
+        data: {
+          madeBy: newUser.id,
+          msg: faker.lorem.sentence(),
+        },
+      });
+    }
+
+    const messageCount = faker.number.int({ min: 3, max: 4 });
+    for (let i = 0; i < messageCount; i++) {
+      await prisma.msgs.create({
+        data: {
+          senderID: newUser.id,
+          receiverID: menaUser.id,
+          message: faker.lorem.sentence(),
+        },
+      });
+    }
+
+    console.log(
+      `Created user ${newUser.username} with posts and messages to mena`,
+    );
   }
+
+  console.log("Done!");
 }
 
 main()
