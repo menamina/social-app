@@ -252,7 +252,8 @@ function Profile() {
                       {youBlocked && (
                         <div
                           onClick={(e) => {
-                            (e.stopPropagation(), handleBlockStatus);
+                            e.stopPropagation();
+                            handleBlockStatus();
                           }}
                         >
                           Unblock
@@ -300,7 +301,7 @@ function Profile() {
                                 <div className="blockOpts">
                                   <div
                                     onClick={(e) => {
-                                      cancelBlock;
+                                      cancelBlock();
                                       e.stopPropagation();
                                     }}
                                     className="cursorPoint"
@@ -310,7 +311,7 @@ function Profile() {
                                   <h2
                                     onClick={(e) => {
                                       e.stopPropagation();
-                                      handleBlockStatus;
+                                      handleBlockStatus();
                                     }}
                                     className="cursorPoint"
                                   >
