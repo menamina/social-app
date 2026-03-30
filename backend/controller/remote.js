@@ -1181,11 +1181,11 @@ async function blockHandler(req, res) {
       },
     });
 
-    const isThereAFollowRelation = await prisma.follow.findMany({
+    const followRelation = await prisma.follow.findMany({
       where: {
         OR: [
-          { folllowerID: userID, followingID: otherUserID },
-          { folllowerID: otherUserID, followingID: userID },
+          { followerID: userID, followingID: otherUserID },
+          { followerID: otherUserID, followingID: userID },
         ],
       },
     });
@@ -1199,6 +1199,7 @@ async function blockHandler(req, res) {
           },
         },
       });
+
       return res.status(200).json({ userUnblocked: true });
     }
 
@@ -1210,14 +1211,16 @@ async function blockHandler(req, res) {
         },
       });
 
-      await prisma.follow.deleteMany({
-        where: {
-          OR: [
-            { followerID: userID, followingID: otherUserID },
-            { followerID: otherUserID, followingID: userID },
-          ],
-        },
-      });
+      if (followRelation) {
+        await prisma.follow.deleteMany({
+          where: {
+            OR: [
+              { followerID: userID, followingID: otherUserID },
+              { followerID: otherUserID, followingID: userID },
+            ],
+          },
+        });
+      }
 
       return res.status(200).json({ userBlocked: true });
     }

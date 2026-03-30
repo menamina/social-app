@@ -264,16 +264,17 @@ function Profile() {
                           )}
                           {blockButtonClicked && (
                             <div>
-                              <div></div>
-                              <div></div>
+                              <div>block user?</div>
                               <div>
-                                <div onClick={handleBlockStatus}></div>
-                                <div onClick={cancelBlock}></div>
+                                <div onClick={handleBlockStatus}>block</div>
+                                <div onClick={cancelBlock}>cancel</div>
                               </div>
                             </div>
                           )}
                           <div
-                            onClick={isFollowLoading ? null : updateFollowStatus}
+                            onClick={
+                              isFollowLoading ? null : updateFollowStatus
+                            }
                             className={isFollowLoading ? "disabled" : ""}
                           >
                             {isFollowLoading
