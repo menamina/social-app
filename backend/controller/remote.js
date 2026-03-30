@@ -79,8 +79,6 @@ async function forYouFeed(req, res) {
 
     const allPosts = await prisma.posts.findMany({
       where: {
-        // likes: { gte: 2 },
-        // comments: { gte: 2 },
         madeBy: { notIn: blockedIDs },
       },
       include: {
@@ -1103,10 +1101,11 @@ async function comment(req, res) {
   try {
     const post = req.body.postID;
     const postID = Number(post);
+
     const uID = req.user.id;
     const userID = Number(uID);
 
-    const { commentBody } = req.body.comment;
+    const commentBody = req.body.commentBody;
 
     await prisma.posts.create({
       data: {

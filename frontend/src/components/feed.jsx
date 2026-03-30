@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useOutletContext, useNavigate } from "react-router-dom";
 import MakeAPost from "./makePost";
 import PostCard from "./PostCard";
@@ -21,10 +21,12 @@ function Feed() {
   const [feedView, setFeedView] = useState("for you");
   const [wannaMakeAPost, setWannaMakeAPost] = useState(false);
 
-  if (!user) {
-    navigate("/");
-    return null;
-  }
+  useEffect(() => {
+    if (!user) {
+      navigate("/");
+      return null;
+    }
+  }, []);
 
   async function forYouRefresh() {
     setFeedView("for you");
@@ -120,7 +122,9 @@ function Feed() {
                   <PostCard
                     key={post.id}
                     post={post}
-                    onClick={() => navigate(`/${post.username}/post/${post.id}`)}
+                    onClick={() =>
+                      navigate(`/${post.username}/post/${post.id}`)
+                    }
                     onDelete={handleDeletePost}
                   />
                 ))}
@@ -136,7 +140,9 @@ function Feed() {
                   <PostCard
                     key={post.id}
                     post={post}
-                    onClick={() => navigate(`/${post.username}/post/${post.id}`)}
+                    onClick={() =>
+                      navigate(`/${post.username}/post/${post.id}`)
+                    }
                     onDelete={handleDeletePost}
                   />
                 ))}

@@ -4,7 +4,8 @@ import { useState, useEffect } from "react";
 import MakeAComment from "./makeAComment";
 
 function PostCard({ post, onClick, onDelete }) {
-  const { user } = useOutletContext();
+  const { user, forYouFeed, setForYouFeed, followingFeed, setFollowingFeed } =
+    useOutletContext();
 
   const [refreshPost, setRefreshPost] = useState(post);
 
@@ -111,7 +112,7 @@ function PostCard({ post, onClick, onDelete }) {
         } else {
           return {
             ...prev,
-            reposts: [...(prev.reposts || []), { repostedBy: user?.id }],
+            reposts: [...prev.reposts, { repostedBy: user?.id }],
           };
         }
       });
@@ -148,7 +149,6 @@ function PostCard({ post, onClick, onDelete }) {
   }
 
   function closeModal(e) {
-    e.stopPropagation();
     setOpenCommentModal(false);
     e.stopPropagation();
   }
@@ -219,13 +219,15 @@ function PostCard({ post, onClick, onDelete }) {
                   src="/imgs/heart-svgrepo-com.svg"
                   alt="like"
                   className={
-                    refreshPost.likes?.some((like) => like.idOfLiker === user?.id)
+                    refreshPost.likes?.some(
+                      (like) => like.idOfLiker === user?.id,
+                    )
                       ? "userLikedThisPost"
                       : "heartTolike"
                   }
                 />
               </div>
-              <div>{refreshPost.likes?.length || ""}</div>
+              <div>{refreshPost.likes?.length}</div>
             </div>
 
             <div
@@ -238,7 +240,7 @@ function PostCard({ post, onClick, onDelete }) {
               <div>
                 <img src="/imgs/comment-4-svgrepo-com.svg" alt="comment" />
               </div>
-              <div>{refreshPost.comments?.length || ""}</div>
+              <div>{refreshPost.comments?.length}</div>
             </div>
 
             <div
@@ -261,7 +263,7 @@ function PostCard({ post, onClick, onDelete }) {
                   }
                 />
               </div>
-              <div>{refreshPost.reposts?.length || ""}</div>
+              <div>{refreshPost.reposts?.length}</div>
             </div>
 
             <div className="share">
@@ -275,7 +277,7 @@ function PostCard({ post, onClick, onDelete }) {
       </div>
 
       {openMakeACommentModal && (
-        <MakeAComment post={post} closeModal={closeModal} />
+        <MakeAComment post={post} closeModal={(e) => closeModal(e)} />
       )}
     </div>
   );

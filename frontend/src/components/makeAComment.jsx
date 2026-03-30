@@ -18,6 +18,10 @@ function MakeAComment({ post, closeModal }) {
       });
 
       await res.json();
+      if (res.status === 200) {
+        console.log("COMMENT POSTED");
+        closeModal();
+      }
     } catch (error) {
       console.log(error.errorMsg);
     }
