@@ -85,30 +85,35 @@ function MsgOpened({ id, isBlocked }) {
   }
 
   return (
-    <div className="msgOpened div">
+    <div className="msgOpenedDiv">
       {otherUser && (
-        <div>
-          <Link to={`/${otherUser.username}`}>
-            <div>{otherUser.name}</div>
+        <div className="msgOpenedHeader">
+          <Link to={`/${otherUser.username}`} className="msgOpenedUserLink">
             <img
-              src={otherUser.profile?.pfp}
+              className="msgOpenedPFP"
+              src={`http://localhost:5555/pfpIMG/${otherUser.profile?.pfp || "default-png.jpg"}`}
               alt={`${otherUser.username} profile pic`}
             />
+            <div className="msgOpenedUserInfo">
+              <div className="msgOpenedName">{otherUser.name}</div>
+              <div className="msgOpenedUsername">@{otherUser.username}</div>
+            </div>
           </Link>
         </div>
       )}
       <div className="renderedMsgs">
         {msgs && (
-          <div>
+          <div className="msgsContainer">
             {msgs.map((msg) => {
               const isSent = msg.senderID === user.id;
               return (
                 <div
                   key={msg.id}
-                  className={isSent ? "msgSent" : "msgReceived"}
+                  className={isSent ? "msgBubble msgSent" : "msgBubble msgReceived"}
                 >
-                  <div className="deleteMsg">
+                  <div className="msgOptions">
                     <div
+                      className="msgMenuBtn"
                       onClick={() =>
                         setOpenDeleteMsgID(
                           openDeleteMsgID === msg.id ? null : msg.id,
@@ -118,14 +123,14 @@ function MsgOpened({ id, isBlocked }) {
                       ...
                     </div>
                     {openDeleteMsgID === msg.id && (
-                      <div onClick={() => deleteMsgID(msg.id)}>
+                      <div className="msgDeleteOption" onClick={() => deleteMsgID(msg.id)}>
                         delete for me
                       </div>
                     )}
                   </div>
-                  <div>
+                  <div className="msgContent">
                     {msg.images && msg.images.length > 0 && (
-                      <div>
+                      <div className="msgImages">
                         {msg.images.map((image, index) => (
                           <img
                             key={index}
@@ -135,9 +140,9 @@ function MsgOpened({ id, isBlocked }) {
                         ))}
                       </div>
                     )}
-                    {msg?.message && <div>{msg?.message}</div>}
+                    {msg?.message && <div className="msgText">{msg?.message}</div>}
                   </div>
-                  <div>{msg?.createdAt}</div>
+                  <div className="msgTime">{msg?.createdAt}</div>
                 </div>
               );
             })}
