@@ -25,7 +25,7 @@ function MakeAComment({ post, closeModal }) {
 
   return (
     <div className="modalBackdrop" onClick={closeModal}>
-      <div className="modalContent">
+      <div className="modalContent" onClick={(e) => e.stopPropagation()}>
         <div>
           <div onClick={closeModal}>cancel</div>
           <div>Reply</div>
@@ -39,7 +39,7 @@ function MakeAComment({ post, closeModal }) {
                 alt={`${post.postedBy.username} profile pic`}
               />
             </div>
-            <div>
+            <div className="postInCommentModal">
               <div>
                 <div>{post.username}</div> <div>{post.createdAt}</div>
               </div>
@@ -58,11 +58,12 @@ function MakeAComment({ post, closeModal }) {
                 alt={`${user.name} profile pic`}
               />
             </div>
-            <div>
+            <div className="commentt">
               <div>
                 <div>{user.username}</div>
               </div>
               <input
+                className="commentInput"
                 placeholder={`Reply to ${post.postedBy.username}...`}
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
@@ -70,13 +71,18 @@ function MakeAComment({ post, closeModal }) {
             </div>
           </div>
         </div>
-        <div
-          onClick={(e) => {
-            (e.stopPropagation(), makeComment);
-          }}
-        >
-          post
-        </div>
+        {!comment && <div>post</div>}
+        {comment && (
+          <div
+            onClick={(e) => {
+              e.stopPropagation();
+              makeComment();
+            }}
+            className="postCursor"
+          >
+            post
+          </div>
+        )}
       </div>
     </div>
   );

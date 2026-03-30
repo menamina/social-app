@@ -172,7 +172,8 @@
   border-right: 1px solid rgb(207, 204, 204);
 }
 
-.cursor-reg {
+.cursor-reg,
+.postCursor {
   cursor: pointer;
 }
 
@@ -991,4 +992,14 @@
 .modalContent > div:nth-child(2) > div {
   display: flex;
   gap: 20px;
+}
+
+.commentt,
+.postInCommentModal {
+  width: 100%;
+}
+
+.commentInput {
+  width: 100%;
+  height: auto;
 }
