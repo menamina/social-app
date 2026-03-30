@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useOutletContext } from "react-router-dom";
 
 function MakeAPost({ onClose }) {
-  const { user, userProfile } = useOutletContext();
+  const { user, userProfile, setForYouFeed } = useOutletContext();
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [msgToPost, setMsgToPost] = useState("");
   const [postAPIErr, setPostAPIErr] = useState(null);
@@ -34,8 +34,11 @@ function MakeAPost({ onClose }) {
         body: form,
       });
 
+      const data = await res.json();
+
       if (res.ok) {
         setPostAPIErr(null);
+        setForYouFeed((prev) => [data.justPosted, ...prev]);
         onClose();
         return;
       } else {

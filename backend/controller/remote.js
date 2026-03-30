@@ -954,7 +954,7 @@ async function post(req, res) {
     const id = req.user.id;
     const userID = Number(id);
 
-    await prisma.posts.create({
+    const postHere = await prisma.posts.create({
       data: {
         madeBy: userID,
         msg: body || "",
@@ -962,7 +962,9 @@ async function post(req, res) {
       },
     });
 
-    return res.status(200).json({ success: true });
+    console.log(postHere);
+
+    return res.status(200).json({ justPosted: postHere });
   } catch (error) {
     console.error("Post creation error:", error);
     return res.status(500).json({ errorMsg: "Internal server error :^(" });

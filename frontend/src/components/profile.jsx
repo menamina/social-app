@@ -49,7 +49,7 @@ function Profile() {
       }
     }
     checkURL();
-  }, [location.pathname]);
+  }, [location]);
 
   useEffect(() => {
     async function fetchProfileData() {
