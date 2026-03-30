@@ -258,13 +258,70 @@
 .renderedDMSideDiv {
   display: flex;
   flex-direction: column;
-  margin-top: 30px;
+  margin-top: 20px;
   height: 100%;
+  gap: 8px;
+}
+
+.msgSearchResults {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  gap: 8px;
+}
+
+.dmUserCard {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.dmUserCard:hover {
+  background-color: rgba(207, 205, 205, 0.2);
+}
+
+.dmUserPFP {
+  flex-shrink: 0;
+}
+
+.dmUserPFP img {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.dmUserInfo {
+  flex-grow: 1;
+  overflow: hidden;
+}
+
+.dmUserName {
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dmUsername {
+  color: rgb(128, 128, 128);
+  font-size: 0.9rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .noChats {
   text-align: center;
   font-style: italic;
+  color: rgb(128, 128, 128);
+  margin-top: 40px;
 }
 
 .rightOfDM {

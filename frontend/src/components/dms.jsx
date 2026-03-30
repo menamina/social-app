@@ -190,16 +190,16 @@ function Dms() {
             </div>
           </div>
           {msgSearchOpen ? (
-            <div>
+            <div className="msgSearchResults">
               {msgSeachRes &&
                 msgSeachRes?.map((obj) => (
-                  <div key={obj.id} onClick={(e) => checkBlockStat(e, obj.id)}>
-                    <div>
-                      <img src={`${obj.pfp}`} />
+                  <div key={obj.id} className="dmUserCard" onClick={(e) => checkBlockStat(e, obj.id)}>
+                    <div className="dmUserPFP">
+                      <img src={`http://localhost:5555/pfpIMG/${obj.pfp || "default-png.jpg"}`} />
                     </div>
-                    <div>
-                      <p>{obj.name}</p>
-                      <p>{obj.username}</p>
+                    <div className="dmUserInfo">
+                      <p className="dmUserName">{obj.name}</p>
+                      <p className="dmUsername">@{obj.username}</p>
                     </div>
                   </div>
                 ))}
@@ -211,13 +211,13 @@ function Dms() {
               )}
               {sideBarDMS &&
                 sideBarDMS?.map((obj) => (
-                  <div key={obj.id} onClick={(e) => checkBlockStat(e, obj.id)}>
-                    <div>
-                      <img src={`${obj.pfp}`} />
+                  <div key={obj.id} className="dmUserCard" onClick={(e) => checkBlockStat(e, obj.id)}>
+                    <div className="dmUserPFP">
+                      <img src={`http://localhost:5555/pfpIMG/${obj.pfp || "default-png.jpg"}`} />
                     </div>
-                    <div>
-                      <p>{obj.name}</p>
-                      <p>{obj.username}</p>
+                    <div className="dmUserInfo">
+                      <p className="dmUserName">{obj.name}</p>
+                      <p className="dmUsername">@{obj.username}</p>
                     </div>
                   </div>
                 ))}
