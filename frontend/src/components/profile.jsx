@@ -31,6 +31,7 @@ function Profile() {
 
   const [followStatus, setFollowStatus] = useState(null);
   const [followerStatus, setFollowerStatus] = useState(null);
+  const [isFollowLoading, setIsFollowLoading] = useState(false);
 
   const [error, setError] = useState(null);
 
@@ -152,6 +153,9 @@ function Profile() {
   }, [username, user, navigate]);
 
   async function updateFollowStatus() {
+    if (isFollowLoading) return;
+
+    setIsFollowLoading(true);
     try {
       const res = await fetch(
         `http://localhost:5555/follow/${profileData.id}`,
@@ -176,10 +180,11 @@ function Profile() {
           followers: prev.followers.filter((f) => f.id !== user.id),
         }));
       }
-      return;
     } catch (err) {
       console.log(err);
       alert("Sever error while trying to update follow");
+    } finally {
+      setIsFollowLoading(false);
     }
   }
 
@@ -267,10 +272,15 @@ function Profile() {
                               </div>
                             </div>
                           )}
-                          <div onClick={updateFollowStatus}>
-                            {followStatus === "Following"
-                              ? "Following"
-                              : "Follow"}
+                          <div
+                            onClick={isFollowLoading ? null : updateFollowStatus}
+                            className={isFollowLoading ? "disabled" : ""}
+                          >
+                            {isFollowLoading
+                              ? "Loading..."
+                              : followStatus === "Following"
+                                ? "Following"
+                                : "Follow"}
                           </div>
                         </>
                       )}

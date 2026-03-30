@@ -959,13 +959,14 @@ async function post(req, res) {
     await prisma.posts.create({
       data: {
         madeBy: userID,
-        msg: body,
-        images: files.length > 0 ? files : null,
+        msg: body || "",
+        img: files.length > 0 ? files[0] : null,
       },
     });
 
     return res.status(200).json({ success: true });
   } catch (error) {
+    console.error("Post creation error:", error);
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
   }
 }

@@ -24,7 +24,7 @@ function MakeAPost({ onClose }) {
     }
 
     if (msgToPost) {
-      form.append("msg", msgToPost);
+      form.append("body", msgToPost);
     }
 
     try {
@@ -37,8 +37,11 @@ function MakeAPost({ onClose }) {
       if (res.ok) {
         setPostAPIErr(null);
         onClose();
-        // when post is successful pop up over lay to view post
         return;
+      } else {
+        const data = await res.json();
+        setPostAPIErr(data.errorMsg || "Failed to create post");
+        setShowPostAPIErr(true);
       }
     } catch (error) {
       setPostAPIErr("Error encountered while trying to post");
