@@ -254,20 +254,45 @@ function Profile() {
                       )}
                       {noBlockRelation && (
                         <>
-                          <div onClick={() => setDotsClicked((prev) => !prev)}>
+                          <div
+                            className="cursorPoint"
+                            onClick={() => {
+                              (setDotsClicked((prev) => !prev),
+                                setBlockButtonClicked(false));
+                            }}
+                          >
                             ...
                           </div>
                           {dotsClicked && (
-                            <div onClick={() => setBlockButtonClicked(true)}>
+                            <div
+                              className="cursorPoint"
+                              onClick={() => setBlockButtonClicked(true)}
+                            >
                               block
                             </div>
                           )}
                           {blockButtonClicked && (
                             <div>
-                              <div>block user?</div>
+                              <h2>Block {profileData?.username} </h2>
                               <div>
-                                <div onClick={handleBlockStatus}>block</div>
-                                <div onClick={cancelBlock}>cancel</div>
+                                {profileData?.username} won't be able to find
+                                your profile or content. No one will see their
+                                replies to your posts, and they won't be
+                                notified that you blocked them.
+                              </div>
+                              <div>
+                                <div
+                                  onClick={handleBlockStatus}
+                                  className="cursorPoint"
+                                >
+                                  block
+                                </div>
+                                <div
+                                  onClick={cancelBlock}
+                                  className="cursorPoint"
+                                >
+                                  cancel
+                                </div>
                               </div>
                             </div>
                           )}
@@ -275,13 +300,15 @@ function Profile() {
                             onClick={
                               isFollowLoading ? null : updateFollowStatus
                             }
-                            className={isFollowLoading ? "disabled" : ""}
+                            className={
+                              isFollowLoading
+                                ? "disabled followCursor"
+                                : "followCursor"
+                            }
                           >
-                            {isFollowLoading
-                              ? "Loading..."
-                              : followStatus === "Following"
-                                ? "Following"
-                                : "Follow"}
+                            {followStatus === "Following"
+                              ? "Following"
+                              : "Follow"}
                           </div>
                         </>
                       )}

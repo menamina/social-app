@@ -767,6 +767,11 @@
   gap: 15px;
 }
 
+.followCursor,
+.cursorPoint {
+  cursor: pointer;
+}
+
 .follow {
   display: flex;
   gap: 20px;
