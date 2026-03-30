@@ -1003,3 +1003,23 @@
   width: 100%;
   height: auto;
 }
+
+/* search search search */
+
+.userRsults {
+  width: 100%;
+}
+
+.userProfile {
+  width: 50px;
+}
+
+.individ-user-search-pf {
+  display: flex;
+  text-decoration: none;
+  color: rgb(104, 104, 104);
+}
+
+.individ-user-search-pf > div:last-child {
+  width: 100%;
+}

@@ -104,9 +104,15 @@ function Search() {
                 <div className="usersResults">
                   <h3>Users</h3>
                   {queryResultsUsername.slice(0, 10).map((user) => (
-                    <Link to={`/${user.username}`} key={user.id} id={user.id}>
+                    <Link
+                      className="individ-user-search-pf"
+                      to={`/${user.username}`}
+                      key={user.id}
+                      id={user.id}
+                    >
                       <div>
                         <img
+                          className="userProfile"
                           src={`http://localhost:5555/pfpIMG/${user.profile.pfp}`}
                           alt={user.username}
                         />
