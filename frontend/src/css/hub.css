@@ -233,6 +233,12 @@
   flex-direction: column;
 }
 
+.dmHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .leftOfDM h2 {
   font-weight: 600;
   letter-spacing: 0.5px;

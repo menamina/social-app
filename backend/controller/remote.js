@@ -773,8 +773,9 @@ async function dms(req, res) {
       },
     });
 
-    if(!queryRes){
-      return res.status(403).json({ "no messages" })
+    if (!queryRes) {
+      console.log("noqueryres");
+      return res.status(403).json({ none: "no messages" });
     }
 
     queryRes.forEach((msg) => {
