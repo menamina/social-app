@@ -191,17 +191,13 @@ function PostCard({ post, onClick, onDelete }) {
               )}
             </div>
             <div className="postContent">
-              {post.img && (
-                <Link
-                  to="/${post.username}"
-                  className="postImg"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <img src={`http://localhost:5555/pfpIMG/${post.img}`} />
-                </Link>
-              )}
-
               {post.msg && <div className="postMsg">{post.msg}</div>}
+
+              {post.img && (
+                <div className="postImg">
+                  <img src={`http://localhost:5555/pfpIMG/${post.img}`} />
+                </div>
+              )}
             </div>
           </div>
           <div className="postOptions">

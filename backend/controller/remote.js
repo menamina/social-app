@@ -882,7 +882,7 @@ async function one2oneDMS(req, res) {
 async function sendMsg(req, res) {
   try {
     const { sendToID, msg } = req.body;
-    const files = req.files ? req.files.map((file) => file.path) : [];
+    const files = req.files ? req.files.map((file) => file.filename) : [];
     const { id } = req.user;
 
     const sendTo = Number(sendToID);
@@ -955,7 +955,7 @@ async function deleteMsg(req, res) {
 async function post(req, res) {
   try {
     const { body } = req.body;
-    const files = req.files ? req.files.map((file) => file.path) : [];
+    const files = req.files ? req.files.map((file) => file.filename) : [];
 
     const id = req.user.id;
     const userID = Number(id);
