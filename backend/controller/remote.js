@@ -80,6 +80,7 @@ async function forYouFeed(req, res) {
     const allPosts = await prisma.posts.findMany({
       where: {
         madeBy: { notIn: blockedIDs },
+        commentOnPostID: null,
       },
       include: {
         postedBy: {
@@ -113,6 +114,7 @@ async function followingFeed(req, res) {
     const followingList = await prisma.user.findUnique({
       where: {
         id: userID,
+        commentOnPostID: null,
       },
       select: {
         following: {
@@ -283,6 +285,9 @@ async function viewProfile(req, res) {
         following: true,
         followers: true,
         posts: {
+          where: {
+            commentOnPostID: null,
+          },
           include: {
             postedBy: {
               select: {
@@ -510,6 +515,7 @@ async function search(req, res) {
           contains: query,
           mode: "insensitive",
         },
+        commentOnPostID: null,
       },
       include: {
         postedBy: {
