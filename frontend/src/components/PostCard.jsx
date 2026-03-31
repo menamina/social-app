@@ -20,11 +20,6 @@ function PostCard({ post, onClick, onDelete }) {
 
   const [openMakeACommentModal, setOpenCommentModal] = useState(false);
 
-  useEffect(() => {
-    function checkURL() {}
-    checkURL();
-  }, []);
-
   function openSettings(e) {
     e.stopPropagation();
     setDotsClicked(!dotsClicked);
@@ -171,10 +166,14 @@ function PostCard({ post, onClick, onDelete }) {
               <div>{formattedDate}</div>
               {postByLoggedInUser && (
                 <div>
-                  <div onClick={openSettings} className="cursor-reg">...</div>
+                  <div onClick={openSettings} className="cursor-reg">
+                    ...
+                  </div>
                   {dotsClicked && (
                     <div className="postOptionsDropdown">
-                      <div onClick={preDeleteModal} className="cursor-reg">Delete</div>
+                      <div onClick={preDeleteModal} className="cursor-reg">
+                        Delete
+                      </div>
                     </div>
                   )}
                 </div>
@@ -273,21 +272,31 @@ function PostCard({ post, onClick, onDelete }) {
 
       {preDeleteModalClicked && (
         <div className="modalBackdrop" onClick={cancelDelete}>
-          <div className="deleteModalContent" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="deleteModalContent"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="deleteModalHeader">
               <h3>Delete post?</h3>
             </div>
             <div className="deleteModalBody">
               <p>
                 This can't be undone and it will be removed from your profile,
-                the timeline of any accounts that follow you, and from search results.
+                the timeline of any accounts that follow you, and from search
+                results.
               </p>
             </div>
             <div className="deleteModalFooter">
-              <button onClick={sendDelete} className="deleteConfirmBtn cursor-reg">
+              <button
+                onClick={sendDelete}
+                className="deleteConfirmBtn cursor-reg"
+              >
                 Delete
               </button>
-              <button onClick={cancelDelete} className="deleteCancelBtn cursor-reg">
+              <button
+                onClick={cancelDelete}
+                className="deleteCancelBtn cursor-reg"
+              >
                 Cancel
               </button>
             </div>

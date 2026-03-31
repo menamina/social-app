@@ -53,10 +53,28 @@ function SendMsg({ otherUser }) {
           onChange={(e) => setMsg(e.target.value)}
         ></input>
       </div>
+
+      {imgs.length > 0 && (
+        <div className="imagePreviewContainer">
+          {imgs.map((file, index) => (
+            <div key={index} className="imagePreview">
+              <img src={URL.createObjectURL(file)} alt="preview" />
+              <button
+                type="button"
+                onClick={() => setImgs(imgs.filter((_, i) => i !== index))}
+                className="removeImageBtn cursor-reg"
+              >
+                ×
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+
       <div>
         <input
           aria-label={`send image to ${otherUser?.username} `}
-          onChange={(e) => setImgs(e.target.files)}
+          onChange={(e) => setImgs(Array.from(e.target.files))}
           type="file"
           multiple
         ></input>
