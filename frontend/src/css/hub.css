@@ -155,7 +155,6 @@
   height: 40px;
   width: 100%;
   justify-content: space-evenly;
-  flex-grow: 1;
 }
 
 .cursor:hover {
@@ -166,6 +165,11 @@
   width: 50%;
   text-align: center;
   font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 0;
+  border-bottom: 2px solid transparent;
 }
 
 .cursor:first-of-type {
@@ -178,9 +182,7 @@
 }
 
 .selectedFeedView {
-  text-decoration: underline;
-  text-decoration-color: rgb(37, 7, 88);
-  text-underline-offset: 22px;
+  border-bottom: 2px solid rgb(37, 7, 88);
 }
 
 .feedPosts {
