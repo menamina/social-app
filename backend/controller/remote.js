@@ -114,7 +114,6 @@ async function followingFeed(req, res) {
     const followingList = await prisma.user.findUnique({
       where: {
         id: userID,
-        commentOnPostID: null,
       },
       select: {
         following: {
@@ -130,6 +129,7 @@ async function followingFeed(req, res) {
     const followingPosts = await prisma.posts.findMany({
       where: {
         madeBy: { in: followingIDs },
+        commentOnPostID: null,
       },
       include: {
         postedBy: {
@@ -965,6 +965,23 @@ async function post(req, res) {
         madeBy: userID,
         msg: body || "",
         img: files.length > 0 ? files[0] : null,
+      },
+      include: {
+        postedBy: {
+          select: {
+            id: true,
+            username: true,
+            name: true,
+            profile: {
+              select: {
+                pfp: true,
+              },
+            },
+          },
+        },
+        likes: true,
+        commentReplies: true,
+        reposts: true,
       },
     });
 

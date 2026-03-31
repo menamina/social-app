@@ -122,9 +122,10 @@ function Feed() {
                   <PostCard
                     key={post.id}
                     post={post}
-                    onClick={() =>
-                      navigate(`/${post.username}/post/${post.id}`)
-                    }
+                    onClick={() => {
+                      console.log("Post data:", post);
+                      navigate(`/${post?.postedBy?.username}/post/${post?.id}`);
+                    }}
                     onDelete={handleDeletePost}
                   />
                 ))}
@@ -141,7 +142,7 @@ function Feed() {
                     key={post.id}
                     post={post}
                     onClick={() =>
-                      navigate(`/${post.username}/post/${post.id}`)
+                      navigate(`/${post?.postedBy?.username}/post/${post?.id}`)
                     }
                     onDelete={handleDeletePost}
                   />
