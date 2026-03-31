@@ -123,7 +123,6 @@ function Feed() {
                     key={post.id}
                     post={post}
                     onClick={() => {
-                      console.log("Post data:", post);
                       navigate(`/${post?.postedBy?.username}/post/${post?.id}`);
                     }}
                     onDelete={handleDeletePost}

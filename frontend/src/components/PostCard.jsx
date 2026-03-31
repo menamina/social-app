@@ -1,11 +1,10 @@
 import { Link } from "react-router-dom";
-import { useOutletContext, useNavigate } from "react-router-dom";
+import { useOutletContext } from "react-router-dom";
 import { useState, useEffect } from "react";
 import MakeAComment from "./makeAComment";
 
 function PostCard({ post, onClick, onDelete }) {
-  const { user, forYouFeed, setForYouFeed, followingFeed, setFollowingFeed } =
-    useOutletContext();
+  const { user } = useOutletContext();
 
   const [refreshPost, setRefreshPost] = useState(post);
 
@@ -19,8 +18,6 @@ function PostCard({ post, onClick, onDelete }) {
   const [preDeleteModalClicked, setPreDeleteModalClicked] = useState(false);
 
   const [openMakeACommentModal, setOpenCommentModal] = useState(false);
-
-  const [cameFromSearch, setCameFromSearch] = useState(false);
 
   useEffect(() => {
     function checkURL() {}
@@ -227,7 +224,15 @@ function PostCard({ post, onClick, onDelete }) {
                   }
                 />
               </div>
-              <div>{refreshPost.likes?.length}</div>
+              <div
+                onClick={(e) => {
+                  e.stopPropagation();
+                  console.log(refreshPost);
+                }}
+              >
+                click here
+                {refreshPost.likes?.length}
+              </div>
             </div>
 
             <div
@@ -240,7 +245,7 @@ function PostCard({ post, onClick, onDelete }) {
               <div>
                 <img src="/imgs/comment-4-svgrepo-com.svg" alt="comment" />
               </div>
-              <div>{refreshPost.comments?.length}</div>
+              <div>{refreshPost.commentReplies?.length}</div>
             </div>
 
             <div
