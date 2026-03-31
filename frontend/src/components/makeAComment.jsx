@@ -3,7 +3,7 @@ import { useOutletContext } from "react-router-dom";
 
 function MakeAComment({ post, closeModal }) {
   const [comment, setComment] = useState("");
-  const { user, userProfile } = useOutletContext();
+  const { user, profileData } = useOutletContext();
 
   async function makeComment() {
     try {
@@ -29,64 +29,61 @@ function MakeAComment({ post, closeModal }) {
 
   return (
     <div className="modalBackdrop" onClick={closeModal}>
-      <div className="modalContent" onClick={(e) => e.stopPropagation()}>
-        <div>
-          <div onClick={closeModal}>cancel</div>
-          <div>Reply</div>
+      <div className="commentModalContent" onClick={(e) => e.stopPropagation()}>
+        <div className="commentModalHeader">
+          <div onClick={closeModal} className="cursor-reg">✕</div>
         </div>
 
-        <div>
-          <div>
-            <div>
-              <img
-                src={`http://localhost:5555/img/${post.postedBy.profile.pfp}`}
-                alt={`${post.postedBy.username} profile pic`}
-              />
-            </div>
-            <div className="postInCommentModal">
-              <div>
-                <div>{post.username}</div> <div>{post.createdAt}</div>
+        <div className="commentModalBody">
+          <div className="originalPostSection">
+            <img
+              className="commentPFP"
+              src={`http://localhost:5555/pfpIMG/${post.postedBy.profile.pfp}`}
+              alt={`${post.postedBy.username} profile pic`}
+            />
+            <div className="originalPostContent">
+              <div className="postUserInfo">
+                <span className="postUsername">@{post.postedBy.username}</span>
               </div>
+              {post.msg && <div className="postMsg">{post.msg}</div>}
               {post.img && (
-                <div>
-                  <img src={`http://localhost:5555/img/${post.img}`} />
+                <div className="commentPostImg">
+                  <img src={`http://localhost:5555/pfpIMG/${post.img}`} alt="post image" />
                 </div>
               )}
-              {post.msg && <div>{post.msg}</div>}
             </div>
           </div>
-          <div>
-            <div>
-              <img
-                src={`http://localhost:5555/img/${userProfile?.pfp}`}
-                alt={`${user.name} profile pic`}
-              />
-            </div>
-            <div className="commentt">
-              <div>
-                <div>{user.username}</div>
-              </div>
-              <input
+
+          <div className="replySection">
+            <img
+              className="commentPFP"
+              src={`http://localhost:5555/pfpIMG/${profileData?.pfp || user?.profile?.pfp || 'default-png.jpg'}`}
+              alt={`${user.name} profile pic`}
+            />
+            <div className="replyInputWrapper">
+              <div className="replyUsername">@{user.username}</div>
+              <textarea
                 className="commentInput"
-                placeholder={`Reply to ${post.postedBy.username}...`}
+                placeholder={`Reply to @${post.postedBy.username}...`}
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
-              ></input>
+              />
             </div>
           </div>
         </div>
-        {!comment && <div>post</div>}
-        {comment && (
-          <div
+
+        <div className="commentModalFooter">
+          <button
             onClick={(e) => {
               e.stopPropagation();
               makeComment();
             }}
-            className="postCursor"
+            className={comment ? "commentPostBtn active cursor-reg" : "commentPostBtn disabled"}
+            disabled={!comment}
           >
-            post
-          </div>
-        )}
+            Reply
+          </button>
+        </div>
       </div>
     </div>
   );
