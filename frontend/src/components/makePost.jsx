@@ -61,6 +61,10 @@ function MakeAPost({ onClose }) {
     setShowPostAPIErr(false);
   }
 
+  function removeImage() {
+    setSelectedFiles([]);
+  }
+
   return (
     <div className="modalBackdrop" onClick={onClose}>
       <div className="modalContent" onClick={(e) => e.stopPropagation()}>
@@ -74,7 +78,7 @@ function MakeAPost({ onClose }) {
 
           <form onSubmit={postIt}>
             <div>
-              <div onClick={cancel} className="xPost">
+              <div onClick={cancel} className="xPost cursor-reg">
                 x
               </div>
             </div>
@@ -94,11 +98,29 @@ function MakeAPost({ onClose }) {
                   ></textarea>
                 </div>
               </div>
+              {selectedFiles.length > 0 && (
+                <div className="imagePreviewContainer">
+                  {selectedFiles.map((file, index) => (
+                    <div key={index} className="imagePreview">
+                      <img src={URL.createObjectURL(file)} alt="preview" />
+                      <button
+                        type="button"
+                        onClick={removeImage}
+                        className="removeImageBtn cursor-reg"
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
             <div className="postPost">
               <img
+                src="/imgs/upload-svgrepo-com.svg"
                 alt="Upload imgs"
                 onClick={(e) => e.target.nextSibling.click()}
+                className="cursor-reg"
               />
               <input
                 type="file"

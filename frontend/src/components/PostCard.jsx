@@ -11,7 +11,7 @@ function PostCard({ post, onClick, onDelete }) {
   const name = post.postedBy?.name || post.name;
   const username = post.postedBy?.username || post.username;
   const pfp = post.postedBy?.profile?.pfp || post.pfp;
-  const formattedDate = post.createdAt ? post.createdAt.split('T')[0] : '';
+  const formattedDate = post.createdAt ? post.createdAt.split("T")[0] : "";
 
   const postByLoggedInUser = post.postedBy?.id === user?.id ? true : false;
 
@@ -197,7 +197,7 @@ function PostCard({ post, onClick, onDelete }) {
                   className="postImg"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <img src={`http://localhost:5555/img/${post.img}`} />
+                  <img src={`http://localhost:5555/pfpIMG/${post.img}`} />
                 </Link>
               )}
 
@@ -231,7 +231,6 @@ function PostCard({ post, onClick, onDelete }) {
                   console.log(refreshPost);
                 }}
               >
-                click here
                 {refreshPost.likes?.length}
               </div>
             </div>
