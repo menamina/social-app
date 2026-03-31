@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import PostCard from "./PostCard";
 
 function ExpandedPost() {
-  const { username, postId } = useParams();
+  const { username, id } = useParams();
   const navigate = useNavigate();
 
   const [post, setPost] = useState(null);
@@ -16,7 +16,7 @@ function ExpandedPost() {
     async function fetchPost() {
       try {
         const res = await fetch(
-          `http://localhost:5555/@${username}/post/${postId}`,
+          `http://localhost:5555/@${username}/post/${id}`,
           {
             method: "GET",
             credentials: "include",
@@ -45,7 +45,7 @@ function ExpandedPost() {
       }
     }
     fetchPost();
-  }, [username, postId]);
+  }, [username, id]);
 
   function updateCommentsUI(postId) {
     setPostComments((prev) => prev.filter((post) => post.id !== postId));
