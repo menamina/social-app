@@ -1179,23 +1179,24 @@
 .deleteModalContent {
   padding: 20px;
   border-radius: 20px;
-  width: 400px;
+  width: 350px;
   background-color: white;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 12px;
 }
 
 .deleteModalHeader h3 {
   margin: 0;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   font-weight: 600;
 }
 
 .deleteModalBody p {
   margin: 0;
   color: rgb(80, 80, 80);
-  line-height: 1.5;
+  line-height: 1.4;
+  font-size: 0.9rem;
 }
 
 .deleteModalFooter {
