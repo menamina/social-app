@@ -137,13 +137,14 @@ function Search() {
                 <div className="postRes">
                   <h3>Posts</h3>
                   {queryResultsPosts.slice(0, 10).map((post) => (
-                    <PostCard
-                      key={post.id}
-                      id={post.id}
-                      post={post}
-                      onClick={() => setShowPostComments(true)}
-                      onDelete={handleDeletePost}
-                    />
+                    <Link to={`/${post?.username}`}>
+                      <PostCard
+                        key={post.id}
+                        id={post.id}
+                        post={post}
+                        onDelete={handleDeletePost}
+                      />
+                    </Link>
                   ))}
                   {queryResultsPosts.length > 10 && (
                     <button

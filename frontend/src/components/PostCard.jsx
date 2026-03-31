@@ -33,12 +33,12 @@ function PostCard({ post, onClick, onDelete }) {
   function preDeleteModal(e) {
     e.stopPropagation();
     setPreDeleteModalClicked(true);
+    setDotsClicked(false);
   }
 
   function cancelDelete(e) {
     e.stopPropagation();
     setPreDeleteModalClicked(false);
-    setDotsClicked(false);
   }
 
   async function toggleLike() {
@@ -171,20 +171,10 @@ function PostCard({ post, onClick, onDelete }) {
               <div>{formattedDate}</div>
               {postByLoggedInUser && (
                 <div>
-                  <div onClick={openSettings}>...</div>
-                  {dotsClicked && <div onClick={preDeleteModal}>delete</div>}
-                  {preDeleteModalClicked && (
-                    <div>
-                      <div>Delete post?</div>
-                      <div>
-                        This can’t be undone and it will be removed from your
-                        profile, the timeline of any accounts that follow you,
-                        and from search results.{" "}
-                      </div>
-                      <div>
-                        <div onClick={sendDelete}>delete</div>
-                        <div onClick={cancelDelete}>cancel</div>
-                      </div>
+                  <div onClick={openSettings} className="cursor-reg">...</div>
+                  {dotsClicked && (
+                    <div className="postOptionsDropdown">
+                      <div onClick={preDeleteModal} className="cursor-reg">Delete</div>
                     </div>
                   )}
                 </div>
@@ -279,6 +269,30 @@ function PostCard({ post, onClick, onDelete }) {
 
       {openMakeACommentModal && (
         <MakeAComment post={post} closeModal={(e) => closeModal(e)} />
+      )}
+
+      {preDeleteModalClicked && (
+        <div className="modalBackdrop" onClick={cancelDelete}>
+          <div className="deleteModalContent" onClick={(e) => e.stopPropagation()}>
+            <div className="deleteModalHeader">
+              <h3>Delete post?</h3>
+            </div>
+            <div className="deleteModalBody">
+              <p>
+                This can't be undone and it will be removed from your profile,
+                the timeline of any accounts that follow you, and from search results.
+              </p>
+            </div>
+            <div className="deleteModalFooter">
+              <button onClick={sendDelete} className="deleteConfirmBtn cursor-reg">
+                Delete
+              </button>
+              <button onClick={cancelDelete} className="deleteCancelBtn cursor-reg">
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

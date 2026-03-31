@@ -1025,6 +1025,34 @@
   height: 20px;
 }
 
+.postOptionsDropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: white;
+  border: 1px solid rgb(207, 204, 204);
+  border-radius: 8px;
+  padding: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  min-width: 100px;
+}
+
+.postOptionsDropdown > div {
+  padding: 8px 12px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.postOptionsDropdown > div:hover {
+  background-color: rgba(207, 205, 205, 0.3);
+}
+
+.postUserInfo > div:last-child {
+  position: relative;
+  margin-left: auto;
+}
+
 /* comments comments comments */
 
 .commentModalContent {
@@ -1146,6 +1174,62 @@
   background-color: rgb(207, 204, 204);
   color: rgb(128, 128, 128);
   cursor: not-allowed;
+}
+
+.deleteModalContent {
+  padding: 20px;
+  border-radius: 20px;
+  width: 400px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.deleteModalHeader h3 {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.deleteModalBody p {
+  margin: 0;
+  color: rgb(80, 80, 80);
+  line-height: 1.5;
+}
+
+.deleteModalFooter {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.deleteConfirmBtn,
+.deleteCancelBtn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.deleteConfirmBtn {
+  background-color: rgb(220, 53, 69);
+  color: white;
+}
+
+.deleteConfirmBtn:hover {
+  background-color: rgb(200, 35, 51);
+}
+
+.deleteCancelBtn {
+  background-color: rgb(207, 204, 204);
+  color: black;
+}
+
+.deleteCancelBtn:hover {
+  background-color: rgb(180, 177, 177);
 }
 
 .modalContent {
