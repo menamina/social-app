@@ -11,6 +11,7 @@ function PostCard({ post, onClick, onDelete }) {
   const name = post.postedBy?.name || post.name;
   const username = post.postedBy?.username || post.username;
   const pfp = post.postedBy?.profile?.pfp || post.pfp;
+  const formattedDate = post.createdAt ? post.createdAt.split('T')[0] : '';
 
   const postByLoggedInUser = post.postedBy?.id === user?.id ? true : false;
 
@@ -167,7 +168,7 @@ function PostCard({ post, onClick, onDelete }) {
                 {name} {username}
               </div>
               <div>.</div>
-              <div>{post.createdAt}</div>
+              <div>{formattedDate}</div>
               {postByLoggedInUser && (
                 <div>
                   <div onClick={openSettings}>...</div>
