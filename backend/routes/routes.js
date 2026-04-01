@@ -54,6 +54,11 @@ router.get("/nav-data", isAuth, remote.getNavData);
 
 router.get("/search", isAuth, remote.search);
 router.get("/settings", isAuth, remote.settings);
+router.get("/blocked-users", isAuth, remote.getBlockedUsers);
+router.get("/dms", isAuth, remote.dms);
+router.get("/dms/search/user", isAuth, remote.dmUserSearch);
+router.get("/dms/msgSearch", isAuth, remote.dmMsgSearch);
+router.get("/dms/:wUser", isAuth, remote.one2oneDMS);
 router.get("/:username/post/:postId", isAuth, remote.getPost);
 router.get("/:profile", isAuth, remote.viewProfile);
 
@@ -74,10 +79,6 @@ router.post("/block/:thisID", isAuth, remote.blockHandler);
 
 // dms //
 
-router.get("/dms", isAuth, remote.dms);
-router.get("/dms/search/user", isAuth, remote.dmUserSearch);
-router.get("/dms/msgSearch", isAuth, remote.dmMsgSearch);
-router.get("/dms/:wUser", isAuth, remote.one2oneDMS);
 router.post("/check-block-status", isAuth, remote.checkBlockStatus);
 router.post("/send-msg", isAuth, multer.array("files", 4), remote.sendMsg);
 router.patch("/deleteMsg", isAuth, remote.deleteMsg);
@@ -89,6 +90,5 @@ router.patch(
   multer.single("pfp"),
   remote.updateProfileSettings,
 );
-router.get("/blocked-users", isAuth, remote.getBlockedUsers);
 
 module.exports = router;
