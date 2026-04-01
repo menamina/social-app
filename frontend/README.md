@@ -1,16 +1,40 @@
-# React + Vite
+# Social Media App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A threads/twitter clone social media app
 
-Currently, two official plugins are available:
+## Built with
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Node.js
+- Express and express sessions
+- Passport
+- PostgreSQL
+- Prisma as the ORM for PostgreSQL
+- JavaScript
+- React
+- CSS
 
-## React Compiler
+## Application Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- creating/deleting posts
+- liking, commenting, reposting
+- direct messaging
+- direct messaging searching through messages as well as users to message
+- blocking/unblocking users
+- general search functionality for usernames as well as posts or comments
+- editing account
 
-## Expanding the ESLint configuration
+## My experience building this
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- I chose to use passport for authentication with this application as it is something I am becoming more comfortable with after using it in a previous project; I understand it more than when I did while reading about it and first implementing it in my Members Only project.
+
+- Since learning about Prisma I have enjoyed using it as my ORM and am continuously learning about different ways to structure my schema. For example, in this application I made posts AND comments both Posts in the schema as this helped figure out which posts were strictly posts or which posts were comments under a post.
+
+- I still enjoy building with React and find that I still have a lot to learn although I have come a long way already. My goal is to be more effecient in the way I store data and hit API endpoints. I realized at the very end of this project that in a real world application most applications are going to render the comments under a post AFTER that post has been clicked. - Still a lot to learn, but I'm enjoying it.
+
+## Goals
+
+- One goal for my following projects away from the Odin Project will be to think broadly about applications I am building in the real world scenario. As stated above, real applications do an api fetch after a post has been clicked on and not when the feed is first loaded.
+
+- Another goal would be to implement sanitization; After learning a little bit about it in the Odin Project once I just forgot to keep implementing it and sanitization is very import.
+
+- I would like to do more testing and mocking in future projects
