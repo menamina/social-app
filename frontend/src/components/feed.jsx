@@ -65,8 +65,8 @@ function Feed() {
   }
 
   function handleDeletePost(postId) {
-    setForYouFeed((prev) => prev.filter((post) => post.id !== postId));
-    setFollowingFeed((prev) => prev.filter((post) => post.id !== postId));
+    setForYouFeed((prev) => prev ? prev.filter((post) => post.id !== postId) : prev);
+    setFollowingFeed((prev) => prev ? prev.filter((post) => post.id !== postId) : prev);
   }
 
   return (

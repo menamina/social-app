@@ -152,27 +152,29 @@ function MsgOpened({ id, isBlocked }) {
         {deleteMsgErr && <div className="error">{deleteMsgErr}</div>}
 
         {deleteClicked && (
-          <>
-            <div className="modal-backdrop" onClick={cancelMsgDelete}></div>
-            <div className="modal-content">
-              <div>Delete message</div>
-              <div>Are you sure you want to delete this message?</div>
-              <div>
-                <div
+          <div className="modalBackdrop" onClick={cancelMsgDelete}>
+            <div className="deleteModalContent" onClick={(e) => e.stopPropagation()}>
+              <div className="deleteModalHeader">
+                <h3>Delete message?</h3>
+              </div>
+              <div className="deleteModalFooter">
+                <button
                   onClick={isDeleting ? null : deleteMsg}
-                  className={isDeleting ? "disabled" : ""}
+                  className={`deleteConfirmBtn cursor-reg ${isDeleting ? "disabled" : ""}`}
+                  disabled={isDeleting}
                 >
-                  {isDeleting ? "Deleting..." : "delete for me"}
-                </div>
-                <div
+                  {isDeleting ? "Deleting..." : "Delete"}
+                </button>
+                <button
                   onClick={isDeleting ? null : cancelMsgDelete}
-                  className={isDeleting ? "disabled" : ""}
+                  className={`deleteCancelBtn cursor-reg ${isDeleting ? "disabled" : ""}`}
+                  disabled={isDeleting}
                 >
-                  cancel
-                </div>
+                  Cancel
+                </button>
               </div>
             </div>
-          </>
+          </div>
         )}
 
         {isBlocked ? (

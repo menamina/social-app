@@ -116,7 +116,12 @@ function Settings() {
           name: name || user.name,
           username: username || user.username,
           email: email || user.email,
+          profile: {
+            ...userProfile.profile,
+            pfp: data.updatedProfile?.pfp || userProfile.profile?.pfp,
+          },
         });
+        setProfilePicture(null);
         alert("Profile updated successfully");
       } else {
         alert("Failed to update profile");

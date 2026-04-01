@@ -1177,18 +1177,19 @@
 }
 
 .deleteModalContent {
-  padding: 20px;
-  border-radius: 20px;
-  width: 350px;
+  padding: 16px;
+  border-radius: 16px;
+  width: 320px;
+  height: 160px;
   background-color: white;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
 .deleteModalHeader h3 {
   margin: 0;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 600;
 }
 
