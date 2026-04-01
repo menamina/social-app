@@ -76,7 +76,6 @@ function SendMsg({ otherUser }) {
           aria-label={`send image to ${otherUser?.username} `}
           onChange={(e) => setImgs(Array.from(e.target.files))}
           type="file"
-          multiple
         ></input>
       </div>
       <div>
