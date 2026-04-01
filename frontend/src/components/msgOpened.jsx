@@ -109,7 +109,9 @@ function MsgOpened({ id, isBlocked }) {
               return (
                 <div
                   key={msg.id}
-                  className={isSent ? "msgBubble msgSent" : "msgBubble msgReceived"}
+                  className={
+                    isSent ? "msgBubble msgSent" : "msgBubble msgReceived"
+                  }
                 >
                   <div className="msgOptions">
                     <div
@@ -123,7 +125,10 @@ function MsgOpened({ id, isBlocked }) {
                       ...
                     </div>
                     {openDeleteMsgID === msg.id && (
-                      <div className="msgDeleteOption" onClick={() => deleteMsgID(msg.id)}>
+                      <div
+                        className="msgDeleteOption"
+                        onClick={() => deleteMsgID(msg.id)}
+                      >
                         delete for me
                       </div>
                     )}
@@ -140,9 +145,11 @@ function MsgOpened({ id, isBlocked }) {
                         ))}
                       </div>
                     )}
-                    {msg?.message && <div className="msgText">{msg?.message}</div>}
+                    {msg?.message && (
+                      <div className="msgText">{msg?.message}</div>
+                    )}
                   </div>
-                  <div className="msgTime">{msg?.createdAt}</div>
+                  <div className="msgTime">{msg?.createdAt.split("T")[0]}</div>
                 </div>
               );
             })}
@@ -153,7 +160,10 @@ function MsgOpened({ id, isBlocked }) {
 
         {deleteClicked && (
           <div className="modalBackdrop" onClick={cancelMsgDelete}>
-            <div className="deleteModalContent" onClick={(e) => e.stopPropagation()}>
+            <div
+              className="deleteModalContent"
+              onClick={(e) => e.stopPropagation()}
+            >
               <div className="deleteModalHeader">
                 <h3>Delete message?</h3>
               </div>

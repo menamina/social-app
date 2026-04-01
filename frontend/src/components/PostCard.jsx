@@ -255,13 +255,6 @@ function PostCard({ post, onClick, onDelete }) {
               </div>
               <div>{refreshPost.reposts?.length}</div>
             </div>
-
-            <div className="share">
-              <div>
-                <img src="/imgs/share-1-svgrepo-com.svg" alt="share" />
-              </div>
-              <div>Share</div>
-            </div>
           </div>
         </div>
       </div>
