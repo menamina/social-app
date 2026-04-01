@@ -111,20 +111,11 @@ function Settings() {
       const data = await res.json();
 
       if (data.success) {
-        setUserProfile({
-          ...userProfile,
-          name: name || user.name,
-          username: username || user.username,
-          email: email || user.email,
-          profile: {
-            ...userProfile.profile,
-            pfp: data.updatedProfile?.pfp || userProfile.profile?.pfp,
-          },
-        });
-        setProfilePicture(null);
-        alert("Profile updated successfully");
+        window.location.reload();
+        return;
       } else {
         alert("Failed to update profile");
+        return;
       }
     } catch (error) {
       console.error("Error updating profile:", error);
@@ -294,7 +285,9 @@ function Settings() {
                   <label>Message:</label>
                   <textarea placeholder="How can we help you?" rows="6" />
                 </div>
-                <button className="saveButton" type="submit">Submit</button>
+                <button className="saveButton" type="submit">
+                  Submit
+                </button>
               </form>
             </div>
           )}

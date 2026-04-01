@@ -14,6 +14,7 @@ function Feed() {
     setFollowingFeed,
     followingFeedErr,
     setFollowingFeedErr,
+    navUserData,
   } = useOutletContext();
 
   const navigate = useNavigate();
@@ -65,8 +66,12 @@ function Feed() {
   }
 
   function handleDeletePost(postId) {
-    setForYouFeed((prev) => prev ? prev.filter((post) => post.id !== postId) : prev);
-    setFollowingFeed((prev) => prev ? prev.filter((post) => post.id !== postId) : prev);
+    setForYouFeed((prev) =>
+      prev ? prev.filter((post) => post.id !== postId) : prev,
+    );
+    setFollowingFeed((prev) =>
+      prev ? prev.filter((post) => post.id !== postId) : prev,
+    );
   }
 
   return (
@@ -99,7 +104,7 @@ function Feed() {
           <div>
             <img
               className="feedPFP"
-              src={`http://localhost:5555/pfpIMG/${user?.profile?.pfp || user?.pfp || "default-png.jpg"}`}
+              src={`http://localhost:5555/pfpIMG/${navUserData?.profile?.pfp || 'default-png.jpg'}`}
             />
           </div>
           <div className="inputWrapper">

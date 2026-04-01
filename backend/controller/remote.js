@@ -712,14 +712,14 @@ async function updateProfileSettings(req, res) {
     const userID = Number(id);
 
     const { name, username, email } = req.body;
-    const pfp = req.file ? req.file.path : null;
+    const pfp = req.file ? req.file.filename : null;
 
     const updateData = { name, username, email };
     if (pfp) updateData.pfp = pfp;
 
-    await prisma.profile.update({
+    const updatedProfile = await prisma.profile.update({
       where: { user: userID },
-      update: updateData,
+      data: updateData,
     });
 
     await prisma.user.update({
@@ -727,7 +727,7 @@ async function updateProfileSettings(req, res) {
       data: updateData,
     });
 
-    return res.status(200).json({ success: true });
+    return res.status(200).json({ success: true, updatedProfile });
   } catch (error) {
     console.error("Update profile error:", error);
     return res.status(500).json({ errorMsg: "Internal server error :^(" });
