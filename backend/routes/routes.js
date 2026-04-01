@@ -26,7 +26,7 @@ router.post("/login", (req, res, next) => {
         user: {
           id: user.id,
           name: user.name,
-          usename: user.name,
+          username: user.name,
           email: user.email,
         },
       });
@@ -49,14 +49,11 @@ router.post("/logout", (req, res, next) => {
 });
 
 router.get("/for-you-feed", isAuth, remote.forYouFeed);
-router.get("/for-you", isAuth, remote.forYouFeed);
 router.get("/followingFeed", isAuth, remote.followingFeed);
 router.get("/nav-data", isAuth, remote.getNavData);
 
 router.get("/search", isAuth, remote.search);
 router.get("/settings", isAuth, remote.settings);
-router.get("/dms", isAuth, remote.dms);
-router.get("/dms/:wUser", isAuth, remote.one2oneDMS);
 router.get("/:username/post/:postId", isAuth, remote.getPost);
 router.get("/:profile", isAuth, remote.viewProfile);
 
@@ -77,8 +74,9 @@ router.post("/block/:thisID", isAuth, remote.blockHandler);
 
 // dms //
 
+router.get("/dms", isAuth, remote.dms);
 router.get("/dms/search/user", isAuth, remote.dmUserSearch);
-router.get("/dms/msgSearch/", isAuth, remote.dmMsgSearch);
+router.get("/dms/msgSearch", isAuth, remote.dmMsgSearch);
 router.get("/dms/:wUser", isAuth, remote.one2oneDMS);
 router.post("/check-block-status", isAuth, remote.checkBlockStatus);
 router.post("/send-msg", isAuth, multer.array("files", 4), remote.sendMsg);
