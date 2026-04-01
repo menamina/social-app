@@ -33,7 +33,7 @@ function MsgOpened({ id, isBlocked }) {
     }
 
     get1to1Msgs();
-    const interval = setInterval(get1to1Msgs, 20000);
+    const interval = setInterval(get1to1Msgs, 2000);
     return () => clearInterval(interval);
   }, [id]);
 
@@ -134,15 +134,12 @@ function MsgOpened({ id, isBlocked }) {
                     )}
                   </div>
                   <div className="msgContent">
-                    {msg.images && msg.images.length > 0 && (
+                    {msg.image && (
                       <div className="msgImages">
-                        {msg.images.map((image, index) => (
-                          <img
-                            key={index}
-                            src={`http://localhost:5555/img/${image}`}
-                            alt={`message attachment ${index + 1}`}
-                          />
-                        ))}
+                        <img
+                          src={`http://localhost:5555/pfpIMG/${msg.image}`}
+                          alt="message attachment"
+                        />
                       </div>
                     )}
                     {msg?.message && (
